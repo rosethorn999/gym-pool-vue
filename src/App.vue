@@ -3,9 +3,9 @@
     <div id="nav">
       <h1>Gym Pool</h1>
       <p>A pool that share your fitness contract.</p>
-      <router-link to="/">Ask</router-link>
+      <router-link to="/">Buy</router-link>
       <span>&nbsp;|&nbsp;</span>
-      <router-link to="/transfer">Transfer</router-link>
+      <router-link to="/sell">Sell</router-link>
     </div>
     <router-view/>
   </div>
