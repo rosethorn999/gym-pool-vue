@@ -5,7 +5,7 @@ import Home from './views/Home.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -25,6 +25,10 @@ export default new Router({
       path: '/contract/:contractId',
       name: 'contract',
       component: () => import('./views/Contract.vue')
-    }
+    },
+    {
+      path: '*',
+      component: Home
+    },
   ]
 })
