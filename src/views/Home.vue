@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item,ind) in asks" :key="item.id">
+          <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
             <td>{{item.gymType}}</td>
             <td>{{item.dueDate}}</td>
@@ -69,6 +69,9 @@ export default {
           v = c == "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
+    },
+    checkout(id) {
+      this.$router.push({ name: "contract", params: { contractId: id } });
     }
   }
 };
