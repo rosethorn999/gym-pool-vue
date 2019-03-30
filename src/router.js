@@ -27,6 +27,11 @@ export default new Router({
       component: () => import('./views/Contract.vue')
     },
     {
+      path: '/addRecord',
+      name: 'add',
+      component: () => import('./views/AddRecord.vue')
+    },
+    {
       path: '*',
       component: Home
     },

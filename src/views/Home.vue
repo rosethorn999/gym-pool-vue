@@ -3,6 +3,8 @@
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
     <!-- <Asks/> -->
     <h2>Asks</h2>
+    <input type="button" value="ADD" @click="addRecord">
+    <input type="button" value="READ" @click="readRecord">
     <div class="table-container">
       <table>
         <thead>
@@ -16,7 +18,7 @@
         <tbody>
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
-            <td>{{item.gymType}}</td>
+            <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{item.dueDate}}</td>
             <td>${{item.price}}</td>
           </tr>
@@ -41,37 +43,51 @@ export default {
     // Asks
   },
   mounted: function() {
-    this.genRandomList();
+    this.db = firebase.firestore();
+    this.readRecord();
   },
   data: function() {
     return {
-      asks: []
+      db: null,
+      asks: null,
+      gymTypes: [
+        { val: 0, name: "健身工廠" },
+        { val: 1, name: "全真會館" },
+        { val: 2, name: "世界健身" },
+        { val: 3, name: "成吉思汗" },
+        { val: 4, name: "台北健身院" },
+        { val: 999, name: "其他" }
+      ]
     };
   },
   methods: {
-    genRandomList() {
-      let id = this._uuid();
-      for (let i = 0; i < 20; i++) {
-        this.asks.push({
-          id: id,
-          gymType: "健身工廠",
-          dueDate: "2019/12/31",
-          price: 31990,
-          postDate: "2019/03/23"
-        });
-      }
+    addRecord() {
+      this.$router.push({ name: "add" });
     },
-    _uuid() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
-        c
-      ) {
-        var r = (Math.random() * 16) | 0,
-          v = c == "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
+    readRecord() {
+      this.asks = [];
+      this.db
+        .collection("sell")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.asks.push(doc.data());
+            console.log(`${doc.id} => ${doc.data()}`);
+          });
+        });
     },
     checkout(id) {
       this.$router.push({ name: "contract", params: { contractId: id } });
+    },
+    gymTypeCaption: function(v) {
+      let selected = this.gymTypes.filter(function(item) {
+        return item.val === v;
+      });
+      if (selected.length > 0) {
+        return selected[0].name;
+      } else {
+        return "error";
+      }
     }
   }
 };
@@ -112,6 +128,7 @@ $phones-media: 479px;
 .table-container {
   width: 100%;
   overflow: auto;
+  padding-bottom: 50px;
   // display: none;
 }
 table {
@@ -143,7 +160,11 @@ table {
   }
   tfoot {
     tr {
+      height: 56px;
       text-align: right;
+      td {
+        padding-right: 2rem;
+      }
     }
   }
   //電腦版
