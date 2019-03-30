@@ -22,7 +22,6 @@
           <textarea v-model="remark" placeholder="Remark"></textarea>
         </div>
         <div>
-          <!-- todo android mobile字會被壓到 -->
           <select class="expiryDate" v-model="expiryDate[0]">
             <option :value="-1">Expiry Year</option>
             <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
@@ -228,6 +227,13 @@ textarea {
   border: 1px solid rgba(0, 0, 0, 0.12);
   width: 100%;
   height: 32px;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 5px;
+  padding: 5px;
 }
 .form {
   padding: 16px;

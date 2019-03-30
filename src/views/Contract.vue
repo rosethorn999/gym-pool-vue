@@ -225,6 +225,13 @@ textarea {
   width: 100%;
   height: 32px;
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 5px;
+  padding: 5px;
+}
 .form {
   padding: 16px;
   border-spacing: 0;
