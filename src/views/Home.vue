@@ -11,7 +11,7 @@
           <tr>
             <th>#</th>
             <th>gymType</th>
-            <th>dueDate</th>
+            <th>expiryDate</th>
             <th>price</th>
           </tr>
         </thead>
@@ -27,13 +27,15 @@
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
             <td>{{gymTypeCaption(item.gymType)}}</td>
-            <td>{{item.dueDate}}</td>
+            <td>{{item.expiryDate}}</td>
             <td>${{item.price}}</td>
+            <!-- 平均每月售價 -->
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4">Prev&nbsp;|&nbsp;Next</td>
+            <!-- todo 翻頁 -->
+            <!-- <td colspan="4">Prev&nbsp;|&nbsp;Next</td> -->
           </tr>
         </tfoot>
       </table>
@@ -80,7 +82,6 @@ export default {
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             this.asks.push(doc.data());
-            console.log(`${doc.id} => ${doc.data()}`);
           });
         });
     },

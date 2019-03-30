@@ -22,6 +22,7 @@
           <textarea v-model="remark" placeholder="Remark"></textarea>
         </div>
         <div>
+          <!-- todo android mobile字會被壓到 -->
           <select class="expiryDate" v-model="expiryDate[0]">
             <option :value="-1">Expiry Year</option>
             <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
@@ -34,17 +35,17 @@
             <option :value="-1">Expiry Day</option>
             <option v-for="item in selection.DD" :key="item" :value="item">{{item}}</option>
           </select>
-          <!-- timePicker -->
           <div class="expiryDate">{{productLife}}</div>
+          <!-- todo mobile寬度太窄 -->
         </div>
         <div>
           <label>Feature</label>
-          <input type="checkbox" id="sauna">
-          <label for="sauna">Sauna</label>
-          <input type="checkbox" id="freeParking">
-          <label for="freeParking">Free Parking Lot</label>
-          <input type="checkbox" id="fitnessClass">
-          <label for="fitnessClass">Free Fitness class</label>
+          <template v-for="(f,index) in selection.features">
+            <label :for="f.val" :key="index">
+              <input type="checkbox" :id="f.val" :value="f.val" v-model="features">
+              {{f.caption}}
+            </label>
+          </template>
         </div>
         <div>
           <input type="button" value="Confirm" @click="addNewRecord">
@@ -66,6 +67,21 @@ export default {
   },
   mounted: function() {
     this.db = firebase.firestore();
+    let _DD = [];
+    for (let i = 1; i <= 31; i++) {
+      _DD.push(i);
+    }
+    this.selection = {
+      YYYY: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      MM: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      DD: _DD
+    };
+    this.selection.features = [
+      { val: "saunaRoom", caption: "Sauna room" },
+      { val: "swimPool", caption: "Swimming pool" },
+      { val: "fitnessClass", caption: "Fitness class" },
+      { val: "freeParking", caption: "Free parking lot" }
+    ];
   },
   data: function() {
     return {
@@ -77,6 +93,7 @@ export default {
       location: "",
       expiryDate: [-1, -1, -1],
       remark: "",
+      features: [],
 
       gymTypes: [
         //todo 放到store
@@ -86,21 +103,11 @@ export default {
         { val: 3, name: "成吉思汗" },
         { val: 4, name: "台北健身院" },
         { val: 999, name: "其他" }
-      ]
+      ],
+      selection: {}
     };
   },
   computed: {
-    selection() {
-      let _DD = [];
-      for (let i = 1; i < 31; i++) {
-        _DD.push(i);
-      }
-      return {
-        YYYY: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
-        MM: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        DD: _DD
-      };
-    },
     productLife() {
       let ret = "";
 
@@ -128,8 +135,8 @@ export default {
       //todo 輸入檢查
       let that = this;
       let id = this._uuid();
-      let _postDate = new Date().toString();
-      let _expiryDate = this.expiryDate.toString("/");
+      let _postDate = new Date().toISOString();
+      let _expiryDate = this.expiryDate.join("/");
 
       let pack = {
         id: id,
@@ -138,8 +145,9 @@ export default {
         expiryDate: _expiryDate,
         price: this.price,
         postDate: _postDate,
-        _loc: this.location,
-        remark: this.remark
+        location: this.location,
+        remark: this.remark,
+        features: this.features
       };
       this.db
         .collection("sell")
