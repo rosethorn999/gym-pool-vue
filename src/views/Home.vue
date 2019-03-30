@@ -14,6 +14,7 @@
             <th>gymType</th>
             <th>productLife</th>
             <th>price</th>
+            <th>price/M</th>
           </tr>
         </thead>
         <tbody>
@@ -23,20 +24,20 @@
             </td>
           </tr>
           <tr v-if="asks&&asks.length===0">
-            <td colspan="4">None</td>
+            <td colspan="5">None</td>
           </tr>
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
             <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <!-- todo 平均每月售價 -->
+            <td>${{getUnitPrice(item.expiryDate,item.price)}}</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <!-- todo 翻頁 -->
-            <!-- <td colspan="4">Prev&nbsp;|&nbsp;Next</td> -->
+            <!-- <td colspan="5">Prev&nbsp;|&nbsp;Next</td> -->
           </tr>
         </tfoot>
       </table>
@@ -98,6 +99,27 @@ export default {
         ret = "calc error";
       }
 
+      return ret;
+    },
+    getUnitPrice(expiryDate, price) {
+      let ret = "";
+      if (expiryDate) {
+        let now = new Date();
+        let nowYYYY = now.getFullYear();
+        let nowMM = now.getMonth() + 1;
+
+        let expiryArr = expiryDate.split("/").map(function(item) {
+          return Number(item);
+        });
+        let YYYY = expiryArr[0];
+        let MM = expiryArr[1];
+        if (YYYY === -1 || MM === -1) {
+          ret = "calc error";
+        } else {
+          ret = Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
+        }
+      } else {
+      }
       return ret;
     },
     addRecord() {
