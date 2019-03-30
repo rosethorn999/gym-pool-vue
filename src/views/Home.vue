@@ -16,6 +16,14 @@
           </tr>
         </thead>
         <tbody>
+          <tr v-if="asks===null">
+            <td colspan="4">
+              <img src="../assets/loading.gif">
+            </td>
+          </tr>
+          <tr v-if="asks&&asks.length===0">
+            <td colspan="4">None</td>
+          </tr>
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
             <td>{{gymTypeCaption(item.gymType)}}</td>
