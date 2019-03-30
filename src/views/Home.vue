@@ -8,10 +8,11 @@
     <div class="table-container">
       <table>
         <thead>
+          <!-- todo filter -->
           <tr>
             <th>#</th>
             <th>gymType</th>
-            <th>expiryDate</th>
+            <th>productLife</th>
             <th>price</th>
           </tr>
         </thead>
@@ -27,9 +28,9 @@
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
             <td>{{gymTypeCaption(item.gymType)}}</td>
-            <td>{{item.expiryDate}}</td>
+            <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <!-- 平均每月售價 -->
+            <!-- todo 平均每月售價 -->
           </tr>
         </tbody>
         <tfoot>
@@ -71,6 +72,34 @@ export default {
     };
   },
   methods: {
+    getProductLife(expiryDate) {
+      let ret = "";
+
+      let now = new Date();
+      let nowYYYY = now.getFullYear();
+      let nowMM = now.getMonth() + 1;
+
+      if (expiryDate) {
+        let expiryArr = expiryDate.split("/").map(function(item) {
+          return Number(item);
+        });
+        let YYYY = expiryArr[0];
+        let MM = expiryArr[1];
+        if (YYYY === -1 || MM === -1) {
+          ret = "calc error";
+        } else {
+          let life = MM - nowMM + "M";
+          if (YYYY - nowYYYY > 0) {
+            life = YYYY - nowYYYY + "Y" + life;
+          }
+          ret = life;
+        }
+      } else {
+        ret = "calc error";
+      }
+
+      return ret;
+    },
     addRecord() {
       this.$router.push({ name: "add" });
     },
