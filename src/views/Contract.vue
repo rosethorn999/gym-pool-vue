@@ -250,6 +250,10 @@ select {
   }
   div.expiryDate {
     text-align: right;
+    line-height: 32px;
+    @include phone-width {
+      font-size: 0.6em;
+    }
   }
   //電腦版
   @include pc-width {
