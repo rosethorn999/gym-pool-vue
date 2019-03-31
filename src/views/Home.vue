@@ -10,10 +10,50 @@
         <thead>
           <!-- todo filter -->
           <tr>
-            <th>#</th>
-            <th>gymType</th>
-            <th>productLife</th>
-            <th>price</th>
+            <th @click="orderBy('postDate')">
+              #
+              <img
+                v-show="isShowSortIcon('postDate','asc')"
+                src="../assets/iconfinder_sort_incr_18917.png"
+              >
+              <img
+                v-show="isShowSortIcon('postDate','desc')"
+                src="../assets/iconfinder_sort_decrease_18916.png"
+              >
+            </th>
+            <th @click="orderBy('gymType')">
+              gymType
+              <img
+                v-show="isShowSortIcon('gymType','asc')"
+                src="../assets/iconfinder_sort_incr_18917.png"
+              >
+              <img
+                v-show="isShowSortIcon('gymType','desc')"
+                src="../assets/iconfinder_sort_decrease_18916.png"
+              >
+            </th>
+            <th @click="orderBy('expiryDate')">
+              productLife
+              <img
+                v-show="isShowSortIcon('expiryDate','asc')"
+                src="../assets/iconfinder_sort_incr_18917.png"
+              >
+              <img
+                v-show="isShowSortIcon('expiryDate','desc')"
+                src="../assets/iconfinder_sort_decrease_18916.png"
+              >
+            </th>
+            <th @click="orderBy('price')">
+              price
+              <img
+                v-show="isShowSortIcon('price','asc')"
+                src="../assets/iconfinder_sort_incr_18917.png"
+              >
+              <img
+                v-show="isShowSortIcon('price','desc')"
+                src="../assets/iconfinder_sort_decrease_18916.png"
+              >
+            </th>
             <th>price/M</th>
           </tr>
         </thead>
@@ -62,6 +102,7 @@ export default {
     return {
       db: null,
       asks: null,
+      sorting: { name: "postDate", way: "asc" },
       gymTypes: [
         { val: 0, name: "健身工廠" },
         { val: 1, name: "全真會館" },
@@ -73,6 +114,35 @@ export default {
     };
   },
   methods: {
+    isShowSortIcon(name, way) {
+      return this.sorting.name === name && this.sorting.way === way;
+    },
+    orderBy(sortName) {
+      let sortingWay = this.sorting.way;
+      let sortingName = this.sorting.name;
+      let sortWay = "asc";
+      if (sortingName === sortName) {
+        if (sortingWay === "desc") {
+          sortName = "postDate";
+          sortWay = "asc";
+        } else {
+          sortWay = "desc";
+        }
+      }
+      this.sorting.way = sortWay;
+      this.sorting.name = sortName;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+      this.db
+        .collection("sell")
+        .orderBy(sortName, sortWay)
+        .get()
+        .then(querySnapshot => {
+          this.asks = [];
+          querySnapshot.forEach(doc => {
+            this.asks.push(doc.data());
+          });
+        });
+    },
     getProductLife(expiryDate) {
       let ret = "";
 
@@ -131,6 +201,7 @@ export default {
         .collection("sell")
         .get()
         .then(querySnapshot => {
+          this.asks = [];
           querySnapshot.forEach(doc => {
             this.asks.push(doc.data());
           });
@@ -202,9 +273,12 @@ table {
     tr {
       height: 56px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      th:first-child {
-        width: 3em;
-        word-break: break-all;
+      th {
+        cursor: pointer;
+        &:first-child {
+          width: 3em;
+          word-break: break-all;
+        }
       }
     }
   }
