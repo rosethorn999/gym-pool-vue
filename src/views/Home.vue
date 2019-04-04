@@ -76,8 +76,13 @@
         </tbody>
         <tfoot>
           <tr>
-            <!-- todo 翻頁 -->
-            <!-- <td colspan="5">Prev&nbsp;|&nbsp;Next</td> -->
+            <td colspan="5">
+              <span>Page {{pagination.pageIndex+1}}</span>
+              &nbsp;|&nbsp;
+              <span @click="pageControl(-1)">Prev</span>
+              &nbsp;|&nbsp;
+              <span @click="pageControl(1)">Next</span>
+            </td>
           </tr>
         </tfoot>
       </table>
@@ -102,6 +107,7 @@ export default {
     return {
       db: null,
       asks: null,
+      pagination: { pageSize: 20, pageIndex: 0, noNext: false, lastData: {} },
       sorting: { name: "postDate", way: "asc" },
       gymTypes: [
         { val: 0, name: "健身工廠" },
@@ -114,6 +120,64 @@ export default {
     };
   },
   methods: {
+    pageControl(pager) {
+      if (pager === -1 && this.pagination.pageIndex === 0) {
+        console.log("page index is 0");
+        return;
+      } else if (pager === 1 && this.pagination.noNext) {
+        console.log("no next page");
+        return;
+      }
+      this.pagination.pageIndex += pager;
+      let sortWay = this.sorting.way;
+      let sortName = this.sorting.name;
+
+      let startCursor = this.pagination.lastData[sortName];
+      let endCursor = this.asks[0][sortName];
+      let cursor = startCursor;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+      console.log("startAt:" + startCursor);
+      console.log("endAt:" + endCursor);
+
+      if (pager < 0) {
+        //PREV
+        sortWay = sortWay === "desc" ? "asc" : "desc";
+        cursor = endCursor;
+      }
+      this.db
+        .collection("sell")
+        .orderBy(sortName, sortWay)
+        .startAt(cursor)
+        .limit(this.pagination.pageSize + 1)
+        .get()
+        .then(querySnapshot => {
+          this.asks = [];
+          let size = querySnapshot.docs.length;
+          this.pagination.noNext = this.pagination.pageSize >= size;
+          console.log(this.pagination.pageSize, size);
+          if (pager > 0) {
+            //NEXT
+            for (let i = 0; i < size; i++) {
+              let d = querySnapshot.docs[i].data();
+              if (i < this.pagination.pageSize) {
+                this.asks.push(d);
+              } else {
+                this.pagination.lastData = d;
+              }
+            }
+          } else {
+            //PREV
+            for (let i = size - 1; i >= 0; i--) {
+              let d = querySnapshot.docs[i].data();
+              if (i > 0) {
+                this.asks.push(d);
+              } else {
+                this.pagination.lastData = d;
+              }
+            }
+          }
+        });
+    },
     isShowSortIcon(name, way) {
       return this.sorting.name === name && this.sorting.way === way;
     },
@@ -121,6 +185,7 @@ export default {
       let sortingWay = this.sorting.way;
       let sortingName = this.sorting.name;
       let sortWay = "asc";
+      this.pagination.pageIndex = 0;
       if (sortingName === sortName) {
         if (sortingWay === "desc") {
           sortName = "postDate";
@@ -135,12 +200,20 @@ export default {
       this.db
         .collection("sell")
         .orderBy(sortName, sortWay)
+        .limit(this.pagination.pageSize + 1)
         .get()
         .then(querySnapshot => {
           this.asks = [];
-          querySnapshot.forEach(doc => {
-            this.asks.push(doc.data());
-          });
+          let size = querySnapshot.docs.length;
+          this.pagination.noNext = this.pagination.pageSize >= size;
+          for (let i = 0; i < size; i++) {
+            let d = querySnapshot.docs[i].data();
+            if (i < this.pagination.pageSize) {
+              this.asks.push(d);
+            } else {
+              this.pagination.lastData = d;
+            }
+          }
         });
     },
     getProductLife(expiryDate) {
@@ -197,14 +270,28 @@ export default {
     },
     readRecord() {
       this.asks = [];
+
+      let sortWay = this.sorting.way;
+      let sortName = this.sorting.name;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+      this.pagination.pageIndex = 0;
       this.db
         .collection("sell")
+        .orderBy(sortName, sortWay)
+        .limit(this.pagination.pageSize + 1)
         .get()
         .then(querySnapshot => {
           this.asks = [];
-          querySnapshot.forEach(doc => {
-            this.asks.push(doc.data());
-          });
+          let size = querySnapshot.docs.length;
+          this.pagination.noNext = this.pagination.pageSize >= size;
+          for (let i = 0; i < size; i++) {
+            let d = querySnapshot.docs[i].data();
+            if (i < this.pagination.pageSize) {
+              this.asks.push(d);
+            } else {
+              this.pagination.lastData = d;
+            }
+          }
         });
     },
     checkout(id) {
@@ -298,6 +385,9 @@ table {
       text-align: right;
       td {
         padding-right: 2rem;
+        span {
+          cursor: pointer;
+        }
       }
     }
   }
