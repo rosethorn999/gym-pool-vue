@@ -231,12 +231,19 @@ export default {
         let MM = expiryArr[1];
         if (YYYY === -1 || MM === -1) {
           ret = "calc error";
+        } else if (nowYYYY > YYYY) {
+          ret = "expired ";
+        } else if (nowYYYY === YYYY && nowMM >= MM) {
+          ret = "expired";
         } else {
-          let life = MM - nowMM + "M";
-          if (YYYY - nowYYYY > 0) {
-            life = YYYY - nowYYYY + "Y" + life;
+          let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
+          if (YYYY > nowYYYY) {
+            let gap = MM - nowMM < 0 ? -1 : 0;
+            if (YYYY - nowYYYY + gap !== 0) {
+              ret = YYYY - nowYYYY + gap + "Y";
+            }
           }
-          ret = life;
+          ret += life;
         }
       } else {
         ret = "calc error";

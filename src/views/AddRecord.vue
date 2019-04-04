@@ -46,8 +46,8 @@
           </template>
         </div>
         <div>
-          <input type="button" value="Confirm" @click="addNewRecord">
           <input type="button" value="Cancal" @click="backToList">
+          <input type="button" value="Confirm" @click="addNewRecord">
         </div>
       </div>
     </div>
@@ -67,11 +67,28 @@ export default {
     this.db = firebase.firestore();
     let _DD = [];
     for (let i = 1; i <= 31; i++) {
-      _DD.push(i);
+      if (i < 10) {
+        _DD.push("0" + i);
+      } else {
+        _DD.push(i.toString());
+      }
     }
     this.selection = {
-      YYYY: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
-      MM: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      YYYY: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+      MM: [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12"
+      ],
       DD: _DD
     };
     this.selection.features = [
@@ -113,13 +130,26 @@ export default {
       let nowYYYY = now.getFullYear();
       let nowMM = now.getMonth() + 1;
 
-      let YYYY = this.expiryDate[0];
-      let MM = this.expiryDate[1];
+      let expiryArr = this.expiryDate.map(function(item) {
+        return Number(item);
+      });
+      let YYYY = expiryArr[0];
+      let MM = expiryArr[1];
       if (YYYY === -1 || MM === -1) {
         ret = "calc error";
+      } else if (nowYYYY > YYYY) {
+        ret = "expired ";
+      } else if (nowYYYY === YYYY && nowMM >= MM) {
+        ret = "expired";
       } else {
-        let live = (YYYY - nowYYYY) * 12 + (MM - nowMM);
-        ret = live + " months left";
+        let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
+        if (YYYY > nowYYYY) {
+          let gap = MM - nowMM < 0 ? -1 : 0;
+          if (YYYY - nowYYYY + gap !== 0) {
+            ret = YYYY - nowYYYY + gap + "Y";
+          }
+        }
+        ret += life;
       }
 
       return ret;
@@ -134,7 +164,7 @@ export default {
       let that = this;
       let id = this._uuid();
       let _postDate = new Date().toISOString();
-      let _expiryDate = this.expiryDate.join("/");
+      let _expiryDate = this.expiryDate.join("/"); //todo 要補0到<10的數字 不然排序會錯
 
       let pack = {
         id: id,
