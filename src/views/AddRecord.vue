@@ -301,27 +301,6 @@ $phones-media: 479px;
 .description {
   text-align: left;
 }
-textarea:focus,
-input:focus {
-  outline: none;
-}
-input[type="number"],
-input[type="text"],
-select,
-textarea {
-  border-radius: 2px;
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  width: 100%;
-  height: 32px;
-}
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  text-indent: 5px;
-  padding: 5px;
-}
 .form {
   padding: 16px;
   border-spacing: 0;
@@ -363,28 +342,5 @@ select {
   @include phone-width {
     width: 100%;
   }
-}
-input[type="button"] {
-  color: #fff;
-  margin: 6px 8px;
-  height: 36px;
-  padding: 6px;
-  font-size: 14px;
-  background-color: #4caf50;
-  border-radius: 2px;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  &:disabled {
-    cursor: not-allowed;
-    background-color: rgba(0, 0, 0, 0.12);
-    color: rgba(0, 0, 0, 0.26);
-  }
-}
-select.danger,
-input.danger {
-  border: #ff5252 solid 1px;
-}
-p.danger {
-  color: #ff5252;
 }
 </style>
