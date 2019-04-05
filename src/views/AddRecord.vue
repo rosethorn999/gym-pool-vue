@@ -3,12 +3,19 @@
     <h2>Add</h2>
     <div class="container">
       <div class="form">
+        The place shows * is must fill.
         <div>
-          <input type="number" v-model.number="price" placeholder="Price">
+          <input
+            type="number"
+            v-model.number="price"
+            min="0"
+            placeholder="Price*"
+            :class="{danger:formError.tfs.price}"
+          >
         </div>
         <div class="control-container">
-          <select v-model="gymType">
-            <option :value="-1">Gym Name</option>
+          <select v-model="gymType" :class="{danger:formError.tfs.gymType}">
+            <option :value="-1">Gym Name*</option>
             <option v-for="item in gymTypes" :key="item.val" :value="item.val">{{item.name}}</option>
           </select>
         </div>
@@ -16,28 +23,46 @@
           <input type="text" v-model="location" placeholder="Location">
         </div>
         <div>
-          <input type="number" v-model="monthlyRental" placeholder="Monthly Rental">
+          <input
+            type="number"
+            v-model.number="monthlyRental"
+            min="0"
+            placeholder="Monthly Rental*"
+            :class="{danger:formError.tfs.monthlyRental}"
+          >
         </div>
         <div>
           <textarea v-model="remark" placeholder="Remark"></textarea>
         </div>
         <div>
-          <select class="expiryDate" v-model="expiryDate[0]">
-            <option :value="-1">Expiry Year</option>
+          <select
+            class="expiryDate"
+            v-model="expiryDate[0]"
+            :class="{danger:formError.tfs.expiryDate}"
+          >
+            <option :value="-1">Expiry Year*</option>
             <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
           </select>
-          <select class="expiryDate" v-model="expiryDate[1]">
-            <option :value="-1">Expiry Month</option>
+          <select
+            class="expiryDate"
+            v-model="expiryDate[1]"
+            :class="{danger:formError.tfs.expiryDate}"
+          >
+            <option :value="-1">Expiry Month*</option>
             <option v-for="item in selection.MM" :key="item" :value="item">{{item}}</option>
           </select>
-          <select class="expiryDate" v-model="expiryDate[2]">
-            <option :value="-1">Expiry Day</option>
+          <select
+            class="expiryDate"
+            v-model="expiryDate[2]"
+            :class="{danger:formError.tfs.expiryDate}"
+          >
+            <option :value="-1">Expiry Day*</option>
             <option v-for="item in selection.DD" :key="item" :value="item">{{item}}</option>
           </select>
           <div class="expiryDate">{{productLife}}</div>
         </div>
         <div>
-          <label>Feature</label>
+          <label>Feature:&nbsp;</label>
           <template v-for="(f,index) in selection.features">
             <label :for="f.val" :key="index">
               <input type="checkbox" :id="f.val" :value="f.val" v-model="features">
@@ -46,8 +71,9 @@
           </template>
         </div>
         <div>
+          <p class="danger">{{formErrorMsg}}</p>
           <input type="button" value="Cancal" @click="backToList">
-          <input type="button" value="Confirm" @click="addNewRecord">
+          <input type="button" value="Confirm" @click="addNewRecord" :disabled="formError.tf">
         </div>
       </div>
     </div>
@@ -153,6 +179,38 @@ export default {
       }
 
       return ret;
+    },
+    formErrorMsg() {
+      let ret = "";
+      let temp = [];
+      let list = this.formError.tfs;
+      Object.keys(list).map((objectKey, index) => {
+        if (list[objectKey] === true) {
+          temp.push(objectKey);
+        }
+      });
+      if (temp.length > 0) {
+        ret = "ERROR:" + temp.join(", ");
+      }
+      return ret;
+    },
+    formError() {
+      let ret = false;
+      // todo: expiryDate 過期的案件不能發送
+      let tfs = {
+        gymType: this.gymType === -1,
+        monthlyRental:
+          typeof this.monthlyRental !== "number" || this.monthlyRental < 0,
+        expiryDate: this.expiryDate.some(item => {
+          return item === -1;
+        }),
+        price: typeof this.price !== "number" || this.price < 0
+      };
+
+      ret =
+        ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price;
+
+      return { tf: ret, tfs: tfs };
     }
   },
   methods: {
@@ -160,11 +218,11 @@ export default {
       this.$router.push({ name: "home" });
     },
     addNewRecord() {
-      //todo 輸入檢查
+      //todo 後端輸入檢查
       let that = this;
       let id = this._uuid();
       let _postDate = new Date().toISOString();
-      let _expiryDate = this.expiryDate.join("/"); //todo 要補0到<10的數字 不然排序會錯
+      let _expiryDate = this.expiryDate.join("/");
 
       let pack = {
         id: id,
@@ -316,5 +374,17 @@ input[type="button"] {
   border-radius: 2px;
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  &:disabled {
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.26);
+  }
+}
+select.danger,
+input.danger {
+  border: #ff5252 solid 1px;
+}
+p.danger {
+  color: #ff5252;
 }
 </style>
