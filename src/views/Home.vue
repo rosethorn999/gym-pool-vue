@@ -55,7 +55,6 @@
               >
             </th>
             <th>{{$t('price')}}/{{$t('month')}}</th>
-            <!-- todo:過期的會跑出負數 -->
           </tr>
         </thead>
         <tbody>
@@ -72,7 +71,7 @@
             <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <td>${{getUnitPrice(item.expiryDate,item.price)}}</td>
+            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>
           </tr>
         </tbody>
         <tfoot>
@@ -264,12 +263,15 @@ export default {
         });
         let YYYY = expiryArr[0];
         let MM = expiryArr[1];
-        if (YYYY === -1 || MM === -1) {
+        let isExpired = nowYYYY > YYYY || (nowYYYY === YYYY && nowMM >= MM); //現在年>到期年 || 同一年且現在月>到期月
+        if (isExpired) {
+          ret = this.$t("expired");
+        } else if (YYYY === -1 || MM === -1) {
           ret = this.$t("disComputable");
+        } else if (YYYY === -1 || MM === -1) {
         } else {
-          ret = Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
+          ret = "$" + Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
         }
-      } else {
       }
       return ret;
     },
