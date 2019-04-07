@@ -2,10 +2,10 @@
   <div id="app">
     <div id="nav">
       <h1>Gym Pool</h1>
-      <p>A pool that share your fitness contract.</p>
-      <router-link to="/">Buy</router-link>
+      <p>{{$t("appDescription")}}</p>
+      <!-- <router-link to="/">Buy</router-link>
       <span>&nbsp;|&nbsp;</span>
-      <router-link to="/sell">Sell</router-link>
+      <router-link to="/sell">Sell</router-link>-->
     </div>
     <router-view/>
   </div>

@@ -1,43 +1,43 @@
 <template>
   <div class="contract">
-    <h2>Checkout here and contact the owner</h2>
+    <h2>{{$t('addRecordPageDescription')}}</h2>
     <div class="container">
       <div class="form">
         <div>
-          <input type="number" v-model.number="price" placeholder="Price" disabled>
+          <input type="number" v-model.number="price" :placeholder="$t('price')" disabled>
         </div>
         <div class="control-container">
           <select v-model="gymType" disabled>
-            <option :value="-1">Gym Name</option>
+            <option :value="-1">{{$t('gymType')}}</option>
             <option v-for="item in gymTypes" :key="item.val" :value="item.val">{{item.name}}</option>
           </select>
         </div>
         <div>
-          <input type="text" v-model="location" placeholder="Location" disabled>
+          <input type="text" v-model="location" :placeholder="$t('location')" disabled>
         </div>
         <div>
-          <input type="number" v-model="monthlyRental" placeholder="Monthly Rental" disabled>
+          <input type="number" v-model="monthlyRental" :placeholder="$t('monthlyRental')" disabled>
         </div>
         <div>
-          <textarea v-model="remark" placeholder="Remark" disabled></textarea>
+          <textarea v-model="remark" :placeholder="$t('remark')" disabled></textarea>
         </div>
         <div>
           <select class="expiryDate" v-model="expiryDate[0]" disabled>
-            <option :value="-1">Expiry Year</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('year')}}</option>
             <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
           </select>
           <select class="expiryDate" v-model="expiryDate[1]" disabled>
-            <option :value="-1">Expiry Month</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('month')}}</option>
             <option v-for="item in selection.MM" :key="item" :value="item">{{item}}</option>
           </select>
           <select class="expiryDate" v-model="expiryDate[2]" disabled>
-            <option :value="-1">Expiry Day</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('day')}}</option>
             <option v-for="item in selection.DD" :key="item" :value="item">{{item}}</option>
           </select>
           <div class="expiryDate">{{productLife}}</div>
         </div>
         <div>
-          <label>Feature</label>
+          <label>{{$t('features.label')}}:&nbsp;</label>
           <template v-for="(f,index) in selection.features">
             <label :for="f.val" :key="index">
               <input type="checkbox" :id="f.val" :value="f.val" v-model="features" disabled>
@@ -46,7 +46,7 @@
           </template>
         </div>
         <div>
-          <input type="button" value="Back" @click="backToList">
+          <input type="button" :value="$t('back')" @click="backToList">
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export default {
       if (selected.length > 0) {
         return selected[0].name;
       } else {
-        return "error";
+        return this.$t("disComputable");
       }
     },
     productLife() {
@@ -106,17 +106,17 @@ export default {
       let YYYY = expiryArr[0];
       let MM = expiryArr[1];
       if (YYYY === -1 || MM === -1) {
-        ret = "calc error";
+        ret = this.$t("disComputable");
       } else if (nowYYYY > YYYY) {
-        ret = "expired ";
+        ret = this.$t("expired");
       } else if (nowYYYY === YYYY && nowMM >= MM) {
-        ret = "expired";
+        ret = this.$t("expired");
       } else {
-        let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
+        let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
         if (YYYY > nowYYYY) {
           let gap = MM - nowMM < 0 ? -1 : 0;
           if (YYYY - nowYYYY + gap !== 0) {
-            ret = YYYY - nowYYYY + gap + "Y";
+            ret = YYYY - nowYYYY + gap + this.$t("year");
           }
         }
         ret += life;
@@ -144,10 +144,10 @@ export default {
       DD: _DD
     };
     this.selection.features = [
-      { val: "saunaRoom", caption: "Sauna room" },
-      { val: "swimPool", caption: "Swimming pool" },
-      { val: "fitnessClass", caption: "Fitness class" },
-      { val: "freeParking", caption: "Free parking lot" }
+      { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
+      { val: "swimPool", caption: this.$t("features.swimPool") },
+      { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
+      { val: "freeParking", caption: this.$t("features.freeParking") }
     ];
 
     this.getContractInfo();

@@ -3,36 +3,36 @@
     <h2>Add</h2>
     <div class="container">
       <div class="form">
-        The place shows * is must fill.
+        {{$t('requiredPlaceNotice')}}
         <div>
           <input
             type="number"
             v-model.number="price"
             min="0"
-            placeholder="Price*"
+            :placeholder="$t('price')+'*'"
             :class="{danger:formError.tfs.price}"
           >
         </div>
         <div class="control-container">
           <select v-model="gymType" :class="{danger:formError.tfs.gymType}">
-            <option :value="-1">Gym Name*</option>
+            <option :value="-1">{{$t('gymType')}}*</option>
             <option v-for="item in gymTypes" :key="item.val" :value="item.val">{{item.name}}</option>
           </select>
         </div>
         <div>
-          <input type="text" v-model="location" placeholder="Location">
+          <input type="text" v-model="location" :placeholder="$t('location')">
         </div>
         <div>
           <input
             type="number"
             v-model.number="monthlyRental"
             min="0"
-            placeholder="Monthly Rental*"
+            :placeholder="$t('monthlyRental')+'*'"
             :class="{danger:formError.tfs.monthlyRental}"
           >
         </div>
         <div>
-          <textarea v-model="remark" placeholder="Remark"></textarea>
+          <textarea v-model="remark" :placeholder="$t('remark')"></textarea>
         </div>
         <div>
           <select
@@ -40,7 +40,7 @@
             v-model="expiryDate[0]"
             :class="{danger:formError.tfs.expiryDate}"
           >
-            <option :value="-1">Expiry Year*</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('year')}}*</option>
             <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
           </select>
           <select
@@ -48,7 +48,7 @@
             v-model="expiryDate[1]"
             :class="{danger:formError.tfs.expiryDate}"
           >
-            <option :value="-1">Expiry Month*</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('month')}}*</option>
             <option v-for="item in selection.MM" :key="item" :value="item">{{item}}</option>
           </select>
           <select
@@ -56,13 +56,13 @@
             v-model="expiryDate[2]"
             :class="{danger:formError.tfs.expiryDate}"
           >
-            <option :value="-1">Expiry Day*</option>
+            <option :value="-1">{{$t('expiry')}}{{$t('day')}}*</option>
             <option v-for="item in selection.DD" :key="item" :value="item">{{item}}</option>
           </select>
           <div class="expiryDate">{{productLife}}</div>
         </div>
         <div>
-          <label>Feature:&nbsp;</label>
+          <label>{{$t('features.label')}}:&nbsp;</label>
           <template v-for="(f,index) in selection.features">
             <label :for="f.val" :key="index">
               <input type="checkbox" :id="f.val" :value="f.val" v-model="features">
@@ -72,8 +72,8 @@
         </div>
         <div>
           <p class="danger">{{formErrorMsg}}</p>
-          <input type="button" value="Cancal" @click="backToList">
-          <input type="button" value="Confirm" @click="addNewRecord" :disabled="formError.tf">
+          <input type="button" :value="$t('cancal')" @click="backToList">
+          <input type="button" :value="$t('send')" @click="addNewRecord" :disabled="formError.tf">
         </div>
       </div>
     </div>
@@ -105,10 +105,10 @@ export default {
       DD: _DD
     };
     this.selection.features = [
-      { val: "saunaRoom", caption: "Sauna room" },
-      { val: "swimPool", caption: "Swimming pool" },
-      { val: "fitnessClass", caption: "Fitness class" },
-      { val: "freeParking", caption: "Free parking lot" }
+      { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
+      { val: "swimPool", caption: this.$t("features.swimPool") },
+      { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
+      { val: "freeParking", caption: this.$t("features.freeParking") }
     ];
   },
   data: function() {
@@ -149,17 +149,17 @@ export default {
       let YYYY = expiryArr[0];
       let MM = expiryArr[1];
       if (YYYY === -1 || MM === -1) {
-        ret = "calc error";
+        ret = this.$t("disComputable");
       } else if (nowYYYY > YYYY) {
-        ret = "expiredDay must > 30days";
+        ret = this.$t("expiredDayMustBigger30days");
       } else if (nowYYYY === YYYY && nowMM >= MM) {
-        ret = "expiredDay must > 30days";
+        ret = this.$t("expiredDayMustBigger30days");
       } else {
-        let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
+        let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
         if (YYYY > nowYYYY) {
           let gap = MM - nowMM < 0 ? -1 : 0;
           if (YYYY - nowYYYY + gap !== 0) {
-            ret = YYYY - nowYYYY + gap + "Y";
+            ret = YYYY - nowYYYY + gap + this.$t("year");
           }
         }
         ret += life;
@@ -173,11 +173,12 @@ export default {
       let list = this.formError.tfs;
       Object.keys(list).map((objectKey, index) => {
         if (list[objectKey] === true) {
-          temp.push(objectKey);
+          let caption = this.$t(objectKey);
+          temp.push(caption);
         }
       });
       if (temp.length > 0) {
-        ret = "ERROR:" + temp.join(", ");
+        ret = this.$t("error") + ": " + temp.join(", ");
       }
       return ret;
     },

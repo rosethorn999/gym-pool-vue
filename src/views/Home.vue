@@ -2,9 +2,9 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
     <!-- <Asks/> -->
-    <h2>Asks</h2>
-    <input type="button" value="ADD" @click="addRecord">
-    <input type="button" value="READ" @click="readRecord">
+    <h2>{{$t('selling')}}</h2>
+    <input type="button" :value="$t('addRecord')" @click="addRecord">
+    <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
     <div class="table-container">
       <table>
         <thead>
@@ -22,7 +22,7 @@
               >
             </th>
             <th @click="orderBy('gymType')">
-              gymType
+              {{$t('gymType')}}
               <img
                 v-show="isShowSortIcon('gymType','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
@@ -33,7 +33,7 @@
               >
             </th>
             <th @click="orderBy('expiryDate')">
-              productLife
+              {{$t('productLife')}}
               <img
                 v-show="isShowSortIcon('expiryDate','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
@@ -44,7 +44,7 @@
               >
             </th>
             <th @click="orderBy('price')">
-              price
+              {{$t('price')}}
               <img
                 v-show="isShowSortIcon('price','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
@@ -54,7 +54,8 @@
                 src="../assets/iconfinder_sort_decrease_18916.png"
               >
             </th>
-            <th>price/M</th>
+            <th>{{$t('price')}}/{{$t('month')}}</th>
+            <!-- todo:過期的會跑出負數 -->
           </tr>
         </thead>
         <tbody>
@@ -64,7 +65,7 @@
             </td>
           </tr>
           <tr v-if="asks&&asks.length===0">
-            <td colspan="5">None</td>
+            <td colspan="5">{{$t('none')}}</td>
           </tr>
           <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
             <th>{{ind+1}}</th>
@@ -77,11 +78,11 @@
         <tfoot>
           <tr>
             <td colspan="5">
-              <span>Page {{pagination.pageIndex+1}}</span>
+              <span>{{$t('pageNow')}} {{pagination.pageIndex+1}}</span>
               &nbsp;|&nbsp;
-              <span @click="pageControl(-1)">Prev</span>
+              <span @click="pageControl(-1)">{{$t('prevPage')}}</span>
               &nbsp;|&nbsp;
-              <span @click="pageControl(1)">Next</span>
+              <span @click="pageControl(1)">{{$t('nextPage')}}</span>
             </td>
           </tr>
         </tfoot>
@@ -230,23 +231,23 @@ export default {
         let YYYY = expiryArr[0];
         let MM = expiryArr[1];
         if (YYYY === -1 || MM === -1) {
-          ret = "calc error";
+          ret = this.$t("disComputable");
         } else if (nowYYYY > YYYY) {
-          ret = "expired ";
+          ret = this.$t("expired");
         } else if (nowYYYY === YYYY && nowMM >= MM) {
-          ret = "expired";
+          ret = this.$t("expired");
         } else {
-          let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
+          let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
           if (YYYY > nowYYYY) {
             let gap = MM - nowMM < 0 ? -1 : 0;
             if (YYYY - nowYYYY + gap !== 0) {
-              ret = YYYY - nowYYYY + gap + "Y";
+              ret = YYYY - nowYYYY + gap + this.$t("year");
             }
           }
           ret += life;
         }
       } else {
-        ret = "calc error";
+        ret = this.$t("disComputable");
       }
 
       return ret;
@@ -264,7 +265,7 @@ export default {
         let YYYY = expiryArr[0];
         let MM = expiryArr[1];
         if (YYYY === -1 || MM === -1) {
-          ret = "calc error";
+          ret = this.$t("disComputable");
         } else {
           ret = Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
         }
@@ -311,7 +312,7 @@ export default {
       if (selected.length > 0) {
         return selected[0].name;
       } else {
-        return "error";
+        return this.$t("disComputable");
       }
     }
   }

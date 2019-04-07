@@ -1,5 +1,6 @@
 {
-  "message": {
-    "hello": "hello world11"
-  }
+  "appDescription": "A pool that share your fitness contract.",
+  "addRecordPageDescription": "Checkout here and contact the owner",
+  "requiredPlaceNotice": "The place shows * is must fill.",
+  "expiredDayMustBigger30days": "expiredDay must > 30days"
 }
