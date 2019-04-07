@@ -140,20 +140,7 @@ export default {
     }
     this.selection = {
       YYYY: ["2019", "2020", "'2021'", "2022", "2023", "2024", "2025"],
-      MM: [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12"
-      ],
+      MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
       DD: _DD
     };
     this.selection.features = [
@@ -246,8 +233,8 @@ $phones-media: 479px;
   margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   & > div {
     padding: 12px 0 8px 0;
   }

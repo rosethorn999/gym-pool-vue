@@ -101,20 +101,7 @@ export default {
     }
     this.selection = {
       YYYY: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
-      MM: [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12"
-      ],
+      MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
       DD: _DD
     };
     this.selection.features = [
@@ -199,16 +186,14 @@ export default {
       // todo: expiryDate 過期的案件不能發送
       let tfs = {
         gymType: this.gymType === -1,
-        monthlyRental:
-          typeof this.monthlyRental !== "number" || this.monthlyRental < 0,
+        monthlyRental: typeof this.monthlyRental !== "number" || this.monthlyRental < 0,
         expiryDate: this.expiryDate.some(item => {
           return item === -1;
         }),
         price: typeof this.price !== "number" || this.price < 0
       };
 
-      ret =
-        ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price;
+      ret = ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price;
 
       return { tf: ret, tfs: tfs };
     }
@@ -248,9 +233,7 @@ export default {
         });
     },
     _uuid() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
-        c
-      ) {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r = (Math.random() * 16) | 0,
           v = c == "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
@@ -307,8 +290,8 @@ $phones-media: 479px;
   margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   & > div {
     padding: 12px 0 8px 0;
   }
