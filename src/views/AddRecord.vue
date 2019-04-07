@@ -151,9 +151,9 @@ export default {
       if (YYYY === -1 || MM === -1) {
         ret = "calc error";
       } else if (nowYYYY > YYYY) {
-        ret = "expired ";
+        ret = "expiredDay must > 30days";
       } else if (nowYYYY === YYYY && nowMM >= MM) {
-        ret = "expired";
+        ret = "expiredDay must > 30days";
       } else {
         let life = MM - nowMM < 0 ? 12 - nowMM + MM + "M" : MM - nowMM + "M";
         if (YYYY > nowYYYY) {
@@ -183,13 +183,20 @@ export default {
     },
     formError() {
       let ret = false;
-      // todo: expiryDate 過期的案件不能發送
+
+      // 有錯是true
+      let now = new Date();
+      let thrityDay = 1000 * 60 * 60 * 24 * 30;
+      let _expiryDate =
+        this.expiryDate.some(item => {
+          return item === -1;
+        }) ||
+        new Date(this.expiryDate[0], Number(this.expiryDate[1]) - 1, this.expiryDate[2]).getTime() - thrityDay <=
+          now.getTime(); //any column lost || dueDate<30Days
       let tfs = {
         gymType: this.gymType === -1,
         monthlyRental: typeof this.monthlyRental !== "number" || this.monthlyRental < 0,
-        expiryDate: this.expiryDate.some(item => {
-          return item === -1;
-        }),
+        expiryDate: _expiryDate,
         price: typeof this.price !== "number" || this.price < 0
       };
 
