@@ -1,6 +1,7 @@
 {
   "appDescription": "健身房合約轉讓庫",
-  "addRecordPageDescription": "在檢視細節後即可與擁有者聯繫",
+  "addRecordPageDescription": "填寫你的合約內容",
+  "checkoutRecordPageDescription": "在檢視細節後即可與擁有者聯繫",
   "selling": "待售出",
   "gymType": "會籍",
   "productLife": "合約效期",

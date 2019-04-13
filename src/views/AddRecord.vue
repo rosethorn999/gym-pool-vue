@@ -1,6 +1,6 @@
 <template>
   <div class="addRecord">
-    <h2>Add</h2>
+    <h2>{{$t('addRecordPageDescription')}}</h2>
     <div class="container">
       <div class="form">
         {{$t('requiredPlaceNotice')}}

@@ -1,6 +1,6 @@
 <template>
   <div class="contract">
-    <h2>{{$t('addRecordPageDescription')}}</h2>
+    <h2>{{$t('checkoutRecordPageDescription')}}</h2>
     <div class="container">
       <div class="form">
         <div>
