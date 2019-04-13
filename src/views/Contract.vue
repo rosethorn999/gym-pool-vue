@@ -9,7 +9,11 @@
         <div class="control-container">
           <select v-model="gymType" disabled>
             <option :value="-1">{{$t('gymType')}}</option>
-            <option v-for="item in gymTypes" :key="item.val" :value="item.val">{{item.name}}</option>
+            <option
+              v-for="item in selection.gymTypes"
+              :key="item.val"
+              :value="item.val"
+            >{{item.name}}</option>
           </select>
         </div>
         <div>
@@ -46,13 +50,53 @@
           </template>
         </div>
         <div>
+          <label>{{$t('contact')}}:&nbsp;</label>
+          <template v-for="(value, key) in contact">
+            <img
+              class="contact-img"
+              v-if="key==='tel'"
+              src="../assets/iconfinder_phone_1807538.png"
+              :key="key"
+              @click="openContact(key,value)"
+            >
+            <img
+              class="contact-img"
+              v-if="key==='mail'"
+              src="../assets/iconfinder_aiga_mail_inver_134147.png"
+              :key="key"
+              @click="openContact(key,value)"
+            >
+            <img
+              class="contact-img"
+              v-if="key==='tg'"
+              src="../assets/iconfinder_telegram_386727.png"
+              :key="key"
+              @click="openContact(key,value)"
+            >
+            <img
+              class="contact-img"
+              v-if="key==='line'"
+              src="../assets/iconfinder_line_1807543.png"
+              :key="key"
+              @click="openContact(key,value)"
+            >
+            <img
+              class="contact-img"
+              v-if="key==='fb'"
+              src="../assets/iconfinder_facebook_1807546.png"
+              :key="key"
+              @click="openContact(key,value)"
+            >
+          </template>
+          <span v-if="Object.keys(contact).length===0">{{$t('none')}}</span>
+        </div>
+        <div>
           <input type="button" :value="$t('back')" @click="backToList">
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -69,22 +113,26 @@ export default {
       expiryDate: [-1, -1, -1],
       remark: "",
       features: [],
+      contact: {},
 
-      gymTypes: [
-        { val: 0, name: "健身工廠" },
-        { val: 1, name: "全真會館" },
-        { val: 2, name: "世界健身" },
-        { val: 3, name: "成吉思汗" },
-        { val: 4, name: "台北健身院" },
-        { val: 999, name: "其他" }
-      ],
-      selection: {}
+      selection: {
+        gymTypes: [
+          { val: 0, name: "健身工廠" },
+          { val: 1, name: "全真會館" },
+          { val: 2, name: "世界健身" },
+          { val: 3, name: "成吉思汗" },
+          { val: 4, name: "台北健身院" },
+          { val: 999, name: "其他" }
+        ],
+        YYYY: ["2019", "2020", "'2021'", "2022", "2023", "2024", "2025"],
+        MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+      }
     };
   },
   computed: {
     gymTypeCaption() {
       let v = this.gymType;
-      let selected = this.gymTypes.filter(function(item) {
+      let selected = this.selection.gymTypes.filter(function(item) {
         return item.val === v;
       });
       if (selected.length > 0) {
@@ -138,21 +186,38 @@ export default {
         _DD.push(i.toString());
       }
     }
-    this.selection = {
-      YYYY: ["2019", "2020", "'2021'", "2022", "2023", "2024", "2025"],
-      MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-      DD: _DD
-    };
+    this.selection.DD = _DD;
     this.selection.features = [
       { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
       { val: "swimPool", caption: this.$t("features.swimPool") },
       { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
       { val: "freeParking", caption: this.$t("features.freeParking") }
     ];
-
     this.getContractInfo();
   },
   methods: {
+    openContact(type, value) {
+      switch (type) {
+        case "tel":
+          window.open("tel:" + value);
+          break;
+        case "mail":
+          window.open("mailto:" + value);
+          break;
+        case "tg":
+          window.open("https://t.me/" + value);
+          break;
+        case "line":
+          window.open("line://ti/p/" + value);
+          break;
+        case "fb":
+          window.open(value);
+          break;
+        default:
+          console.error("something wrong!");
+          break;
+      }
+    },
     backToList() {
       this.$router.push({ name: "home" });
     },
@@ -176,6 +241,7 @@ export default {
             that.remark = d.remark;
             that.features = d.features;
             that.postDate = d.postDate;
+            that.contact = d.contact;
           });
         })
         .catch(function(error) {
@@ -268,5 +334,11 @@ $phones-media: 479px;
   @include phone-width {
     width: 100%;
   }
+}
+.contact-img {
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 3px;
+  height: 2rem;
 }
 </style>

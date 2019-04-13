@@ -29,6 +29,12 @@
     "fitnessClass": "健身課程",
     "freeParking": "免費停車"
   },
+  "contact": "聯繫方式",
+  "keyingPhoneNumber": "請輸入電話",
+  "keyingMailAddr": "請輸入電子信箱",
+  "keyingTGID": "請輸入Telegram ID",
+  "keyingLineID": "請輸入Line ID",
+  "keyingFBProfileUrl": "請輸入臉書個人連結",
   "requiredPlaceNotice": "標註 星號* 處為必填欄位",
   "expiredDayMustBigger30days": "合約到期日必須大於30天",
   "cancal": "取消",

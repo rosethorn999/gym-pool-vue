@@ -16,7 +16,11 @@
         <div class="control-container">
           <select v-model="gymType" :class="{danger:formError.tfs.gymType}">
             <option :value="-1">{{$t('gymType')}}*</option>
-            <option v-for="item in gymTypes" :key="item.val" :value="item.val">{{item.name}}</option>
+            <option
+              v-for="item in selection.gymTypes"
+              :key="item.val"
+              :value="item.val"
+            >{{item.name}}</option>
           </select>
         </div>
         <div>
@@ -71,6 +75,51 @@
           </template>
         </div>
         <div>
+          <label>{{$t('contact')}}:&nbsp;</label>
+          <template v-for="c in selection.contactType">
+            <span :key="c" v-if="c==='tel'">
+              <img
+                class="contact-img"
+                src="../assets/iconfinder_phone_1807538.png"
+                @click="editContact(c)"
+              >
+              {{contact.tel}}
+            </span>
+            <span :key="c" v-if="c==='mail'">
+              <img
+                class="contact-img"
+                src="../assets/iconfinder_aiga_mail_inver_134147.png"
+                @click="editContact(c)"
+              >
+              {{contact.mail}}
+            </span>
+            <span :key="c" v-if="c==='tg'">
+              <img
+                class="contact-img"
+                src="../assets/iconfinder_telegram_386727.png"
+                @click="editContact(c)"
+              >
+              {{contact.tg}}
+            </span>
+            <span :key="c" v-if="c==='line'">
+              <img
+                class="contact-img"
+                src="../assets/iconfinder_line_1807543.png"
+                @click="editContact(c)"
+              >
+              {{contact.line}}
+            </span>
+            <span :key="c" v-if="c==='fb'">
+              <img
+                class="contact-img"
+                src="../assets/iconfinder_facebook_1807546.png"
+                @click="editContact(c)"
+              >
+              {{contact.fb}}
+            </span>
+          </template>
+        </div>
+        <div>
           <p class="danger">{{formErrorMsg}}</p>
           <input type="button" :value="$t('cancal')" @click="backToList">
           <input type="button" :value="$t('send')" @click="addNewRecord" :disabled="formError.tf">
@@ -99,11 +148,8 @@ export default {
         _DD.push(i.toString());
       }
     }
-    this.selection = {
-      YYYY: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
-      MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-      DD: _DD
-    };
+
+    this.selection.DD = _DD;
     this.selection.features = [
       { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
       { val: "swimPool", caption: this.$t("features.swimPool") },
@@ -122,17 +168,22 @@ export default {
       expiryDate: [-1, -1, -1],
       remark: "",
       features: [],
+      contact: {},
 
-      gymTypes: [
-        //todo 放到store
-        { val: 0, name: "健身工廠" },
-        { val: 1, name: "全真會館" },
-        { val: 2, name: "世界健身" },
-        { val: 3, name: "成吉思汗" },
-        { val: 4, name: "台北健身院" },
-        { val: 999, name: "其他" }
-      ],
-      selection: {}
+      selection: {
+        gymTypes: [
+          //todo 放到store
+          { val: 0, name: "健身工廠" },
+          { val: 1, name: "全真會館" },
+          { val: 2, name: "世界健身" },
+          { val: 3, name: "成吉思汗" },
+          { val: 4, name: "台北健身院" },
+          { val: 999, name: "其他" }
+        ],
+        YYYY: ["2019", "2020", "'2021'", "2022", "2023", "2024", "2025"],
+        MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+        contactType: ["tel", "mail", "tg", "line", "fb"]
+      }
     };
   },
   computed: {
@@ -204,9 +255,47 @@ export default {
       ret = ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price;
 
       return { tf: ret, tfs: tfs };
+    },
+    contact_tidied() {
+      let ret = {};
+      const keys = Object.keys(this.contact);
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        const v = this.contact[k].trim();
+        if (v !== "") {
+          ret[k] = v;
+        }
+      }
+      return ret;
     }
   },
   methods: {
+    editContact(type) {
+      let msg = "";
+      switch (type) {
+        case "tel":
+          msg = this.$t("keyingPhoneNumber");
+          break;
+        case "mail":
+          msg = this.$t("keyingMailAddr");
+          break;
+        case "tg":
+          msg = this.$t("keyingTGID");
+          break;
+        case "line":
+          msg = this.$t("keyingLineID");
+          break;
+        case "fb":
+          msg = this.$t("keyingFBProfileUrl");
+          break;
+        default:
+          console.error("something wrong!");
+          break;
+      }
+
+      let value = prompt(msg, this.contact[type]);
+      this.$set(this.contact, type, value);
+    },
     backToList() {
       this.$router.push({ name: "home" });
     },
@@ -226,7 +315,8 @@ export default {
         postDate: _postDate,
         location: this.location,
         remark: this.remark,
-        features: this.features
+        features: this.features,
+        contact: this.contact_tidied
       };
       this.db
         .collection("sell")
@@ -333,5 +423,11 @@ $phones-media: 479px;
   @include phone-width {
     width: 100%;
   }
+}
+.contact-img {
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 3px;
+  height: 2rem;
 }
 </style>
