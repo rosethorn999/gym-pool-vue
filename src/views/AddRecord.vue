@@ -245,14 +245,16 @@ export default {
         }) ||
         new Date(this.expiryDate[0], Number(this.expiryDate[1]) - 1, this.expiryDate[2]).getTime() - thrityDay <=
           now.getTime(); //any column lost || dueDate<30Days
+      let _contact = Object.keys(this.contact_tidied).length === 0; //dont have any contact method
       let tfs = {
         gymType: this.gymType === -1,
         monthlyRental: typeof this.monthlyRental !== "number" || this.monthlyRental < 0,
         expiryDate: _expiryDate,
-        price: typeof this.price !== "number" || this.price < 0
+        price: typeof this.price !== "number" || this.price < 0,
+        contact: _contact
       };
 
-      ret = ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price;
+      ret = ret || tfs.gymType || tfs.monthlyRental || tfs.expiryDate || tfs.price || tfs.contact;
 
       return { tf: ret, tfs: tfs };
     },
