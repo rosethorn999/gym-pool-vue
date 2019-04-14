@@ -268,7 +268,6 @@ export default {
           ret = this.$t("expired");
         } else if (YYYY === -1 || MM === -1) {
           ret = this.$t("disComputable");
-        } else if (YYYY === -1 || MM === -1) {
         } else {
           ret = "$" + Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
         }

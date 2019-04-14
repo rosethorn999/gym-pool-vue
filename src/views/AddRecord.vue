@@ -222,7 +222,7 @@ export default {
       let ret = "";
       let temp = [];
       let list = this.formError.tfs;
-      Object.keys(list).map((objectKey, index) => {
+      Object.keys(list).map(objectKey => {
         if (list[objectKey] === true) {
           let caption = this.$t(objectKey);
           temp.push(caption);
