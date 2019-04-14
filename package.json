@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "deploy2GCP": "gsutil -m cp -r /Library/WebServer/Documents/gym-pool/dist/* gs://gympool.villager.club",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
