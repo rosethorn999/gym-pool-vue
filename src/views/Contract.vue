@@ -99,6 +99,9 @@
 </template>
 
 <script>
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+
 export default {
   name: "contract",
   props: {},

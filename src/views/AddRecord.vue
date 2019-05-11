@@ -132,6 +132,8 @@
 <script>
 // @ is an alias to /src
 // import Asks from "@/components/Ask.vue";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
 
 export default {
   name: "addRecord",
