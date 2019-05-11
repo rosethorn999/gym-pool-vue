@@ -97,4 +97,29 @@ input.danger {
 p.danger {
   color: #ff5252;
 }
+.modal {
+  top: 0;
+  position: fixed;
+  z-index: 2000;
+  background: #fff;
+  width: 100vw;
+  height: 100vh;
+  .modal-header {
+    height: 58px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    div {
+      display: inline-block;
+      width: 50%;
+      padding: 0px 10%;
+      &:nth-of-type(1) {
+        vertical-align: middle;
+        text-align: left;
+      }
+      &:nth-of-type(2) {
+        vertical-align: middle;
+        text-align: right;
+      }
+    }
+  }
+}
 </style>

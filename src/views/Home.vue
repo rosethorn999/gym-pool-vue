@@ -4,6 +4,7 @@
     <!-- <Asks/> -->
     <h2>{{$t('selling')}}</h2>
     <input type="button" :value="$t('addRecord')" @click="addRecord">
+    <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
     <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
     <div class="table-container">
       <table>
@@ -87,6 +88,10 @@
         </tfoot>
       </table>
     </div>
+    <div class="modal" v-show="isModalShow">
+      <div class="modal-header"></div>
+      <div class="modal-body"></div>
+    </div>
   </div>
 </template>
 
@@ -116,7 +121,9 @@ export default {
         { val: 3, name: "成吉思汗" },
         { val: 4, name: "台北健身院" },
         { val: 999, name: "其他" }
-      ]
+      ],
+
+      isModalShow: false
     };
   },
   methods: {
@@ -306,7 +313,10 @@ export default {
     checkout(id) {
       this.$router.push({ name: "contract", params: { contractId: id } });
     },
-    gymTypeCaption: function(v) {
+    triggerFilterModal() {
+      this.isModalShow = !this.isModalShow;
+    },
+    gymTypeCaption(v) {
       let selected = this.gymTypes.filter(function(item) {
         return item.val === v;
       });

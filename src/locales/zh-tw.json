@@ -41,5 +41,7 @@
   "cancal": "取消",
   "send": "送出",
   "back": "回前頁",
-  "error": "錯誤"
+  "error": "錯誤",
+  "filter": "篩選條件",
+  "clear": "清除"
 }
