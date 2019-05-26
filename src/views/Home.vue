@@ -1,9 +1,11 @@
 <template>
   <div class="home">
+        <input type="text" name="usrname" >
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
     <!-- <Asks/> -->
     <h2>{{$t('selling')}}</h2>
-    <input type="button" :value="$t('addRecord')" @click="addRecord">
+    <input type="button"  @click="addRecord">
+    <!-- :value="$t('addRecord')" -->
     <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
     <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
     <div class="table-container">
@@ -67,12 +69,35 @@
           <tr v-if="asks&&asks.length===0">
             <td colspan="5">{{$t('none')}}</td>
           </tr>
-          <tr v-for="(item,ind) in asks" :key="item.id" @click="checkout(item.id)">
-            <th>{{ind+1}}</th>
+          <tr v-for="(item) in asks" :key="item.id" @click="checkout(item.id)">
+            <td class="image-block">
+                  <div class="image-box">
+                    <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
+                  </div>
+            </td>
+            <td colspan="4" class="image-Text">
+                    <div class="text-left">
+                      <h4>{{gymTypeCaption(item.gymType)}}</h4>
+                      <p>world Gym竹北店</p>
+                      <p>不住在竹北了</p>
+                    </div>
+                    <div class="text-center">
+                      <p>NT:{{item.price}}</p>
+                    </div>
+                    <div class="text-right">
+                         <p>轉讓費:300元</p>
+                         <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
+                         <h5>{{getProductLife(item.expiryDate)}}</h5>
+                    </div>
+            </td>
+            <!-- <td><div class="image-box">
+              <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
+              </div>
+              </td>
             <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>
+            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td> -->
           </tr>
         </tbody>
         <tfoot>
@@ -339,6 +364,7 @@ $pad-media: 760px;
 $pads-media: 759px;
 $phone-media: 480px;
 $phones-media: 479px;
+
 //電腦
 @mixin pc-width() {
   @media all and (min-width: $pc-media) {
@@ -363,11 +389,99 @@ $phones-media: 479px;
     @content;
   }
 }
+.home {
+  display: inline-block;
+  background: #f5f7f8;
+  width: 85%;
 
+  input[type="text"] {
+    margin: 20px;
+    width: 30%;
+    min-width: 250px;
+    display: block;
+  }
+  h2 {
+    display: block;
+    text-align: start;
+    margin: 10px 25px;
+  }
+  .image-block {
+    width: 100%;
+    min-width: 150px;
+    overflow: hidden;
+    position: relative;
+    .image-box {
+      width: 100%;
+      min-width: 150px;
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      img {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+    }
+  }
+  .image-Text {
+    width: 100%;
+    vertical-align: top;
+
+    .text-left {
+      float: left;
+      width: 30%;
+      text-align: start;
+      padding-left: 5%;
+
+      h4 {
+        font-weight: bold;
+        margin-top: 15px;
+        font-size: 18px;
+      }
+      p {
+        margin: 10px 0 0;
+        width: 95%;
+        overflow: hidden;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+    }
+  }
+  .text-center {
+    width: 30%;
+    float: left;
+    margin-top: 15px;
+    font-size: 1.4em;
+    color: #1597fa;
+    p {
+      text-align: end;
+    }
+  }
+  .text-right {
+    width: 30%;
+    float: left;
+    margin-top: 15px;
+    p {
+      text-align: end;
+      margin-bottom: 10px;
+    }
+    h5 {
+      text-align: end;
+      font-size: 1em;
+    }
+  }
+}
 .table-container {
   width: 100%;
   overflow: auto;
   padding-bottom: 50px;
+  padding: 1%;
   // display: none;
 }
 table {
@@ -384,7 +498,6 @@ table {
       th {
         cursor: pointer;
         &:first-child {
-          width: 3em;
           word-break: break-all;
         }
       }
@@ -393,7 +506,7 @@ table {
   tbody {
     tr {
       height: 48px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
       transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
       &:hover {
         background: #eee;
@@ -414,7 +527,7 @@ table {
   }
   //電腦版
   @include pc-width {
-    width: 80vw;
+    width: 100%;
     max-width: 100vw;
   }
   //平板

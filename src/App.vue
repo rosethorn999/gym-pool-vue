@@ -6,6 +6,15 @@
       <!-- <router-link to="/">Buy</router-link>
       <span>&nbsp;|&nbsp;</span>
       <router-link to="/sell">Sell</router-link>-->
+      <div class="headImage">
+      </div>
+      <p>Alex</p>
+      <div class="item-Menu">
+        <ul>
+          <li class="active">拍賣</li>
+          <li>會員中心</li>          
+        </ul>
+      </div>
     </div>
     <router-view/>
   </div>
@@ -16,6 +25,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "微軟正黑體";
 }
 body {
   width: 100vw;
@@ -33,14 +43,47 @@ a {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background: #222222;
 }
 #nav {
   padding: 30px;
+  display: inline-block;
+  vertical-align: top;
+  width: 15%;
+  h1 {
+    color: #fe4220;
+  }
+  p {
+    color: #fff;
+    margin-bottom: 0.2em;
+  }
   a {
     font-weight: bold;
     color: #2c3e50;
     &.router-link-exact-active {
       color: #42b983;
+    }
+  }
+  .headImage {
+    background-image: url("./assets/20160203022635285.png");
+    background-position: center;
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    margin: 20% auto 10%;
+  }
+  .item-Menu {
+    display: block;
+    margin: 30px 0;
+    ul li {
+      display: block;
+      color: #fff;
+      text-align: end;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .active {
+      background: #2c72b1;
     }
   }
 }
@@ -74,21 +117,21 @@ select {
   }
 }
 input[type="button"] {
+  position: fixed;
+  bottom: 1%;
+  right: 1%;
   cursor: pointer;
   color: #fff;
   margin: 6px 8px;
-  height: 36px;
-  padding: 6px;
+  width: 85px;
+  height: 85px;
   font-size: 14px;
-  background-color: #4caf50;
-  border-radius: 2px;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  &:disabled {
-    cursor: not-allowed;
-    background-color: rgba(0, 0, 0, 0.12);
-    color: rgba(0, 0, 0, 0.26);
-  }
+  background-image: url("./assets/add.png");
+  background-position: 50% 40%;
+  background-size: auto;
+  border-radius: 50%;
+  border: 0;
+  overflow: hidden;
 }
 select.danger,
 input.danger {
