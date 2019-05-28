@@ -16,6 +16,9 @@
         </ul>
       </div>
     </div>
+    <div id="nav2">
+      
+    </div>
     <router-view/>
   </div>
 </template>
@@ -50,6 +53,9 @@ a {
   display: inline-block;
   vertical-align: top;
   width: 15%;
+  position: fixed;
+  height: 100vh;
+  left: 0px;
   h1 {
     color: #fe4220;
   }
@@ -86,6 +92,10 @@ a {
       background: #2c72b1;
     }
   }
+}
+#nav2 {
+  display: inline-block;
+  width: 15%;
 }
 input[type="number"],
 input[type="text"],

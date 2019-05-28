@@ -78,8 +78,8 @@
             <td colspan="4" class="image-Text">
                     <div class="text-left">
                       <h4>{{gymTypeCaption(item.gymType)}}</h4>
-                      <p>world Gym竹北店</p>
-                      <p>不住在竹北了</p>
+                      <p>{{item.location}}</p>
+                      <p>{{item.remark}}</p>
                     </div>
                     <div class="text-center">
                       <p>NT:{{item.price}}</p>
