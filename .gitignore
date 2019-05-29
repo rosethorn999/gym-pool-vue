@@ -19,6 +19,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-*.jpg
-*.png
 public
