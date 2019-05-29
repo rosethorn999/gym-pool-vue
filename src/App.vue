@@ -6,22 +6,49 @@
       <!-- <router-link to="/">Buy</router-link>
       <span>&nbsp;|&nbsp;</span>
       <router-link to="/sell">Sell</router-link>-->
-      <div class="headImage">
-      </div>
+      <div class="headImage"></div>
       <p>Alex</p>
       <div class="item-Menu">
         <ul>
-          <li class="active">拍賣</li>
-          <li>會員中心</li>          
+          <li
+            data-target="store"
+            :class="{active:routerActive==='store'||routerActive==='home'}"
+            @click="switchRouter"
+          >
+            <router-link to="/store">拍賣</router-link>
+          </li>
+          <li
+            data-target="accountManager"
+            :class="{active:routerActive==='accountManager'}"
+            @click="switchRouter"
+          >
+            <router-link to="/accountManager">會員中心</router-link>
+          </li>
         </ul>
       </div>
     </div>
-    <div id="nav2">
-      
-    </div>
-    <router-view/>
+    <div id="nav2"></div>
+    <router-view class="router-view"/>
   </div>
 </template>
+
+<script>
+export default {
+  name: "app",
+  computed: {
+    routerActive() {
+      return this.$route.name;
+    }
+  },
+  methods: {
+    switchRouter(e) {
+      let targetPage = e.currentTarget.dataset.target;
+      console.log(targetPage);
+      this.$router.push("/" + targetPage);
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 * {
@@ -36,9 +63,6 @@ body {
 
 h3 {
   margin: 40px 0 0;
-}
-a {
-  color: #42b983;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -63,13 +87,6 @@ a {
     color: #fff;
     margin-bottom: 0.2em;
   }
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
   .headImage {
     background-image: url("./assets/20160203022635285.png");
     background-position: center;
@@ -87,6 +104,10 @@ a {
       text-align: end;
       padding: 10px;
       cursor: pointer;
+      a {
+        color: #fff;
+        text-decoration: none;
+      }
     }
     .active {
       background: #2c72b1;
@@ -174,5 +195,11 @@ p.danger {
       }
     }
   }
+}
+.router-view {
+  display: inline-block;
+  background: #f5f7f8;
+  width: 85%;
+  min-height: 100vh;
 }
 </style>

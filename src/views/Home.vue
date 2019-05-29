@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-        <input type="text" name="usrname" >
+    <input type="text" name="usrname">
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
     <!-- <Asks/> -->
     <h2>{{$t('selling')}}</h2>
-    <input type="button"  @click="addRecord">
+    <input type="button" @click="addRecord">
     <!-- :value="$t('addRecord')" -->
     <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
     <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
@@ -71,24 +71,24 @@
           </tr>
           <tr v-for="(item) in asks" :key="item.id" @click="checkout(item.id)">
             <td class="image-block">
-                  <div class="image-box">
-                    <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
-                  </div>
+              <div class="image-box">
+                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt>
+              </div>
             </td>
             <td colspan="4" class="image-Text">
-                    <div class="text-left">
-                      <h4>{{gymTypeCaption(item.gymType)}}</h4>
-                      <p>{{item.location}}</p>
-                      <p>{{item.remark}}</p>
-                    </div>
-                    <div class="text-center">
-                      <p>NT:{{item.price}}</p>
-                    </div>
-                    <div class="text-right">
-                         <p>轉讓費:300元</p>
-                         <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
-                         <h5>{{getProductLife(item.expiryDate)}}</h5>
-                    </div>
+              <div class="text-left">
+                <h4>{{gymTypeCaption(item.gymType)}}</h4>
+                <p>{{item.location}}</p>
+                <p>{{item.remark}}</p>
+              </div>
+              <div class="text-center">
+                <p>NT:{{item.price}}</p>
+              </div>
+              <div class="text-right">
+                <p>轉讓費:300元</p>
+                <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
+                <h5>{{getProductLife(item.expiryDate)}}</h5>
+              </div>
             </td>
             <!-- <td><div class="image-box">
               <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
@@ -97,7 +97,7 @@
             <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td> -->
+            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>-->
           </tr>
         </tbody>
         <tfoot>
@@ -390,10 +390,6 @@ $phones-media: 479px;
   }
 }
 .home {
-  display: inline-block;
-  background: #f5f7f8;
-  width: 85%;
-
   input[type="text"] {
     margin: 20px;
     width: 30%;
