@@ -9,7 +9,7 @@
     <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
     <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
     <div class="table-container">
-      <table>
+      <table >
         <thead>
           <!-- todo filter -->
           <tr>
@@ -70,12 +70,15 @@
             <td colspan="5">{{$t('none')}}</td>
           </tr>
           <tr v-for="(item) in asks" :key="item.id" @click="checkout(item.id)">
-            <td class="image-block">
-              <div class="image-box">
-                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt>
-              </div>
-            </td>
-            <td colspan="4" class="image-Text">
+              <td  colspan="5">
+                  <table class="table-box">
+                   <tr>
+                              <td class="image-block" colspan="1">
+                                              <div class="image-box">
+                                                                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt>
+                                                                              </div>
+                                                                                          </td>
+            <td colspan="5" class="image-Text">
               <div class="text-left">
                 <h4>{{gymTypeCaption(item.gymType)}}</h4>
                 <p>{{item.location}}</p>
@@ -98,7 +101,12 @@
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
             <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>-->
-          </tr>
+                            </tr>
+                             </table>
+              </td>
+            
+            </tr>
+
         </tbody>
         <tfoot>
           <tr>
@@ -402,12 +410,13 @@ $phones-media: 479px;
     margin: 10px 25px;
   }
   .image-block {
-    width: 100%;
+    width: 30%;
     min-width: 150px;
     overflow: hidden;
     position: relative;
+    padding: 0.5%;
     .image-box {
-      width: 100%;
+      width: 80%;
       min-width: 150px;
       height: 120px;
       position: relative;
@@ -479,6 +488,10 @@ $phones-media: 479px;
   padding-bottom: 50px;
   padding: 1%;
   // display: none;
+  .table-box {
+    margin-bottom: 30px;
+    box-shadow: 0 0 5px 2px #cbcbcb;
+  }
 }
 table {
   border-spacing: 0;
