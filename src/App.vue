@@ -1,51 +1,16 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <h1>Gym Pool</h1>
-      <p>{{$t("appDescription")}}</p>
-      <!-- <router-link to="/">Buy</router-link>
-      <span>&nbsp;|&nbsp;</span>
-      <router-link to="/sell">Sell</router-link>-->
-      <div class="headImage"></div>
-      <p>Alex</p>
-      <div class="item-Menu">
-        <ul>
-          <li
-            data-target="store"
-            :class="{active:routerActive==='store'||routerActive==='home'}"
-            @click="switchRouter"
-          >
-            <router-link to="/store">拍賣</router-link>
-          </li>
-          <li
-            data-target="accountManager"
-            :class="{active:routerActive==='accountManager'}"
-            @click="switchRouter"
-          >
-            <router-link to="/accountManager">會員中心</router-link>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div id="nav2"></div>
-    <router-view class="router-view"/>
+  <div>
+    <Index></Index>
   </div>
 </template>
 
 <script>
+import Index from "./views/Index.vue";
+
 export default {
   name: "app",
-  computed: {
-    routerActive() {
-      return this.$route.name;
-    }
-  },
-  methods: {
-    switchRouter(e) {
-      let targetPage = e.currentTarget.dataset.target;
-      console.log(targetPage);
-      this.$router.push("/" + targetPage);
-    }
+  components: {
+    Index
   }
 };
 </script>
