@@ -1,4 +1,5 @@
 import Vue from "vue";
+import VueAxios from "vue-axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -6,6 +7,9 @@ import "normalize.css";
 import i18n from "./i18n";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
+import axios from "axios";
+
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
 
