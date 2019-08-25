@@ -1,21 +1,55 @@
 <template>
-  <div>
-    <Index></Index>
+  <div id="manage">
+    <div id="nav">
+      <h1>Gym Pool</h1>
+      <p>{{$t("appDescription")}}</p>
+      <div class="headImage"></div>
+      <p>Alex</p>
+      <div class="item-Menu">
+        <ul>
+          <li
+            data-target="store"
+            :class="{active:routerActive==='store'||routerActive==='home'}"
+            @click="switchRouter"
+          >
+            <router-link to="/store">拍賣</router-link>
+          </li>
+          <li
+            data-target="accountManager"
+            :class="{active:routerActive==='accountManager'}"
+            @click="switchRouter"
+          >
+            <router-link to="/accountManager">會員中心</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="nav2"></div>
+    <div id="nav3"></div>
+    <router-view class="router-view" />
   </div>
 </template>
 
 <script>
-import Index from "./views/Index.vue";
-
 export default {
-  name: "app",
-  components: {
-    Index
+  name: "Manage",
+  props: {},
+  computed: {
+    routerActive() {
+      return this.$route.name;
+    }
+  },
+  methods: {
+    switchRouter(e) {
+      let targetPage = e.currentTarget.dataset.target;
+      console.log(targetPage);
+      this.$router.push("/" + targetPage);
+    }
   }
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 * {
   padding: 0;
   margin: 0;
@@ -29,59 +63,13 @@ body {
 h3 {
   margin: 40px 0 0;
 }
-#app {
+#manage {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   background: #222222;
-}
-#nav {
-  padding: 30px;
-  display: inline-block;
-  vertical-align: top;
-  width: 15%;
-  position: fixed;
-  height: 100vh;
-  left: 0px;
-  h1 {
-    color: #fe4220;
-  }
-  p {
-    color: #fff;
-    margin-bottom: 0.2em;
-  }
-  .headImage {
-    background-image: url("./assets/20160203022635285.png");
-    background-position: center;
-    background-size: cover;
-    width: 100px;
-    height: 100px;
-    margin: 20% auto 10%;
-  }
-  .item-Menu {
-    display: block;
-    margin: 30px 0;
-    ul li {
-      display: block;
-      color: #fff;
-      text-align: end;
-      padding: 10px;
-      cursor: pointer;
-      a {
-        color: #fff;
-        text-decoration: none;
-      }
-    }
-    .active {
-      background: #2c72b1;
-    }
-  }
-}
-#nav2 {
-  display: inline-block;
-  width: 15%;
 }
 input[type="number"],
 input[type="text"],
@@ -122,7 +110,7 @@ input[type="button"] {
   width: 85px;
   height: 85px;
   font-size: 14px;
-  background-image: url("./assets/add.png");
+  background-image: url("../../../assets/add.png");
   background-position: 50% 40%;
   background-size: auto;
   border-radius: 50%;

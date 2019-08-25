@@ -4,7 +4,7 @@
     <div class="container">
       <div class="form">
         <div>
-          <input type="number" v-model.number="price" :placeholder="$t('price')" disabled>
+          <input type="number" v-model.number="price" :placeholder="$t('price')" disabled />
         </div>
         <div class="control-container">
           <select v-model="gymType" disabled>
@@ -17,10 +17,10 @@
           </select>
         </div>
         <div>
-          <input type="text" v-model="location" :placeholder="$t('location')" disabled>
+          <input type="text" v-model="location" :placeholder="$t('location')" disabled />
         </div>
         <div>
-          <input type="number" v-model="monthlyRental" :placeholder="$t('monthlyRental')" disabled>
+          <input type="number" v-model="monthlyRental" :placeholder="$t('monthlyRental')" disabled />
         </div>
         <div>
           <textarea v-model="remark" :placeholder="$t('remark')" disabled></textarea>
@@ -44,7 +44,7 @@
           <label>{{$t('features.label')}}:&nbsp;</label>
           <template v-for="(f,index) in selection.features">
             <label :for="f.val" :key="index">
-              <input type="checkbox" :id="f.val" :value="f.val" v-model="features" disabled>
+              <input type="checkbox" :id="f.val" :value="f.val" v-model="features" disabled />
               {{f.caption}}
             </label>
           </template>
@@ -58,40 +58,40 @@
               src="../assets/iconfinder_phone_1807538.png"
               :key="key"
               @click="openContact(key,value)"
-            >
+            />
             <img
               class="contact-img"
               v-if="key==='mail'"
               src="../assets/iconfinder_aiga_mail_inver_134147.png"
               :key="key"
               @click="openContact(key,value)"
-            >
+            />
             <img
               class="contact-img"
               v-if="key==='tg'"
               src="../assets/iconfinder_telegram_386727.png"
               :key="key"
               @click="openContact(key,value)"
-            >
+            />
             <img
               class="contact-img"
               v-if="key==='line'"
               src="../assets/iconfinder_line_1807543.png"
               :key="key"
               @click="openContact(key,value)"
-            >
+            />
             <img
               class="contact-img"
               v-if="key==='fb'"
               src="../assets/iconfinder_facebook_1807546.png"
               :key="key"
               @click="openContact(key,value)"
-            >
+            />
           </template>
           <span v-if="Object.keys(contact).length===0">{{$t('none')}}</span>
         </div>
         <div>
-          <input type="button" :value="$t('back')" @click="backToList">
+          <input type="button" :value="$t('back')" @click="backToList" />
         </div>
       </div>
     </div>

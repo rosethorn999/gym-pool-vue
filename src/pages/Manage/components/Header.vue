@@ -1,12 +1,12 @@
 <template>
-  <div class="sell">
-    <h2>Sell</h2>
-  </div>
+  <header class="header">
+    <h2>header</h2>
+  </header>
 </template>
 
 <script>
 export default {
-  name: "Sell",
+  name: "header",
   props: {}
 };
 </script>

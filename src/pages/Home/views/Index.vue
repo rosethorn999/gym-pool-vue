@@ -15,7 +15,10 @@
         :class="{active:routerActive==='accountManager'}"
         @click="switchRouter"
       >
-        <router-link to="/accountManager">會員中心</router-link>
+        <router-link to="/store">拍賣</router-link>
+      </li>
+      <li data-target="Manage" :class="{active:routerActive==='Manage'}" @click="switchRouter">
+        <router-link to="/accountManager">後台</router-link>
       </li>
     </ul>
   </div>
@@ -48,7 +51,7 @@ export default {
 .index {
   display: inline-block;
   background: #f5f7f8;
-  width: 85%;
+  width: 100%;
   height: 100vh;
 }
 </style>

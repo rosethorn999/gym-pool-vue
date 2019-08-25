@@ -2,7 +2,6 @@
   <div class="home">
     <input type="text" name="usrname" />
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
-    <!-- <Asks/> -->
     <h2>{{$t('selling')}}</h2>
     <input type="button" @click="addRecord" />
     <!-- :value="$t('addRecord')" -->
@@ -128,15 +127,12 @@
 
 <script>
 // @ is an alias to /src
-// import Asks from "@/components/Ask.vue";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 export default {
   name: "home",
-  components: {
-    // Asks
-  },
+  components: {},
   mounted: function() {
     this.db = firebase.firestore();
     this.readRecord();

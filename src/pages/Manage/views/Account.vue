@@ -1,18 +1,18 @@
 <template>
-  <div class="accountManager">
-    <h1>This is a AccountManager page</h1>
+  <div class="account">
+    <h1>This is a Account page</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "accountManager",
+  name: "account",
   props: {}
 };
 </script>
 
 <style scoped lang="scss">
-.accountManager {
+.account {
   display: inline-block;
   background: #f5f7f8;
   width: 85%;

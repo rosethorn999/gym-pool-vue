@@ -1,7 +1,7 @@
 <template>
-  <div class="header">
-    <h2>header</h2>
-  </div>
+  <header class="header">
+    <h2>GymPool</h2>
+  </header>
 </template>
 
 <script>
