@@ -1,15 +1,15 @@
 <template>
   <div class="home">
-    <input type="text" name="usrname">
+    <input type="text" name="usrname" />
     <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
     <!-- <Asks/> -->
     <h2>{{$t('selling')}}</h2>
-    <input type="button" @click="addRecord">
+    <input type="button" @click="addRecord" />
     <!-- :value="$t('addRecord')" -->
     <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
     <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
     <div class="table-container">
-      <table >
+      <table>
         <thead>
           <!-- todo filter -->
           <tr>
@@ -18,44 +18,44 @@
               <img
                 v-show="isShowSortIcon('postDate','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
-              >
+              />
               <img
                 v-show="isShowSortIcon('postDate','desc')"
                 src="../assets/iconfinder_sort_decrease_18916.png"
-              >
+              />
             </th>
             <th @click="orderBy('gymType')">
               {{$t('gymType')}}
               <img
                 v-show="isShowSortIcon('gymType','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
-              >
+              />
               <img
                 v-show="isShowSortIcon('gymType','desc')"
                 src="../assets/iconfinder_sort_decrease_18916.png"
-              >
+              />
             </th>
             <th @click="orderBy('expiryDate')">
               {{$t('productLife')}}
               <img
                 v-show="isShowSortIcon('expiryDate','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
-              >
+              />
               <img
                 v-show="isShowSortIcon('expiryDate','desc')"
                 src="../assets/iconfinder_sort_decrease_18916.png"
-              >
+              />
             </th>
             <th @click="orderBy('price')">
               {{$t('price')}}
               <img
                 v-show="isShowSortIcon('price','asc')"
                 src="../assets/iconfinder_sort_incr_18917.png"
-              >
+              />
               <img
                 v-show="isShowSortIcon('price','desc')"
                 src="../assets/iconfinder_sort_decrease_18916.png"
-              >
+              />
             </th>
             <th>{{$t('price')}}/{{$t('month')}}</th>
           </tr>
@@ -63,50 +63,48 @@
         <tbody>
           <tr v-if="asks===null">
             <td colspan="4">
-              <img src="../assets/loading.gif">
+              <img src="../assets/loading.gif" />
             </td>
           </tr>
           <tr v-if="asks&&asks.length===0">
             <td colspan="5">{{$t('none')}}</td>
           </tr>
           <tr v-for="(item) in asks" :key="item.id" @click="checkout(item.id)">
-              <td  colspan="5">
-                  <table class="table-box">
-                   <tr>
-                              <td class="image-block" colspan="1">
-                                              <div class="image-box">
-                                                                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt>
-                                                                              </div>
-                                                                                          </td>
-            <td colspan="5" class="image-Text">
-              <div class="text-left">
-                <h4>{{gymTypeCaption(item.gymType)}}</h4>
-                <p>{{item.location}}</p>
-                <p>{{item.remark}}</p>
-              </div>
-              <div class="text-center">
-                <p>NT:{{item.price}}</p>
-              </div>
-              <div class="text-right">
-                <p>轉讓費:300元</p>
-                <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
-                <h5>{{getProductLife(item.expiryDate)}}</h5>
-              </div>
-            </td>
-            <!-- <td><div class="image-box">
+            <td colspan="5">
+              <table class="table-box">
+                <tr>
+                  <td class="image-block" colspan="1">
+                    <div class="image-box">
+                      <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt />
+                    </div>
+                  </td>
+                  <td colspan="5" class="image-Text">
+                    <div class="text-left">
+                      <h4>{{gymTypeCaption(item.gymType)}}</h4>
+                      <p>{{item.location}}</p>
+                      <p>{{item.remark}}</p>
+                    </div>
+                    <div class="text-center">
+                      <p>NT:{{item.price}}</p>
+                    </div>
+                    <div class="text-right">
+                      <p>轉讓費:300元</p>
+                      <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
+                      <h5>{{getProductLife(item.expiryDate)}}</h5>
+                    </div>
+                  </td>
+                  <!-- <td><div class="image-box">
               <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
               </div>
               </td>
             <td>{{gymTypeCaption(item.gymType)}}</td>
             <td>{{getProductLife(item.expiryDate)}}</td>
             <td>${{item.price}}</td>
-            <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>-->
-                            </tr>
-                             </table>
-              </td>
-            
-            </tr>
-
+                  <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>-->
+                </tr>
+              </table>
+            </td>
+          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -326,24 +324,16 @@ export default {
       let sortName = this.sorting.name;
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
       this.pagination.pageIndex = 0;
-      this.db
-        .collection("sell")
-        .orderBy(sortName, sortWay)
-        .limit(this.pagination.pageSize + 1)
-        .get()
-        .then(querySnapshot => {
-          this.asks = [];
-          let size = querySnapshot.docs.length;
-          this.pagination.noNext = this.pagination.pageSize >= size;
-          for (let i = 0; i < size; i++) {
-            let d = querySnapshot.docs[i].data();
-            if (i < this.pagination.pageSize) {
-              this.asks.push(d);
-            } else {
-              this.pagination.lastData = d;
-            }
-          }
-        });
+
+      // TODO sorting
+      // TODO pagination
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        let records = response.results;
+        for (let i = 0; i < records; i++) {
+          this.asks.push(records[i]);
+        }
+      });
     },
     checkout(id) {
       this.$router.push({ name: "contract", params: { contractId: id } });
