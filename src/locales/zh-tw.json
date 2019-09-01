@@ -1,7 +1,6 @@
 {
   "appDescription": "健身房合約轉讓庫",
   "addRecordPageDescription": "填寫你的合約內容",
-  "checkoutRecordPageDescription": "在檢視細節後即可與擁有者聯繫",
   "selling": "筆數",
   "gym_type": "會籍",
   "productLife": "合約效期",
@@ -24,8 +23,8 @@
   "remark": "備註",
   "monthlyRental": "月費",
   "location": "所在地",
+  "storeFeature": "場館特色",
   "features": {
-    "label": "場館特色",
     "saunaRoom": "蒸汽室",
     "swimPool": "游泳池",
     "fitnessClass": "健身課程",
@@ -40,9 +39,24 @@
   "requiredPlaceNotice": "標註 星號* 處為必填欄位",
   "expiredDayMustBigger30days": "合約到期日必須大於30天",
   "cancal": "取消",
+  "done": "完成",
   "send": "送出",
   "back": "回前頁",
   "error": "錯誤",
   "filter": "篩選條件",
-  "clear": "清除"
+  "clear": "清除",
+
+  "_id": "編號",
+  "price": "價格",
+  "title": "標題",
+  "basicInfo": "基本資料",
+  "productInfo": "合約資料",
+  "storeInfo": "店家資料",
+  "feeInfo": "其他費用",
+  "otherInfo": "其他",
+  "store": "店家",
+  "create_time": "建立日期",
+  "modify_time": "修改日期",
+  "deal_date": "成交日期",
+  "deal": "成交"
 }

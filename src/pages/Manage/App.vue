@@ -56,9 +56,6 @@ body {
   width: 100vw;
 }
 
-h3 {
-  margin: 40px 0 0;
-}
 #app {
   display: inline-block;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -195,5 +192,19 @@ p.danger {
   width: 85%;
   min-height: 100vh;
   margin-left: 15%;
+}
+.btn {
+  height: 40px;
+  padding: 5px 30px;
+  border-radius: 13px;
+  margin-left: 25px;
+  cursor: pointer;
+  &.blue {
+    background: #1977f2;
+    color: #fff;
+  }
+  &:focus {
+    outline: none;
+  }
 }
 </style>

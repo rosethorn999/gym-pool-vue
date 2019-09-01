@@ -1,122 +1,164 @@
 <template>
   <div class="contract">
-    <h2>{{$t('checkoutRecordPageDescription')}}</h2>
     <div class="container">
-      <div class="form">
-        <div>
-          <input type="number" v-model.number="price" :placeholder="$t('price')" disabled />
+      <div class="block">
+        <h3>{{ $t("basicInfo") }}</h3>
+        <div class="form-group">
+          <label>{{ $t("_id") }}</label>
+          <div class="control-box">
+            <div class="control-box">
+              <input type="text" v-model="id" disabled />
+            </div>
+          </div>
         </div>
-        <div class="control-container">
-          <select v-model="gymType" disabled>
-            <option :value="-1">{{$t('gymType')}}</option>
-            <option
-              v-for="item in selection.gymTypes"
-              :key="item.val"
-              :value="item.val"
-            >{{item.name}}</option>
-          </select>
+        <div class="form-group">
+          <label>{{ $t("title") }}</label>
+          <div class="control-box">
+            <div class="control-box">
+              <input type="text" v-model="title" />
+            </div>
+          </div>
         </div>
-        <div>
-          <input type="text" v-model="location" :placeholder="$t('location')" disabled />
+      </div>
+      <div class="block">
+        <h3>{{ $t("productInfo") }}</h3>
+        <div class="form-group">
+          <label>{{ $t("price") }}</label>
+          <div class="control-box">
+            <div class="control-box">
+              <input type="number" v-model.number="price" disabled />
+            </div>
+          </div>
         </div>
-        <div>
-          <input type="number" v-model="monthlyRental" :placeholder="$t('monthlyRental')" disabled />
+        <div class="form-group">
+          <label>{{ $t("monthly_rental") }}</label>
+          <div class="control-box">
+            <div class="control-box">
+              <input type="number" v-model.number="monthlyRental" />
+            </div>
+          </div>
         </div>
-        <div>
-          <textarea v-model="remark" :placeholder="$t('remark')" disabled></textarea>
+        <div class="form-group">
+          <label>{{ $t("gym_type") }}</label>
+          <div class="control-box">
+            <select v-model="gymType">
+              <option :value="-1">{{$t('gym_type')}}</option>
+              <option
+                v-for="item in selection.gymTypes"
+                :key="item.val"
+                :value="item.val"
+              >{{item.name}}</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <select class="expiryDate" v-model="expiryDate[0]" disabled>
-            <option :value="-1">{{$t('expiry')}}{{$t('year')}}</option>
-            <option v-for="item in selection.YYYY" :key="item" :value="item">{{item}}</option>
-          </select>
-          <select class="expiryDate" v-model="expiryDate[1]" disabled>
-            <option :value="-1">{{$t('expiry')}}{{$t('month')}}</option>
-            <option v-for="item in selection.MM" :key="item" :value="item">{{item}}</option>
-          </select>
-          <select class="expiryDate" v-model="expiryDate[2]" disabled>
-            <option :value="-1">{{$t('expiry')}}{{$t('day')}}</option>
-            <option v-for="item in selection.DD" :key="item" :value="item">{{item}}</option>
-          </select>
-          <div class="expiryDate">{{productLife}}</div>
+        <div class="form-group">
+          <label>{{ $t("store") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="store" />
+          </div>
         </div>
-        <div>
-          <label>{{$t('features.label')}}:&nbsp;</label>
-          <template v-for="(f,index) in selection.features">
-            <label :for="f.val" :key="index">
-              <input type="checkbox" :id="f.val" :value="f.val" v-model="features" disabled />
-              {{f.caption}}
-            </label>
-          </template>
+        <div class="form-group">
+          <label>{{ $t("location") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="location" />
+          </div>
         </div>
-        <div>
-          <label>{{$t('contact')}}:&nbsp;</label>
-          <template v-for="(value, key) in contact">
-            <img
-              class="contact-img"
-              v-if="key==='tel'"
-              src="../assets/iconfinder_phone_1807538.png"
-              :key="key"
-              @click="openContact(key,value)"
-            />
-            <img
-              class="contact-img"
-              v-if="key==='mail'"
-              src="../assets/iconfinder_aiga_mail_inver_134147.png"
-              :key="key"
-              @click="openContact(key,value)"
-            />
-            <img
-              class="contact-img"
-              v-if="key==='tg'"
-              src="../assets/iconfinder_telegram_386727.png"
-              :key="key"
-              @click="openContact(key,value)"
-            />
-            <img
-              class="contact-img"
-              v-if="key==='line'"
-              src="../assets/iconfinder_line_1807543.png"
-              :key="key"
-              @click="openContact(key,value)"
-            />
-            <img
-              class="contact-img"
-              v-if="key==='fb'"
-              src="../assets/iconfinder_facebook_1807546.png"
-              :key="key"
-              @click="openContact(key,value)"
-            />
-          </template>
-          <span v-if="Object.keys(contact).length===0">{{$t('none')}}</span>
+        <div class="form-group">
+          <label>{{ $t("expiryDate") }}</label>
+          <div class="control-box">
+            <div>
+              <input type="date" />
+              <div class="expiryDate">{{productLife}}</div>
+            </div>
+          </div>
         </div>
-        <div>
-          <input type="button" :value="$t('back')" @click="backToList" />
+      </div>
+      <div class="block">
+        <h3>{{ $t("storeInfo") }}</h3>
+        <div class="form-group">
+          <label>{{ $t("storeFeature") }}</label>
+          <div class="control-box">
+            <template v-for="(f,index) in selection.features">
+              <label :for="f.val" :key="index">
+                <input type="checkbox" :id="f.val" :value="f.val" v-model="features" />
+                {{f.caption}}
+              </label>
+            </template>
+          </div>
         </div>
+      </div>
+      <div class="block">
+        <h3>{{ $t("feeInfo") }}</h3>
+        <div class="form-group">
+          <label>{{ $t("processing_fee") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="processing_fee" />
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>{{ $t("otherInfo") }}</h3>
+        <div class="form-group">
+          <label>{{ $t("remark") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="remark" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{ $t("create_time") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="create_time" disabled />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{ $t("deal_date") }}</label>
+          <div class="control-box">
+            <input type="text" v-model="deal_date" disabled />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{ $t("deal") }}</label>
+          <div class="control-box">
+            <div>
+              <label>YES</label>
+              <input type="checkbox" />
+              <label>NO</label>
+              <input type="checkbox" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-box">
+        <input type="button" class="btn" :value="$t('cancal')" @click="backToList" />
+        <input type="button" class="btn blue" :value="$t('done')" @click="done" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import * as firebase from "firebase/app";
-import "firebase/firestore";
+// import * as firebase from "firebase/app";
+// import "firebase/firestore";
 
 export default {
   name: "contract",
   props: {},
   data() {
     return {
-      db: null,
-
+      id: "",
+      title: "",
       price: null,
       gymType: -1,
+      store: "",
       monthlyRental: null,
       location: "",
-      expiryDate: [-1, -1, -1],
+      expiryDate: "",
+      create_time: "",
+      deal_date: "",
       remark: "",
       features: [],
-      contact: {},
+      processing_fee: 0,
 
       selection: {
         gymTypes: [
@@ -126,9 +168,7 @@ export default {
           { val: 3, name: "成吉思汗" },
           { val: 4, name: "台北健身院" },
           { val: 999, name: "其他" }
-        ],
-        YYYY: ["2019", "2020", "'2021'", "2022", "2023", "2024", "2025"],
-        MM: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+        ]
       }
     };
   },
@@ -145,111 +185,70 @@ export default {
       }
     },
     productLife() {
+      // TODO calc
       let ret = "";
 
-      let now = new Date();
-      let nowYYYY = now.getFullYear();
-      let nowMM = now.getMonth() + 1;
+      // let now = new Date();
+      // let nowYYYY = now.getFullYear();
+      // let nowMM = now.getMonth() + 1;
 
-      let expiryArr = this.expiryDate.map(function(item) {
-        return Number(item);
-      });
-      let YYYY = expiryArr[0];
-      let MM = expiryArr[1];
-      if (YYYY === -1 || MM === -1) {
-        ret = this.$t("disComputable");
-      } else if (nowYYYY > YYYY) {
-        ret = this.$t("expired");
-      } else if (nowYYYY === YYYY && nowMM >= MM) {
-        ret = this.$t("expired");
-      } else {
-        let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
-        if (YYYY > nowYYYY) {
-          let gap = MM - nowMM < 0 ? -1 : 0;
-          if (YYYY - nowYYYY + gap !== 0) {
-            ret = YYYY - nowYYYY + gap + this.$t("year");
-          }
-        }
-        ret += life;
-      }
+      // let expiryArr = this.expiryDate.map(function(item) {
+      //   return Number(item);
+      // });
+      // let YYYY = expiryArr[0];
+      // let MM = expiryArr[1];
+      // if (YYYY === -1 || MM === -1) {
+      //   ret = this.$t("disComputable");
+      // } else if (nowYYYY > YYYY) {
+      //   ret = this.$t("expired");
+      // } else if (nowYYYY === YYYY && nowMM >= MM) {
+      //   ret = this.$t("expired");
+      // } else {
+      //   let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
+      //   if (YYYY > nowYYYY) {
+      //     let gap = MM - nowMM < 0 ? -1 : 0;
+      //     if (YYYY - nowYYYY + gap !== 0) {
+      //       ret = YYYY - nowYYYY + gap + this.$t("year");
+      //     }
+      //   }
+      //   ret += life;
+      // }
+
+      ret = "X" + this.$t("month");
       return ret;
-    },
-    id() {
-      return this.$route.params.contractId;
     }
   },
   mounted() {
-    this.db = firebase.firestore();
+    let record = localStorage.getItem("record") ? JSON.parse(localStorage.getItem("record")) : {};
 
-    let _DD = [];
-    for (let i = 1; i <= 31; i++) {
-      if (i < 10) {
-        _DD.push("0" + i);
-      } else {
-        _DD.push(i.toString());
-      }
-    }
-    this.selection.DD = _DD;
+    this.id = record._id;
+    this.title = record.title;
+    this.price = null;
+    this.gymType = record.gym_type;
+    this.store = record.store;
+    this.monthlyRental = record.monthly_rental;
+    this.location = record.location;
+    this.expiryDate = record.expiry_date;
+    this.remark = record.remark;
+    this.features = record.features;
+    this.processing_fee = record.processing_fee;
+    this.create_time = record.create_time;
+    this.deal_timme = record.deal_timme;
+
     this.selection.features = [
       { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
       { val: "swimPool", caption: this.$t("features.swimPool") },
       { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
       { val: "freeParking", caption: this.$t("features.freeParking") }
     ];
-    this.getContractInfo();
   },
   methods: {
-    openContact(type, value) {
-      switch (type) {
-        case "tel":
-          window.open("tel:" + value);
-          break;
-        case "mail":
-          window.open("mailto:" + value);
-          break;
-        case "tg":
-          window.open("https://t.me/" + value);
-          break;
-        case "line":
-          window.open("line://ti/p/" + value);
-          break;
-        case "fb":
-          window.open(value);
-          break;
-        default:
-          console.error("something wrong!");
-          break;
-      }
-    },
     backToList() {
       this.$router.push({ name: "index" });
     },
-    getContractInfo() {
-      let that = this;
-      let id = this.id;
-      this.db
-        .collection("sell")
-        .where("id", "==", id)
-        .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            let d = doc.data();
-
-            that.price = d.price;
-            that.gymType = d.gymType;
-            that.monthlyRental = d.monthlyRental;
-            that.location = d.location;
-            that.expiryDate = d.expiryDate.split("/");
-            that.remark = d.remark;
-            that.features = d.features;
-            that.postDate = d.postDate;
-            that.contact = d.contact;
-          });
-        })
-        .catch(function(error) {
-          console.log("Error getting documents: ", error);
-        });
+    done() {
+      // TODO save
+      this.$router.push({ name: "index" });
     }
   }
 };
@@ -289,58 +288,44 @@ $phones-media: 479px;
 
 .container {
   width: 100%;
-  overflow: auto;
-  padding-bottom: 50px;
-  // display: none;
+  padding: 50px 250px;
 }
-.description {
-  text-align: left;
+
+.block {
+  width: 100%;
+
+  background: #ffffff;
+  box-shadow: 0px 3px 6px #00000029;
+  padding: 10px 20px;
+  margin-bottom: 30px;
+  h3 {
+    color: #0350cc;
+  }
+  > div {
+    padding: 0px 180px;
+  }
 }
-.form {
-  padding: 16px;
-  border-spacing: 0;
-  margin: 0 auto;
-  border-collapse: collapse;
-  table-layout: fixed;
-
-  & > div {
-    padding: 12px 0 8px 0;
-  }
-
-  .expiryDate {
-    width: 25%;
-    display: inline-block;
-  }
-  div.expiryDate {
+.form-group {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  label {
     text-align: right;
-    line-height: 32px;
-    @include phone-width {
-      font-size: 0.6em;
+    flex: 1;
+    min-width: 80px;
+    padding-right: 18px;
+  }
+  .control-box {
+    flex: 4;
+    width: 100%;
+    > div,
+    > input,
+    > select {
+      width: 100%;
     }
   }
-  //電腦版
-  @include pc-width {
-    width: 80vw;
-    max-width: 100vw;
-  }
-  //平板
-  @include pad-width {
-    width: 95vw;
-    max-width: 100vw;
-  }
-  //小平板
-  @include small-pad-width {
-    width: 100%;
-  }
-  //手機
-  @include phone-width {
-    width: 100%;
-  }
 }
-.contact-img {
-  cursor: pointer;
-  border-radius: 5px;
-  margin-left: 3px;
-  height: 2rem;
+.button-box {
+  text-align: right;
 }
 </style>
