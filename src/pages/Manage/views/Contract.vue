@@ -222,7 +222,7 @@ export default {
       }
     },
     backToList() {
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "index" });
     },
     getContractInfo() {
       let that = this;

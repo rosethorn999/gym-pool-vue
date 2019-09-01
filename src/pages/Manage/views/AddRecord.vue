@@ -11,7 +11,7 @@
             min="0"
             :placeholder="$t('price')+'*'"
             :class="{danger:formError.tfs.price}"
-          >
+          />
         </div>
         <div class="control-container">
           <select v-model="gymType" :class="{danger:formError.tfs.gymType}">
@@ -24,7 +24,7 @@
           </select>
         </div>
         <div>
-          <input type="text" v-model="location" :placeholder="$t('location')">
+          <input type="text" v-model="location" :placeholder="$t('location')" />
         </div>
         <div>
           <input
@@ -33,7 +33,7 @@
             min="0"
             :placeholder="$t('monthlyRental')+'*'"
             :class="{danger:formError.tfs.monthlyRental}"
-          >
+          />
         </div>
         <div>
           <textarea v-model="remark" :placeholder="$t('remark')"></textarea>
@@ -69,7 +69,7 @@
           <label>{{$t('features.label')}}:&nbsp;</label>
           <template v-for="(f,index) in selection.features">
             <label :for="f.val" :key="index">
-              <input type="checkbox" :id="f.val" :value="f.val" v-model="features">
+              <input type="checkbox" :id="f.val" :value="f.val" v-model="features" />
               {{f.caption}}
             </label>
           </template>
@@ -82,7 +82,7 @@
                 class="contact-img"
                 src="../assets/iconfinder_phone_1807538.png"
                 @click="editContact(c)"
-              >
+              />
               {{contact.tel}}
             </span>
             <span :key="c" v-if="c==='mail'">
@@ -90,7 +90,7 @@
                 class="contact-img"
                 src="../assets/iconfinder_aiga_mail_inver_134147.png"
                 @click="editContact(c)"
-              >
+              />
               {{contact.mail}}
             </span>
             <span :key="c" v-if="c==='tg'">
@@ -98,7 +98,7 @@
                 class="contact-img"
                 src="../assets/iconfinder_telegram_386727.png"
                 @click="editContact(c)"
-              >
+              />
               {{contact.tg}}
             </span>
             <span :key="c" v-if="c==='line'">
@@ -106,7 +106,7 @@
                 class="contact-img"
                 src="../assets/iconfinder_line_1807543.png"
                 @click="editContact(c)"
-              >
+              />
               {{contact.line}}
             </span>
             <span :key="c" v-if="c==='fb'">
@@ -114,15 +114,15 @@
                 class="contact-img"
                 src="../assets/iconfinder_facebook_1807546.png"
                 @click="editContact(c)"
-              >
+              />
               {{contact.fb}}
             </span>
           </template>
         </div>
         <div>
           <p class="danger">{{formErrorMsg}}</p>
-          <input type="button" :value="$t('cancal')" @click="backToList">
-          <input type="button" :value="$t('send')" @click="addNewRecord" :disabled="formError.tf">
+          <input type="button" :value="$t('cancal')" @click="backToList" />
+          <input type="button" :value="$t('send')" @click="addNewRecord" :disabled="formError.tf" />
         </div>
       </div>
     </div>
@@ -301,7 +301,7 @@ export default {
       this.$set(this.contact, type, value);
     },
     backToList() {
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "index" });
     },
     addNewRecord() {
       //todo 後端輸入檢查

@@ -1,158 +1,91 @@
 <template>
   <div class="home">
-    <input type="text" name="usrname" />
-    <!-- <img alt="Vue logo" src="../assets/stockvault-fitness-center106597.jpg"> -->
-    <h2>{{$t('selling')}}</h2>
-    <input type="button" @click="addRecord" />
-    <!-- :value="$t('addRecord')" -->
-    <!-- <input type="button" :value="$t('filter')" @click="triggerFilterModal"> -->
-    <!-- <input type="button" :value="$t('refresh')" @click="readRecord"> -->
-    <div class="table-container">
-      <table>
-        <thead>
-          <!-- todo filter -->
-          <tr>
-            <th @click="orderBy('postDate')">
-              #
-              <img
-                v-show="isShowSortIcon('postDate','asc')"
-                src="../assets/iconfinder_sort_incr_18917.png"
-              />
-              <img
-                v-show="isShowSortIcon('postDate','desc')"
-                src="../assets/iconfinder_sort_decrease_18916.png"
-              />
-            </th>
-            <th @click="orderBy('gymType')">
-              {{$t('gymType')}}
-              <img
-                v-show="isShowSortIcon('gymType','asc')"
-                src="../assets/iconfinder_sort_incr_18917.png"
-              />
-              <img
-                v-show="isShowSortIcon('gymType','desc')"
-                src="../assets/iconfinder_sort_decrease_18916.png"
-              />
-            </th>
-            <th @click="orderBy('expiryDate')">
-              {{$t('productLife')}}
-              <img
-                v-show="isShowSortIcon('expiryDate','asc')"
-                src="../assets/iconfinder_sort_incr_18917.png"
-              />
-              <img
-                v-show="isShowSortIcon('expiryDate','desc')"
-                src="../assets/iconfinder_sort_decrease_18916.png"
-              />
-            </th>
-            <th @click="orderBy('price')">
-              {{$t('price')}}
-              <img
-                v-show="isShowSortIcon('price','asc')"
-                src="../assets/iconfinder_sort_incr_18917.png"
-              />
-              <img
-                v-show="isShowSortIcon('price','desc')"
-                src="../assets/iconfinder_sort_decrease_18916.png"
-              />
-            </th>
-            <th>{{$t('price')}}/{{$t('month')}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="asks===null">
-            <td colspan="4">
-              <img src="../assets/loading.gif" />
-            </td>
-          </tr>
-          <tr v-if="asks&&asks.length===0">
-            <td colspan="5">{{$t('none')}}</td>
-          </tr>
-          <tr v-for="(item) in asks" :key="item.id" @click="checkout(item.id)">
-            <td colspan="5">
-              <table class="table-box">
-                <tr>
-                  <td class="image-block" colspan="1">
-                    <div class="image-box">
-                      <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt />
-                    </div>
-                  </td>
-                  <td colspan="5" class="image-Text">
-                    <div class="text-left">
-                      <h4>{{gymTypeCaption(item.gymType)}}</h4>
-                      <p>{{item.location}}</p>
-                      <p>{{item.remark}}</p>
-                    </div>
-                    <div class="text-center">
-                      <p>NT:{{item.price}}</p>
-                    </div>
-                    <div class="text-right">
-                      <p>轉讓費:300元</p>
-                      <p>{{getUnitPrice(item.expiryDate,item.price)}}</p>
-                      <h5>{{getProductLife(item.expiryDate)}}</h5>
-                    </div>
-                  </td>
-                  <!-- <td><div class="image-box">
-              <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="">
-              </div>
-              </td>
-            <td>{{gymTypeCaption(item.gymType)}}</td>
-            <td>{{getProductLife(item.expiryDate)}}</td>
-            <td>${{item.price}}</td>
-                  <td>{{getUnitPrice(item.expiryDate,item.price)}}</td>-->
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="5">
-              <span>{{$t('pageNow')}} {{pagination.pageIndex+1}}</span>
-              &nbsp;|&nbsp;
-              <span @click="pageControl(-1)">{{$t('prevPage')}}</span>
-              &nbsp;|&nbsp;
-              <span @click="pageControl(1)">{{$t('nextPage')}}</span>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+    <input type="button" class="add-record" @click="addRecord" />
+
+    <input type="text" id="filterBar" />
+    <!-- TODO filter -->
+    <div class="list-header">
+      <div>
+        <h2 id="recordCount">{{$t('selling')}} {{recordCount}}</h2>
+      </div>
+      <div>
+        <select class="sorter">
+          <option>時間</option>
+          <option>新到舊</option>
+          <option>舊到新</option>
+        </select>
+        <select class="sorter">
+          <option>價格</option>
+          <option>高到低</option>
+          <option>低到高</option>
+        </select>
+      </div>
     </div>
-    <div class="modal" v-show="isModalShow">
-      <div class="modal-header"></div>
-      <div class="modal-body"></div>
+
+    <ul>
+      <li class="list-tiem" v-for="r in records" :key="r.id">
+        <div class="image-block">
+          <div class="image-box">
+            <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
+          </div>
+        </div>
+        <div>
+          <p>{{r.title}}</p>
+          <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
+          <p>{{r.remark}}</p>
+        </div>
+        <div>
+          <p class="blue">NT{{r.monthly_rental}}</p>
+        </div>
+        <div>
+          <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
+          <p>{{$t("monthlyRental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
+          <p>{{$t("expiryDate")}}: {{r.expiry_date}}</p>
+        </div>
+        <div>
+          <img
+            class="more"
+            src="../assets/iconfinder_ic_more_vert_48px_352549.png"
+            @click="checkout(r.id)"
+          />
+        </div>
+      </li>
+      <li v-if="records===null">
+        <img src="../assets/loading.gif" />
+      </li>
+      <li v-if="records&&records.length===0">{{$t('none')}}</li>
+    </ul>
+    <div class="pagination">
+      <span>{{$t('pageNow')}} {{pagination.pageIndex+1}}</span>
+      &nbsp;|&nbsp;
+      <span @click="pageControl(-1)">{{$t('prevPage')}}</span>
+      &nbsp;|&nbsp;
+      <span @click="pageControl(1)">{{$t('nextPage')}}</span>
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import * as firebase from "firebase/app";
-import "firebase/firestore";
-
 export default {
   name: "home",
   components: {},
   mounted: function() {
-    this.db = firebase.firestore();
     this.readRecord();
   },
   data: function() {
     return {
-      db: null,
-      asks: null,
+      records: null,
       pagination: { pageSize: 20, pageIndex: 0, noNext: false, lastData: {} },
       sorting: { name: "postDate", way: "asc" },
-      gymTypes: [
+      gym_types: [
         { val: 0, name: "健身工廠" },
         { val: 1, name: "全真會館" },
         { val: 2, name: "世界健身" },
         { val: 3, name: "成吉思汗" },
         { val: 4, name: "台北健身院" },
         { val: 999, name: "其他" }
-      ],
-
-      isModalShow: false
+      ]
     };
   },
   methods: {
@@ -164,60 +97,27 @@ export default {
         console.log("no next page");
         return;
       }
+
       this.pagination.pageIndex += pager;
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
 
-      let startCursor = this.pagination.lastData[sortName];
-      let endCursor = this.asks[0][sortName];
-      let cursor = startCursor;
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-      console.log("startAt:" + startCursor);
-      console.log("endAt:" + endCursor);
 
-      if (pager < 0) {
-        //PREV
-        sortWay = sortWay === "desc" ? "asc" : "desc";
-        cursor = endCursor;
-      }
-      this.db
-        .collection("sell")
-        .orderBy(sortName, sortWay)
-        .startAt(cursor)
-        .limit(this.pagination.pageSize + 1)
-        .get()
-        .then(querySnapshot => {
-          this.asks = [];
-          let size = querySnapshot.docs.length;
-          this.pagination.noNext = this.pagination.pageSize >= size;
-          console.log(this.pagination.pageSize, size);
-          if (pager > 0) {
-            //NEXT
-            for (let i = 0; i < size; i++) {
-              let d = querySnapshot.docs[i].data();
-              if (i < this.pagination.pageSize) {
-                this.asks.push(d);
-              } else {
-                this.pagination.lastData = d;
-              }
-            }
-          } else {
-            //PREV
-            for (let i = size - 1; i >= 0; i--) {
-              let d = querySnapshot.docs[i].data();
-              if (i > 0) {
-                this.asks.push(d);
-              } else {
-                this.pagination.lastData = d;
-              }
-            }
-          }
-        });
+      // .orderBy(sortName, sortWay)
+      // this.pagination.pageSize
+      this.records = [];
+
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.records = response.data.results;
+      });
     },
     isShowSortIcon(name, way) {
       return this.sorting.name === name && this.sorting.way === way;
     },
     orderBy(sortName) {
+      // TODO implement
       let sortingWay = this.sorting.way;
       let sortingName = this.sorting.name;
       let sortWay = "asc";
@@ -233,24 +133,11 @@ export default {
       this.sorting.way = sortWay;
       this.sorting.name = sortName;
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-      this.db
-        .collection("sell")
-        .orderBy(sortName, sortWay)
-        .limit(this.pagination.pageSize + 1)
-        .get()
-        .then(querySnapshot => {
-          this.asks = [];
-          let size = querySnapshot.docs.length;
-          this.pagination.noNext = this.pagination.pageSize >= size;
-          for (let i = 0; i < size; i++) {
-            let d = querySnapshot.docs[i].data();
-            if (i < this.pagination.pageSize) {
-              this.asks.push(d);
-            } else {
-              this.pagination.lastData = d;
-            }
-          }
-        });
+
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.records = response.data.results;
+      });
     },
     getProductLife(expiryDate) {
       let ret = "";
@@ -287,7 +174,7 @@ export default {
 
       return ret;
     },
-    getUnitPrice(expiryDate, price) {
+    getUnitPrice(expiryDate, monthly_rental) {
       let ret = "";
       if (expiryDate) {
         let now = new Date();
@@ -305,7 +192,7 @@ export default {
         } else if (YYYY === -1 || MM === -1) {
           ret = this.$t("disComputable");
         } else {
-          ret = "$" + Math.floor(price / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
+          ret = "$" + Math.floor(monthly_rental / ((YYYY - nowYYYY) * 12 + (MM - nowMM)));
         }
       }
       return ret;
@@ -314,7 +201,7 @@ export default {
       this.$router.push({ name: "add" });
     },
     readRecord() {
-      this.asks = [];
+      this.records = [];
 
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
@@ -323,22 +210,17 @@ export default {
 
       // TODO sorting
       // TODO pagination
+      // TODO query by it owns
       let url = "http://127.0.0.1:8000/api/record/";
       this.axios.get(url).then(response => {
-        let records = response.results;
-        for (let i = 0; i < records; i++) {
-          this.asks.push(records[i]);
-        }
+        this.records = response.data.results;
       });
     },
     checkout(id) {
       this.$router.push({ name: "contract", params: { contractId: id } });
     },
-    triggerFilterModal() {
-      this.isModalShow = !this.isModalShow;
-    },
-    gymTypeCaption(v) {
-      let selected = this.gymTypes.filter(function(item) {
+    gym_typeCaption(v) {
+      let selected = this.gym_types.filter(function(item) {
         return item.val === v;
       });
       if (selected.length > 0) {
@@ -346,6 +228,11 @@ export default {
       } else {
         return this.$t("disComputable");
       }
+    }
+  },
+  computed: {
+    recordCount() {
+      return this.records && Array.isArray(this.records) ? this.records.length : 0;
     }
   }
 };
@@ -384,157 +271,83 @@ $phones-media: 479px;
   }
 }
 .home {
-  input[type="text"] {
-    margin: 20px;
-    width: 30%;
-    min-width: 250px;
-    display: block;
-  }
-  h2 {
-    display: block;
-    text-align: start;
-    margin: 10px 25px;
-  }
-  .image-block {
-    width: 30%;
-    min-width: 150px;
-    overflow: hidden;
-    position: relative;
-    padding: 0.5%;
-    .image-box {
-      width: 80%;
-      min-width: 150px;
-      height: 120px;
-      position: relative;
-      overflow: hidden;
-      img {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-      }
-    }
-  }
-  .image-Text {
-    width: 100%;
-    vertical-align: top;
-
-    .text-left {
-      float: left;
-      width: 30%;
-      text-align: start;
-      padding-left: 5%;
-
-      h4 {
-        font-weight: bold;
-        margin-top: 15px;
-        font-size: 18px;
-      }
-      p {
-        margin: 10px 0 0;
-        width: 95%;
-        overflow: hidden;
-        font-size: 14px;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-      }
-    }
-  }
-  .text-center {
-    width: 30%;
-    float: left;
-    margin-top: 15px;
-    font-size: 1.4em;
-    color: #1597fa;
-    p {
-      text-align: end;
-    }
-  }
-  .text-right {
-    width: 30%;
-    float: left;
-    margin-top: 15px;
-    p {
-      text-align: end;
-      margin-bottom: 10px;
-    }
-    h5 {
-      text-align: end;
-      font-size: 1em;
-    }
-  }
+  padding: 28px 56px;
 }
-.table-container {
-  width: 100%;
-  overflow: auto;
-  padding-bottom: 50px;
-  padding: 1%;
-  // display: none;
-  .table-box {
-    margin-bottom: 30px;
-    box-shadow: 0 0 5px 2px #cbcbcb;
-  }
+#filterBar {
+  margin-bottom: 40px;
+  width: 30%;
+  min-width: 250px;
+  display: block;
 }
-table {
-  border-spacing: 0;
-  margin: 0 auto;
-  border-collapse: collapse;
-  table-layout: fixed;
-  thead {
-    tr {
-      height: 56px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      th {
-        cursor: pointer;
-        &:first-child {
-          word-break: break-all;
-        }
-      }
-    }
+.list-header {
+  display: flex;
+  margin-bottom: 5px;
+
+  #recordCount {
+    margin-bottom: 5px;
   }
-  tbody {
-    tr {
-      height: 48px;
-      // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-      &:hover {
-        background: #eee;
-      }
-    }
-  }
-  tfoot {
-    tr {
-      height: 56px;
+  div {
+    flex: 1;
+    &:last-child {
       text-align: right;
-      td {
-        padding-right: 50%;
-        span {
-          cursor: pointer;
-        }
-      }
     }
   }
-  //電腦版
-  @include pc-width {
-    width: 100%;
-    max-width: 100vw;
+  .sorter {
+    width: 145px;
+    margin-left: 10px;
   }
-  //平板
-  @include pad-width {
-    width: 95vw;
-    max-width: 100vw;
+}
+.image-block {
+  width: 30%;
+  min-width: 150px;
+  overflow: hidden;
+  position: relative;
+  padding: 0.5%;
+  .image-box {
+    width: 80%;
+    min-width: 150px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+    img {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
   }
-  //小平板
-  @include small-pad-width {
-    width: 100%;
+}
+
+ul {
+  li.list-tiem {
+    font-size: 24px;
+    padding: 9px;
+    display: flex;
+    height: 143px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 5px #00000029;
+    transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    margin-bottom: 24px;
+    &:hover {
+      background: #eee;
+    }
+    div {
+      flex: 1;
+    }
   }
-  //手機
-  @include phone-width {
-    width: 100%;
-  }
+}
+
+.more {
+  height: 1.5rem;
+  cursor: pointer;
+}
+.pagination {
+  margin-top: 80px;
+  cursor: pointer;
+}
+.blue {
+  color: #1597fa;
 }
 </style>

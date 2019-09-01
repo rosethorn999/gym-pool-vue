@@ -51,7 +51,6 @@ export default {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "微軟正黑體";
 }
 body {
   width: 100vw;
@@ -120,7 +119,6 @@ textarea {
   border-radius: 2px;
   padding: 8px;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  width: 100%;
   height: 32px;
   &:disabled {
     color: rgba(0, 0, 0, 0.38);
@@ -142,7 +140,7 @@ select {
     outline: none;
   }
 }
-input[type="button"] {
+input.add-record {
   position: fixed;
   bottom: 1%;
   right: 1%;
