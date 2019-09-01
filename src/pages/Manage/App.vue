@@ -15,7 +15,7 @@
             :class="{active:routerActive==='account'}"
             @click="switchRouter"
           >
-            <router-link to="/account">會員中心</router-link>
+            <router-link to="/account">{{ $t("memberCenter") }}</router-link>
           </li>
           <li>
             <a href="/">前台</a>

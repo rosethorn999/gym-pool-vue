@@ -19,7 +19,7 @@
             :class="{active:routerActive==='accountManager'}"
             @click="switchRouter"
           >
-            <router-link to="/accountManager">會員中心</router-link>
+            <router-link to="/accountManager">{{ $t("memberCenter") }}</router-link>
           </li>
         </ul>
       </div>
@@ -54,7 +54,6 @@ export default {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "微軟正黑體";
 }
 body {
   width: 100vw;

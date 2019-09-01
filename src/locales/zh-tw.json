@@ -1,6 +1,8 @@
 {
   "appDescription": "健身房合約轉讓庫",
   "addRecordPageDescription": "填寫你的合約內容",
+
+  "memberCenter": "會員中心",
   "selling": "筆數",
   "gym_type": "會籍",
   "productLife": "合約效期",
@@ -58,5 +60,22 @@
   "create_time": "建立日期",
   "modify_time": "修改日期",
   "deal_date": "成交日期",
-  "deal": "成交"
+  "deal": "成交",
+
+  "memberInfo": "會員資料",
+  "contactInfo": "聯絡資料",
+  "securityInfo": "安全性",
+  "facebook_id": "臉書 id",
+  "line_id": "Line id",
+  "tg_id": "Telegram id",
+  "mobile": "手機號碼",
+  "phone": "市話號碼",
+  "first_name": "名",
+  "last_name": "姓",
+  "username": "使用者名稱",
+  "email": "電子信箱",
+  "birth_date": "生日",
+  "city": "城市",
+  "last_login": "上次登入時間",
+  "date_joined": "加入日期"
 }
