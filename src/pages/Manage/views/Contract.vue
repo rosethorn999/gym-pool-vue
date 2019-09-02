@@ -117,13 +117,13 @@
           </div>
         </div>
         <div class="form-group">
-          <label>{{ $t("deal") }}</label>
+          <label>{{ $t("markAsSoldout") }}</label>
           <div class="control-box">
             <div>
-              <label>YES</label>
-              <input type="checkbox" />
-              <label>NO</label>
-              <input type="checkbox" />
+              <label>
+                {{ $t("yes") }}
+                <input type="checkbox" />
+              </label>
             </div>
           </div>
         </div>
@@ -138,9 +138,6 @@
 </template>
 
 <script>
-// import * as firebase from "firebase/app";
-// import "firebase/firestore";
-
 export default {
   name: "contract",
   props: {},
@@ -168,6 +165,12 @@ export default {
           { val: 3, name: "成吉思汗" },
           { val: 4, name: "台北健身院" },
           { val: 999, name: "其他" }
+        ],
+        features: [
+          { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
+          { val: "swimPool", caption: this.$t("features.swimPool") },
+          { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
+          { val: "freeParking", caption: this.$t("features.freeParking") }
         ]
       }
     };
@@ -234,13 +237,6 @@ export default {
     this.processing_fee = record.processing_fee;
     this.create_time = record.create_time;
     this.deal_timme = record.deal_timme;
-
-    this.selection.features = [
-      { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
-      { val: "swimPool", caption: this.$t("features.swimPool") },
-      { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
-      { val: "freeParking", caption: this.$t("features.freeParking") }
-    ];
   },
   methods: {
     backToList() {

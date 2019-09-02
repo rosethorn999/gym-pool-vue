@@ -3,6 +3,7 @@
   "addRecordPageDescription": "填寫你的合約內容",
 
   "memberCenter": "會員中心",
+  "sllerCenter": "我的拍賣",
   "selling": "筆數",
   "gym_type": "會籍",
   "productLife": "合約效期",
@@ -61,6 +62,11 @@
   "modify_time": "修改日期",
   "deal_date": "成交日期",
   "deal": "成交",
+  "markAsSoldout": "標示為已售出",
+  "yes": "是",
+  "no": "否",
+  "remove": "刪除",
+  "update": "修改",
 
   "memberInfo": "會員資料",
   "contactInfo": "聯絡資料",

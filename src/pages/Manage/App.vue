@@ -4,11 +4,11 @@
       <h1>Gym Pool</h1>
       <p>{{$t("appDescription")}}</p>
       <div class="headImage"></div>
-      <p>Alex</p>
+      <p>{{userName}}</p>
       <div class="item-Menu">
         <ul>
           <li data-target :class="{active:routerActive==='index'}" @click="switchRouter">
-            <router-link to="/">拍賣</router-link>
+            <router-link to="/">{{ $t("sllerCenter") }}</router-link>
           </li>
           <li
             data-target="account"
@@ -31,6 +31,11 @@
 export default {
   name: "About",
   computed: {
+    userName() {
+      // TODO implement
+      let ret = "Alex"; //user.first_name
+      return ret;
+    },
     routerActive() {
       console.log(this.$route.name);
       return this.$route.name;
