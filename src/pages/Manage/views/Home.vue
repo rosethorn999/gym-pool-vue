@@ -46,8 +46,14 @@
           <img
             class="more"
             src="../assets/iconfinder_ic_more_vert_48px_352549.png"
-            @click="checkout(index)"
+            @click="triggerMenu($event,index)"
           />
+          <div class="dropdown-menu" :ref="'dropdown-menu'+index">
+            <!-- TODO triangle-->
+            <a class="dropdown-item">{{ $t("remove") }}</a>
+            <!-- TODO  implement-->
+            <a class="dropdown-item" @click="checkout(index)">{{ $t("update") }}</a>
+          </div>
         </div>
       </li>
       <li v-if="records===null">
@@ -72,6 +78,8 @@ export default {
   components: {},
   mounted: function() {
     this.readRecord();
+
+    this.$el.addEventListener("click", this.closeAllDropDownMenu);
   },
   data: function() {
     return {
@@ -216,6 +224,18 @@ export default {
         this.records = response.data.results;
       });
     },
+    triggerMenu(e, index) {
+      e.stopPropagation();
+
+      let targetElemName = "dropdown-menu" + index;
+      let isTargetShowNow = this.$refs[targetElemName][0].classList.contains("show");
+
+      this.closeAllDropDownMenu();
+
+      if (!isTargetShowNow) {
+        this.$refs[targetElemName][0].classList.add("show");
+      }
+    },
     checkout(index) {
       let record = this.records[index];
       localStorage.setItem("record", JSON.stringify(record));
@@ -231,6 +251,12 @@ export default {
       } else {
         return this.$t("disComputable");
       }
+    },
+    closeAllDropDownMenu: function() {
+      let elems = document.querySelectorAll(".dropdown-menu");
+      elems.forEach(function(item) {
+        item.classList.remove("show");
+      });
     }
   },
   computed: {
@@ -346,6 +372,46 @@ ul {
   height: 1.5rem;
   cursor: pointer;
 }
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  min-width: 7rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  transform: translate3d(-6rem, 0px, 0px);
+
+  a {
+    text-decoration: none;
+  }
+
+  &.show {
+    display: block;
+  }
+}
+.dropdown-item {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  &:hover {
+    background-color: #f8f9fa;
+  }
+}
+
 .pagination {
   margin-top: 80px;
   cursor: pointer;
