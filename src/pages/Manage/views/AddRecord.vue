@@ -4,14 +4,6 @@
       <div class="block">
         <h3>{{ $t("basicInfo") }}</h3>
         <div class="form-group">
-          <label>{{ $t("_id") }}</label>
-          <div class="control-box">
-            <div class="control-box">
-              <input type="text" v-model="id" disabled />
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
           <label>{{ $t("title") }}</label>
           <div class="control-box">
             <div class="control-box">
@@ -34,17 +26,17 @@
           <label>{{ $t("monthly_rental") }}</label>
           <div class="control-box">
             <div class="control-box">
-              <input type="number" v-model.number="monthlyRental" />
+              <input type="number" v-model.number="monthly_rental" />
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>{{ $t("gym_type") }}</label>
           <div class="control-box">
-            <select v-model="gymType">
+            <select v-model="gym_type">
               <option :value="-1">{{$t('gym_type')}}</option>
               <option
-                v-for="item in selection.gymTypes"
+                v-for="item in selection.gym_types"
                 :key="item.val"
                 :value="item.val"
               >{{item.name}}</option>
@@ -64,11 +56,11 @@
           </div>
         </div>
         <div class="form-group">
-          <label>{{ $t("expiryDate") }}</label>
+          <label>{{ $t("expiry_date") }}</label>
           <div class="control-box">
             <div>
-              <input type="date" />
-              <div class="expiryDate">{{productLife}}</div>
+              <input type="date" v-model="expiry_date" />
+              <div class="expiry_date">{{productLife}}</div>
             </div>
           </div>
         </div>
@@ -92,7 +84,7 @@
         <div class="form-group">
           <label>{{ $t("processing_fee") }}</label>
           <div class="control-box">
-            <input type="text" v-model="processing_fee" />
+            <input type="text" v-model.number="processing_fee" />
           </div>
         </div>
       </div>
@@ -102,29 +94,6 @@
           <label>{{ $t("remark") }}</label>
           <div class="control-box">
             <input type="text" v-model="remark" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>{{ $t("create_time") }}</label>
-          <div class="control-box">
-            <input type="text" v-model="create_time" disabled />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>{{ $t("deal_date") }}</label>
-          <div class="control-box">
-            <input type="text" v-model="deal_date" disabled />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>{{ $t("markAsSoldout") }}</label>
-          <div class="control-box">
-            <div>
-              <label>
-                {{ $t("yes") }}
-                <input type="checkbox" />
-              </label>
-            </div>
           </div>
         </div>
       </div>
@@ -138,47 +107,44 @@
 </template>
 
 <script>
+import { constants } from "crypto";
 export default {
   name: "addRecord",
   props: {},
   data() {
     return {
-      id: "",
       title: "",
-      price: null,
-      gymType: -1,
+      gym_type: -1,
       store: "",
-      monthlyRental: null,
+      monthly_rental: null,
       location: "",
-      expiryDate: "",
-      create_time: "",
-      deal_date: "",
+      expiry_date: "",
       remark: "",
       features: [],
       processing_fee: 0,
 
       selection: {
-        gymTypes: [
-          { val: 0, name: "健身工廠" },
-          { val: 1, name: "全真會館" },
-          { val: 2, name: "世界健身" },
-          { val: 3, name: "成吉思汗" },
-          { val: 4, name: "台北健身院" },
+        gym_types: [
+          { val: 1, name: "健身工廠" },
+          { val: 2, name: "全真會館" },
+          { val: 3, name: "世界健身" },
+          { val: 4, name: "成吉思汗" },
+          { val: 5, name: "台北健身院" },
           { val: 999, name: "其他" }
         ],
         features: [
-          { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
-          { val: "swimPool", caption: this.$t("features.swimPool") },
-          { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
-          { val: "freeParking", caption: this.$t("features.freeParking") }
+          { val: 1, caption: this.$t("features.saunaRoom") },
+          { val: 2, caption: this.$t("features.swimPool") },
+          { val: 3, caption: this.$t("features.fitnessClass") },
+          { val: 4, caption: this.$t("features.freeParking") }
         ]
       }
     };
   },
   computed: {
-    gymTypeCaption() {
-      let v = this.gymType;
-      let selected = this.selection.gymTypes.filter(function(item) {
+    gym_typeCaption() {
+      let v = this.gym_type;
+      let selected = this.selection.gym_types.filter(function(item) {
         return item.val === v;
       });
       if (selected.length > 0) {
@@ -195,7 +161,7 @@ export default {
       // let nowYYYY = now.getFullYear();
       // let nowMM = now.getMonth() + 1;
 
-      // let expiryArr = this.expiryDate.map(function(item) {
+      // let expiryArr = this.expiry_date.map(function(item) {
       //   return Number(item);
       // });
       // let YYYY = expiryArr[0];
@@ -219,6 +185,10 @@ export default {
 
       ret = "X" + this.$t("month");
       return ret;
+    },
+    price() {
+      let monthCount = 12; // TODO calc real months
+      return this.monthly_rental * monthCount + this.processing_fee;
     }
   },
   mounted() {},
@@ -228,7 +198,31 @@ export default {
     },
     done() {
       // TODO save
-      this.$router.push({ name: "index" });
+      let url = "http://127.0.0.1:8000/api/record";
+      let o = {
+        monthly_rental: this.monthly_rental,
+        title: this.title,
+        processing_fee: this.processing_fee,
+        store: this.store,
+        location: this.location,
+        remark: this.remark,
+        inventory: 1, // Fix to 1
+        expiry_date: this.expiry_date,
+        gym_type: this.gym_type,
+        features: this.features
+      };
+      let token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNDAwYTYyOGEtY2VmNi00MWZkLTgzMTAtYWQxYmM1NDBkYTE5IiwidXNlcm5hbWUiOiJhZG1pbkB2aWxsYWdlci5jbHViIiwiZXhwIjoxNTY3NTI3Njg2LCJlbWFpbCI6ImFkbWluQHZpbGxhZ2VyLmNsdWIiLCJvcmlnX2lhdCI6MTU2NzUyNTg4Nn0.TfU-OxXuB8bjxi9UooFKkmKrBd8HgL7qhp-WJS11Jxk"; // TODO replace real token
+      let headers = { headers: { Authorization: "jwt " + token } };
+      this.axios
+        .post(url, o, headers)
+        .then(() => {
+          alert("Created"); // TODO beatuy alert
+          this.$router.push({ name: "index" });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

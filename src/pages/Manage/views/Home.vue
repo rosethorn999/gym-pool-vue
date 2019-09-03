@@ -39,8 +39,8 @@
         </div>
         <div>
           <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
-          <p>{{$t("monthlyRental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
-          <p>{{$t("expiryDate")}}: {{r.expiry_date}}</p>
+          <p>{{$t("monthly_rental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
+          <p>{{$t("expiry_date")}}: {{r.expiry_date}}</p>
         </div>
         <div>
           <img
@@ -147,15 +147,15 @@ export default {
         this.records = response.data.results;
       });
     },
-    getProductLife(expiryDate) {
+    getProductLife(expiry_date) {
       let ret = "";
 
       let now = new Date();
       let nowYYYY = now.getFullYear();
       let nowMM = now.getMonth() + 1;
 
-      if (expiryDate) {
-        let expiryArr = expiryDate.split("/").map(function(item) {
+      if (expiry_date) {
+        let expiryArr = expiry_date.split("/").map(function(item) {
           return Number(item);
         });
         let YYYY = expiryArr[0];
@@ -182,14 +182,14 @@ export default {
 
       return ret;
     },
-    getUnitPrice(expiryDate, monthly_rental) {
+    getUnitPrice(expiry_date, monthly_rental) {
       let ret = "";
-      if (expiryDate) {
+      if (expiry_date) {
         let now = new Date();
         let nowYYYY = now.getFullYear();
         let nowMM = now.getMonth() + 1;
 
-        let expiryArr = expiryDate.split("/").map(function(item) {
+        let expiryArr = expiry_date.split("/").map(function(item) {
           return Number(item);
         });
         let YYYY = expiryArr[0];

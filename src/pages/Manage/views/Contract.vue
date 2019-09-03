@@ -34,17 +34,17 @@
           <label>{{ $t("monthly_rental") }}</label>
           <div class="control-box">
             <div class="control-box">
-              <input type="number" v-model.number="monthlyRental" />
+              <input type="number" v-model.number="monthly_rental" />
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>{{ $t("gym_type") }}</label>
           <div class="control-box">
-            <select v-model="gymType">
+            <select v-model="gym_type">
               <option :value="-1">{{$t('gym_type')}}</option>
               <option
-                v-for="item in selection.gymTypes"
+                v-for="item in selection.gym_types"
                 :key="item.val"
                 :value="item.val"
               >{{item.name}}</option>
@@ -64,11 +64,11 @@
           </div>
         </div>
         <div class="form-group">
-          <label>{{ $t("expiryDate") }}</label>
+          <label>{{ $t("expiry_date") }}</label>
           <div class="control-box">
             <div>
               <input type="date" />
-              <div class="expiryDate">{{productLife}}</div>
+              <div class="expiry_date">{{productLife}}</div>
             </div>
           </div>
         </div>
@@ -146,11 +146,11 @@ export default {
       id: "",
       title: "",
       price: null,
-      gymType: -1,
+      gym_type: -1,
       store: "",
-      monthlyRental: null,
+      monthly_rental: null,
       location: "",
-      expiryDate: "",
+      expiry_date: "",
       create_time: "",
       deal_date: "",
       remark: "",
@@ -158,7 +158,7 @@ export default {
       processing_fee: 0,
 
       selection: {
-        gymTypes: [
+        gym_types: [
           { val: 0, name: "健身工廠" },
           { val: 1, name: "全真會館" },
           { val: 2, name: "世界健身" },
@@ -176,9 +176,9 @@ export default {
     };
   },
   computed: {
-    gymTypeCaption() {
-      let v = this.gymType;
-      let selected = this.selection.gymTypes.filter(function(item) {
+    gym_typeCaption() {
+      let v = this.gym_type;
+      let selected = this.selection.gym_types.filter(function(item) {
         return item.val === v;
       });
       if (selected.length > 0) {
@@ -195,7 +195,7 @@ export default {
       // let nowYYYY = now.getFullYear();
       // let nowMM = now.getMonth() + 1;
 
-      // let expiryArr = this.expiryDate.map(function(item) {
+      // let expiryArr = this.expiry_date.map(function(item) {
       //   return Number(item);
       // });
       // let YYYY = expiryArr[0];
@@ -227,11 +227,11 @@ export default {
     this.id = record._id;
     this.title = record.title;
     this.price = null;
-    this.gymType = record.gym_type;
+    this.gym_type = record.gym_type;
     this.store = record.store;
-    this.monthlyRental = record.monthly_rental;
+    this.monthly_rental = record.monthly_rental;
     this.location = record.location;
-    this.expiryDate = record.expiry_date;
+    this.expiry_date = record.expiry_date;
     this.remark = record.remark;
     this.features = record.features;
     this.processing_fee = record.processing_fee;
