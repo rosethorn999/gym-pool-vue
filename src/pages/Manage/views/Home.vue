@@ -83,6 +83,7 @@ export default {
   },
   data: function() {
     return {
+      recordCount: 0,
       records: null,
       pagination: { pageSize: 20, pageIndex: 0, noNext: false, lastData: {} },
       sorting: { name: "postDate", way: "asc" },
@@ -221,6 +222,7 @@ export default {
       // TODO query by it owns
       let url = "http://127.0.0.1:8000/api/record/";
       this.axios.get(url).then(response => {
+        this.recordCount = response.data.count;
         this.records = response.data.results;
       });
     },
@@ -259,11 +261,7 @@ export default {
       });
     }
   },
-  computed: {
-    recordCount() {
-      return this.records && Array.isArray(this.records) ? this.records.length : 0;
-    }
-  }
+  computed: {}
 };
 </script>
 
