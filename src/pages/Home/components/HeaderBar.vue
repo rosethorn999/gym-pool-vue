@@ -14,7 +14,7 @@
       <select>
         <option value="1">地區</option>
       </select>
-      <input type="text" />
+      <input type="text" class="search-textbox" />
     </div>
     <div class="loginArea">
       <ul>
@@ -41,8 +41,10 @@ header {
   $displayActive: inline-block;
   $menuSpace: 10px 30px;
   background: #ffffff;
-
   display: flex;
+  width: 100%;
+  overflow: auto;
+
   .logoArea {
     max-width: 10%;
     flex: 1;
@@ -66,6 +68,9 @@ header {
     > * {
       display: $displayActive;
       margin: 10px 0px;
+    }
+    .search-textbox {
+      max-width: 100%;
     }
   }
 

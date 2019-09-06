@@ -1,20 +1,33 @@
 <template>
   <div id="app">
-    <Header />
-    <img alt="Vue logo" src="@/assets/logo.png" />
-    <div>
-      <a href="./manage">後台</a>
-    </div>
+    <HeaderBar></HeaderBar>
+    <router-view class="router-view" />
+    <FooterBar></FooterBar>
   </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
+import HeaderBar from "./components/HeaderBar.vue";
+import FooterBar from "./components/FooterBar.vue";
 
 export default {
-  name: "Home",
+  name: "Index",
   components: {
-    Header
+    HeaderBar,
+    FooterBar
+  },
+  props: {},
+  computed: {
+    routerActive() {
+      return this.$route.name;
+    }
+  },
+  methods: {
+    switchRouter(e) {
+      let targetPage = e.currentTarget.dataset.target;
+      console.log(targetPage);
+      this.$router.push("/" + targetPage);
+    }
   }
 };
 </script>
@@ -24,8 +37,11 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+a {
+  text-decoration: none;
+}
+ul {
+  padding-inline-start: 0px;
 }
 </style>
