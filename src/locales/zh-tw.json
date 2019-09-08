@@ -70,6 +70,9 @@
   "memberInfo": "會員資料",
   "contactInfo": "聯絡資料",
   "securityInfo": "安全性",
+  "password": "密碼",
+  "passwordConfirm": "確認密碼",
+  "sn": "身分證字號",
   "facebook_id": "臉書 id",
   "line_id": "Line id",
   "tg_id": "Telegram id",
@@ -88,5 +91,8 @@
   "area-north": "北區",
   "area-centre": "中區",
   "area-south": "南區",
-  "area-east": "東區"
+  "area-east": "東區",
+
+  "register": "註冊",
+  "login": "登入"
 }

@@ -2,6 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Index from "./views/Index.vue";
 import Record from "./views/Record.vue";
+import Register from "./views/Register.vue";
+import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
@@ -18,6 +20,16 @@ export default new Router({
       path: "/record",
       name: "Record",
       component: Record
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: Login
     }
 
     // {

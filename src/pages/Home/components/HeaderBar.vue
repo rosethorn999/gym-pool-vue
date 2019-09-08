@@ -27,10 +27,10 @@
     <div class="login-area">
       <ul>
         <li>
-          <a href="./manage">註冊</a>
+          <router-link to="/register">{{ $t("register") }}</router-link>
         </li>
         <li>
-          <a href="./manage">登入</a>
+          <router-link to="/login">{{ $t("login") }}</router-link>
         </li>
       </ul>
     </div>
