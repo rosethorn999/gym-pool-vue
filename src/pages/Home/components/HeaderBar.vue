@@ -1,13 +1,21 @@
 <template>
   <header>
-    <div class="logoArea">
-      <p>GymPool</p>
+    <div class="logo-area">
+      <b>
+        <router-link to="/">GymPool</router-link>
+      </b>
     </div>
-    <div class="menuArea">
+    <div class="menu-area">
       <ul>
-        <li>健身房會籍轉讓</li>|
-        <li>配件</li>|
-        <li>文章</li>
+        <li>
+          <a href="#">健身房會籍轉讓</a>
+        </li>|
+        <li>
+          <a href="#">配件</a>
+        </li>|
+        <li>
+          <a href="#">文章</a>
+        </li>
       </ul>
     </div>
     <div class="search-bar">
@@ -16,7 +24,7 @@
       </select>
       <input type="text" class="search-textbox" />
     </div>
-    <div class="loginArea">
+    <div class="login-area">
       <ul>
         <li>
           <a href="./manage">註冊</a>
@@ -38,52 +46,60 @@ export default {
 
 <style scoped lang="scss">
 header {
-  $displayActive: inline-block;
-  $menuSpace: 10px 30px;
   background: #ffffff;
   display: flex;
   width: 100%;
   overflow: auto;
+}
 
-  .logoArea {
-    max-width: 10%;
-    flex: 1;
-    padding: $menuSpace;
-    background: #f00034;
-    color: #ffffff;
-    text-align: center;
+.logo-area {
+  height: 100%;
+  line-height: 67px;
+  max-width: 10%;
+  flex: 1;
+  background: #f00034;
+  color: #ffffff;
+  text-align: center;
+  a:visited {
+    color: #fff;
   }
-  .menuArea {
-    flex: 5;
-    text-align: center;
-    li {
-      display: $displayActive;
-      margin: 10px 10px;
-    }
+}
+.menu-area {
+  height: 100%;
+  line-height: 67px;
+  flex: 5;
+  text-align: center;
+  a:visited {
+    color: #000;
   }
-  .search-bar {
-    flex: 2;
-    text-align: center;
-    padding: $menuSpace;
-    > * {
-      display: $displayActive;
-      margin: 10px 0px;
-    }
-    .search-textbox {
-      max-width: 100%;
-    }
+  li {
+    display: inline-block;
+    margin: 0px 10px;
   }
-
-  .loginArea {
-    max-width: 20%;
-    flex: 2;
-    li {
-      display: $displayActive;
-      margin: 10px 10px;
-      a {
-        color: #ff3d00;
-        text-decoration: none;
-      }
+}
+.search-bar {
+  height: 100%;
+  line-height: 67px;
+  flex: 2;
+  text-align: center;
+  > * {
+    display: inline-block;
+  }
+  .search-textbox {
+    max-width: 100%;
+  }
+}
+.login-area {
+  height: 100%;
+  line-height: 67px;
+  max-width: 20%;
+  flex: 2;
+  li {
+    display: inline-block;
+    a {
+      margin-right: 10px;
+      color: #ff3d00;
+      text-decoration: none;
     }
   }
 }

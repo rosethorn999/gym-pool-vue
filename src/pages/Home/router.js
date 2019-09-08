@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Index from "./views/Index.vue";
+import Record from "./views/Record.vue";
 
 Vue.use(Router);
 
@@ -12,7 +13,13 @@ export default new Router({
       path: "/",
       name: "Index",
       component: Index
+    },
+    {
+      path: "/record",
+      name: "Record",
+      component: Record
     }
+
     // {
     //   path: "/sell",
     //   name: "sell",

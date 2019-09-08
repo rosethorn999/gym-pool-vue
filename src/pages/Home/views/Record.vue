@@ -1,0 +1,346 @@
+<template>
+  <div class="records">
+    <div class="area-switcher">
+      <ul>
+        <li class="active">北區</li>
+        <li>中區</li>
+        <li>南區</li>
+        <li>東區</li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="you-should-know">
+        <h1>健身會籍轉讓需知</h1>
+        <p>需要注意的事情</p>
+      </div>
+      <div class="list-header">
+        <div>
+          <h2 id="recordCount">{{$t('area-north')}} {{$t('selling')}} {{recordCount}}</h2>
+        </div>
+        <div>
+          <select class="filter">
+            <option :value="-1">{{$t('gym_type')}}</option>
+            <option
+              v-for="item in selection.gym_types"
+              :key="item.val"
+              :value="item.val"
+            >{{item.name}}</option>
+          </select>
+          <select class="filter">
+            <option>{{$t('city')}}</option>
+          </select>
+          <select class="filter">
+            <option>{{$t('district')}}</option>
+          </select>
+          <select class="sorter">
+            <option>時間</option>
+            <option>新到舊</option>
+            <option>舊到新</option>
+          </select>
+          <select class="sorter">
+            <option>價格</option>
+            <option>高到低</option>
+            <option>低到高</option>
+          </select>
+        </div>
+      </div>
+      <div class="record-container">
+        <ul>
+          <li class="list-tiem" v-for="(r,index) in records" :key="r.id">
+            <div class="image-block">
+              <div class="image-box">
+                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
+              </div>
+            </div>
+            <div>
+              <p>{{r.title}}</p>
+              <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
+              <p>{{r.remark}}</p>
+            </div>
+            <div>
+              <p class="blue">NT{{r.monthly_rental}}</p>
+            </div>
+            <div>
+              <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
+              <p>{{$t("monthly_rental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
+              <p>{{$t("expiry_date")}}: {{r.expiry_date}}</p>
+            </div>
+          </li>
+          <li v-if="records===null">
+            <img src="../assets/loading.gif" />
+          </li>
+          <li v-if="records&&records.length===0">{{$t('none')}}</li>
+        </ul>
+        <div class="pagination-block">
+          <a class="pagination-btn" href="#">{{$t("prevPage")}}</a>
+          <a class="pagination-btn" href="#">{{$t("nextPage")}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "records",
+  components: {},
+  mounted: function() {
+    this.readRecord();
+  },
+  data: function() {
+    return {
+      recordCount: 0,
+      records: null,
+      sorting: { name: "postDate", way: "asc" },
+      pagination: { pageSize: 20, pageIndex: 0, noNext: false },
+
+      selection: {
+        gym_types: [
+          { val: 1, name: "健身工廠" },
+          { val: 2, name: "全真會館" },
+          { val: 3, name: "世界健身" },
+          { val: 4, name: "成吉思汗" },
+          { val: 5, name: "台北健身院" },
+          { val: 999, name: "其他" }
+        ]
+      }
+    };
+  },
+  methods: {
+    pageControl(pager) {
+      if (pager === -1 && this.pagination.pageIndex === 0) {
+        console.log("page index is 0");
+        return;
+      } else if (pager === 1 && this.pagination.noNext) {
+        console.log("no next page");
+        return;
+      }
+
+      this.pagination.pageIndex += pager;
+      let sortWay = this.sorting.way;
+      let sortName = this.sorting.name;
+
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+
+      // .orderBy(sortName, sortWay)
+      // this.pagination.pageSize
+      this.records = [];
+
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.records = response.data.results;
+      });
+    },
+    isShowSortIcon(name, way) {
+      return this.sorting.name === name && this.sorting.way === way;
+    },
+    orderBy(sortName) {
+      // TODO implement
+      let sortingWay = this.sorting.way;
+      let sortingName = this.sorting.name;
+      let sortWay = "asc";
+      this.pagination.pageIndex = 0;
+      if (sortingName === sortName) {
+        if (sortingWay === "desc") {
+          sortName = "postDate";
+          sortWay = "asc";
+        } else {
+          sortWay = "desc";
+        }
+      }
+      this.sorting.way = sortWay;
+      this.sorting.name = sortName;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.records = response.data.results;
+      });
+    },
+    readRecord() {
+      this.records = [];
+
+      let sortWay = this.sorting.way;
+      let sortName = this.sorting.name;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+      this.pagination.pageIndex = 0;
+
+      // TODO sorting
+      // TODO pagination
+      // TODO query by it owns
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.recordCount = response.data.count;
+        this.records = response.data.results;
+      });
+    },
+    checkout(index) {
+      let record = this.records[index];
+      localStorage.setItem("record", JSON.stringify(record));
+      let id = record.id;
+      this.$router.push({ name: "contract", params: { contractId: id } });
+    },
+    gym_typeCaption(v) {
+      let selected = this.selection.gym_types.filter(function(item) {
+        return item.val === v;
+      });
+      if (selected.length > 0) {
+        return selected[0].name;
+      } else {
+        return this.$t("disComputable");
+      }
+    }
+  },
+  computed: {}
+};
+</script>
+
+<style scoped lang="scss">
+$pc-media: 960px;
+$pcs-media: 959px;
+$pad-media: 760px;
+$pads-media: 759px;
+$phone-media: 480px;
+$phones-media: 479px;
+
+//電腦
+@mixin pc-width() {
+  @media all and (min-width: $pc-media) {
+    @content;
+  }
+}
+//平板
+@mixin pad-width() {
+  @media all and (min-width: $pad-media) and (max-width: $pcs-media) {
+    @content;
+  }
+}
+//小平板
+@mixin small-pad-width() {
+  @media all and (min-width: $phone-media) and (max-width: $pads-media) {
+    @content;
+  }
+}
+//手機
+@mixin phone-width() {
+  @media all and (max-width: $phones-media) {
+    @content;
+  }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+.blue {
+  color: #1597fa;
+}
+.records {
+  background: #f5f7f8;
+}
+.container {
+  padding: 0px 234px;
+}
+.area-switcher {
+  text-align: center;
+  color: #fff;
+  background: #434343;
+  height: 51px;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      height: 51px;
+      line-height: 51px;
+      width: 194px;
+      cursor: pointer;
+      &:hover,
+      &.active {
+        background: #555555;
+      }
+    }
+  }
+}
+
+.you-should-know {
+  box-sizing: border-box;
+  height: 244px;
+  background-image: url("../assets/bg.png");
+  color: #fff;
+  padding: 52px 20%;
+  width: 100%;
+}
+.list-header {
+  display: flex;
+  margin: 10px 0px;
+
+  div {
+    flex: 1;
+    &:last-child {
+      flex: 2;
+      text-align: right;
+    }
+  }
+  .filter,
+  .sorter {
+    width: 145px;
+    margin-left: 10px;
+  }
+}
+
+.record-container {
+  ul {
+    li.list-tiem {
+      font-size: 24px;
+      padding: 9px;
+      display: flex;
+      height: 143px;
+      background: #ffffff 0% 0% no-repeat padding-box;
+      box-shadow: 0px 2px 5px #00000029;
+      transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+      margin-bottom: 24px;
+      &:hover {
+        background: #eee;
+      }
+      div {
+        flex: 1;
+      }
+    }
+  }
+  .image-block {
+    width: 30%;
+    min-width: 150px;
+    overflow: hidden;
+    position: relative;
+    padding: 0.5%;
+    .image-box {
+      width: 80%;
+      min-width: 150px;
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      img {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+    }
+  }
+  .pagination-block {
+    height: 100px;
+    margin-top: 50px;
+    text-align: center;
+    .pagination-btn {
+      margin: 0px 50px;
+      padding: 10px 25px;
+      border: 1px solid #707070;
+      color: #0058e5;
+    }
+  }
+}
+</style>

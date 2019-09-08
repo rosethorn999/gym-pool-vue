@@ -48,7 +48,7 @@
         </div>
         <p>
           看
-          <a href="#">全部商品</a>
+          <router-link to="/record">全部商品</router-link>
         </p>
       </div>
     </div>
@@ -85,8 +85,8 @@
     </div>
     <div class="latst-sell">
       <h1>最近上架</h1>
-      <div class="recorde-container">
-        <div class="recorde-box" v-for="item in 15">
+      <div class="record-container">
+        <div class="record-box" v-for="item in 15">
           <img src="../assets/world_gym__1448962972_16f5e373.jpg" />
           <div class="text-box">
             <p>轉讓世界健身 竹北店 會籍</p>
@@ -99,7 +99,7 @@
         </div>
       </div>
       <div class="watch-more-block">
-        <a class="watch-more" href="#">看更多</a>
+        <router-link class="watch-more" to="/record">看更多</router-link>
       </div>
     </div>
   </div>
@@ -144,6 +144,9 @@ $grassgreen: #2ed97d;
     p {
       padding: 15px 0;
       font-size: 24px;
+    }
+    a:visited {
+      color: #fff;
     }
 
     .city-Area {
@@ -247,11 +250,11 @@ $grassgreen: #2ed97d;
   }
   .latst-sell {
     padding: 100px 136px;
-    .recorde-container {
+    .record-container {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
-      .recorde-box {
+      .record-box {
         margin-top: 24px;
         box-shadow: 0px 3px 6px #00000029;
         min-height: 235px;

@@ -15,24 +15,14 @@ export default {
   components: {
     HeaderBar,
     FooterBar
-  },
-  props: {},
-  computed: {
-    routerActive() {
-      return this.$route.name;
-    }
-  },
-  methods: {
-    switchRouter(e) {
-      let targetPage = e.currentTarget.dataset.target;
-      console.log(targetPage);
-      this.$router.push("/" + targetPage);
-    }
   }
 };
 </script>
 
 <style lang="scss">
+* {
+  box-sizing: border-box;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,5 +33,7 @@ a {
 }
 ul {
   padding-inline-start: 0px;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
 }
 </style>
