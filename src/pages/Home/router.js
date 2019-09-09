@@ -4,6 +4,7 @@ import Index from "./views/Index.vue";
 import Record from "./views/Record.vue";
 import Register from "./views/Register.vue";
 import Login from "./views/Login.vue";
+import ResetPassword from "./views/ResetPassword.vue";
 import Accessory from "./views/Accessory.vue";
 import Article from "./views/Article.vue";
 
@@ -32,6 +33,11 @@ export default new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/resetPassword",
+      name: "ResetPassword",
+      component: ResetPassword
     },
     {
       path: "/accessory",

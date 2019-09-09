@@ -1,7 +1,7 @@
 <template>
   <div class="register container">
     <div v-if="hasInvitation_id">
-      <p>填妥以下資訊來完成註冊</p>
+      <p>{{ $t("fillToRegister") }}</p>
       <div class="form-group">
         <input
           type="text"
@@ -60,8 +60,8 @@
         />
       </div>
       <div class="form-group">
-        要深入了解 Gympool 如何收集、使用、分享及保護你的個人資料，請詳閱 Gympool 的
-        <a href="#">隱私權政策</a>
+        {{ $t("reilizeHowWeSaveYourPrivacyPleaseVisit") }}
+        <a href="#">{{ $t("privacyPolicy") }}</a>
       </div>
       <div class="button-box">
         <input type="button" class="btn blue" :value="$t('send')" @click="createUser" />
@@ -69,7 +69,7 @@
     </div>
 
     <div v-else>
-      <p>用電子郵件註冊</p>
+      <p>{{ $t("registerByEmail") }}</p>
       <div class="form-group">
         <input
           type="text"
@@ -88,7 +88,7 @@
 
 <script>
 export default {
-  name: "Index",
+  name: "Register",
   data() {
     return {
       hasInvitation_id: false, // TODO implement
@@ -152,8 +152,6 @@ export default {
 }
 .register {
   background: #f5f7f8;
-  width: 100%;
-  min-height: 600px;
   text-align: center;
 }
 
