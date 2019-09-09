@@ -4,6 +4,8 @@ import Index from "./views/Index.vue";
 import Record from "./views/Record.vue";
 import Register from "./views/Register.vue";
 import Login from "./views/Login.vue";
+import Accessory from "./views/Accessory.vue";
+import Article from "./views/Article.vue";
 
 Vue.use(Router);
 
@@ -30,6 +32,16 @@ export default new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/accessory",
+      name: "Accessory",
+      component: Accessory
+    },
+    {
+      path: "/article",
+      name: "Article",
+      component: Article
     }
 
     // {

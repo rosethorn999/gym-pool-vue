@@ -8,19 +8,19 @@
     <div class="menu-area">
       <ul>
         <li>
-          <a href="#">健身房會籍轉讓</a>
+          <router-link to="/record">{{ $t("recordSell") }}</router-link>
         </li>|
         <li>
-          <a href="#">配件</a>
+          <router-link to="/accessory">{{ $t("accessory") }}</router-link>
         </li>|
         <li>
-          <a href="#">文章</a>
+          <router-link to="/article">{{ $t("article") }}</router-link>
         </li>
       </ul>
     </div>
     <div class="search-bar">
-      <select>
-        <option value="1">地區</option>
+      <select class="search-select">
+        <option value="1">標題</option>
       </select>
       <input type="text" class="search-textbox" />
     </div>
@@ -50,6 +50,7 @@ header {
   display: flex;
   width: 100%;
   overflow: auto;
+  border-bottom: 1px solid #b7b7b7;
 }
 
 .logo-area {
@@ -60,6 +61,7 @@ header {
   background: #f00034;
   color: #ffffff;
   text-align: center;
+  a:link,
   a:visited {
     color: #fff;
   }
@@ -69,6 +71,7 @@ header {
   line-height: 67px;
   flex: 5;
   text-align: center;
+  a:link,
   a:visited {
     color: #000;
   }
@@ -84,6 +87,11 @@ header {
   text-align: center;
   > * {
     display: inline-block;
+    height: 30px;
+  }
+  .search-select {
+    width: 4rem;
+    border-right-color: #fff;
   }
   .search-textbox {
     max-width: 100%;
