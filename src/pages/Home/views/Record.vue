@@ -18,27 +18,37 @@
           <h2 id="recordCount">{{$t('area-north')}} {{$t('selling')}} {{recordCount}}</h2>
         </div>
         <div>
-          <select class="filter">
-            <option :value="-1">{{$t('gym_type')}}</option>
+          <select class="filter" v-model="filter.gym_type">
+            <option :value="null">{{$t('gym_type')}}</option>
             <option
               v-for="item in selection.gym_types"
               :key="item.val"
               :value="item.val"
             >{{item.name}}</option>
           </select>
-          <select class="filter">
-            <option>{{$t('city')}}</option>
+          <select class="filter" v-model="filter.county">
+            <option :value="null">{{$t('county')}}</option>
+            <option
+              v-for="county in selection.zipcode"
+              :key="county.name"
+              :value="county.name"
+            >{{county.name}}</option>
           </select>
-          <select class="filter">
-            <option>{{$t('district')}}</option>
+          <select class="filter" v-model="filter.district">
+            <option :value="null">{{$t('district')}}</option>
+            <option
+              v-for="district in districts"
+              :key="district.name"
+              :value="district.name"
+            >{{district.name}}</option>
           </select>
-          <select class="sorter">
-            <option>時間</option>
+          <select class="sorter" v-model="sorting.create_time">
+            <option :value="null">發佈時間</option>
             <option>新到舊</option>
             <option>舊到新</option>
           </select>
-          <select class="sorter">
-            <option>價格</option>
+          <select class="sorter" v-model="sorting.price">
+            <option :value="null">價格</option>
             <option>高到低</option>
             <option>低到高</option>
           </select>
@@ -46,7 +56,7 @@
       </div>
       <div class="record-container">
         <ul>
-          <li class="list-tiem" v-for="(r,index) in records" :key="r.id">
+          <li class="list-tiem" v-for="r in records" :key="r.id">
             <div class="image-block">
               <div class="image-box">
                 <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
@@ -81,6 +91,8 @@
 </template>
 
 <script>
+import zipcode from "@/assets/twZipCode.json";
+
 export default {
   name: "records",
   components: {},
@@ -91,10 +103,13 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      sorting: { name: "postDate", way: "asc" },
+
       pagination: { pageSize: 20, pageIndex: 0, noNext: false },
+      filter: { gym_type: null, county: null, district: null },
+      sorting: { create_time: null, price: null },
 
       selection: {
+        zipcode: zipcode,
         gym_types: [
           { val: 1, name: "健身工廠" },
           { val: 2, name: "全真會館" },
@@ -105,6 +120,24 @@ export default {
         ]
       }
     };
+  },
+  computed: {
+    districts() {
+      let ret = [];
+      let selectedDistricts = this.selection.zipcode.filter(item => {
+        return item.name === this.filter.county;
+      });
+
+      if (selectedDistricts.length > 0) {
+        ret = selectedDistricts[0].districts;
+      }
+      return ret;
+    }
+  },
+  watch: {
+    "filter.county"() {
+      this.filter.district = null;
+    }
   },
   methods: {
     pageControl(pager) {
@@ -190,8 +223,7 @@ export default {
         return this.$t("disComputable");
       }
     }
-  },
-  computed: {}
+  }
 };
 </script>
 

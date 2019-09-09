@@ -44,10 +44,10 @@
           </div>
         </div>
         <div class="form-group">
-          <label>{{ $t("city") }}</label>
+          <label>{{ $t("county") }}</label>
           <div class="control-box">
             <div class="control-box">
-              <input type="text" v-model="city" />
+              <input type="text" v-model="county" />
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default {
       username: "",
       email: "",
       birth_date: "",
-      city: "",
+      county: "",
 
       facebook_id: "",
       line_id: "",
@@ -173,7 +173,7 @@ export default {
     this.username = user.username;
     this.email = user.email;
     this.birth_date = user.birth_date;
-    this.city = user.city;
+    this.county = user.county;
 
     this.facebook_id = user.facebook_id;
     this.line_id = user.line_id;

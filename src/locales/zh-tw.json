@@ -83,8 +83,8 @@
   "username": "使用者名稱",
   "email": "電子信箱",
   "birth_date": "生日",
-  "city": "城市",
-  "district": "區",
+  "county": "縣市",
+  "district": "行政區",
   "last_login": "上次登入時間",
   "date_joined": "加入日期",
 
