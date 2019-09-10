@@ -99,7 +99,7 @@
 
   "register": "註冊",
   "login": "登入",
-  "forgetYourPassword": "忘記密碼了嗎",
+  "forgetPassword": "忘記密碼",
   "fillToRegister": "填妥以下資訊來完成註冊",
   "newPasswordWillSentToEmail": "新密碼將會寄到你的信箱",
   "reilizeHowWeSaveYourPrivacyPleaseVisit": "要深入了解 Gympool 如何收集、使用、分享及保護你的個人資料，請詳閱 Gympool 的",

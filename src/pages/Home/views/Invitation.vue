@@ -1,6 +1,6 @@
 <template>
-  <div class="login container">
-    <p>{{ $t("newPasswordWillSentToEmail") }}</p>
+  <div class="invitation container">
+    <p>{{ $t("registerByEmail") }}</p>
     <div class="form-group">
       <input
         type="text"
@@ -10,41 +10,27 @@
         v-model="email"
       />
     </div>
-    <div class="form-group">
-      <input
-        type="text"
-        class="textbox"
-        :class="{'is-invalid':invalidForm.sn}"
-        :placeholder="$t('sn')"
-        v-model="sn"
-      />
-    </div>
     <div class="button-box">
-      <input type="button" class="btn blue" :value="$t('back')" @click="$router.go(-1)" />
-      <input type="button" class="btn blue" :value="$t('send')" @click="resetPassword" />
+      <input type="button" class="btn blue" :value="$t('send')" @click="requestInvitation" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ResetPassword",
+  name: "Invitation",
   data() {
     return {
       email: "",
-      sn: "",
 
-      dirty: { email: false, sn: false },
-      invalidForm: { email: false, sn: false }
+      dirty: { email: false },
+      invalidForm: { email: false }
     };
   },
   computed: {},
   watch: {
     email() {
       this.validForm_email();
-    },
-    sn() {
-      this.validForm_sn();
     }
   },
   methods: {
@@ -52,30 +38,22 @@ export default {
       this.dirty.email = true;
       this.invalidForm.email = this.email.trim() === "" || this.email.trim().indexOf(" ") > 0;
     },
-    validForm_sn() {
-      this.dirty.sn = true;
-      this.invalidForm.sn = this.sn.trim() === "" || this.sn.trim().indexOf(" ") > 0;
-    },
     validForm() {
-      if (this.dirty.email === false || this.dirty.password === false) {
+      if (this.dirty.email === false) {
         this.validForm_email();
-        this.validForm_sn();
       } else {
-        return !(this.invalidForm.email || this.invalidForm.sn);
+        return !this.invalidForm.email;
       }
     },
-    resetPassword() {
+    requestInvitation() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://127.0.0.1:8000/api/password_reset/";
-        let o = {
-          email: this.email,
-          sn: this.sn
-        };
+        let url = "http://127.0.0.1:8000/api/invitation/";
+        let o = { email: this.email };
         this.axios
           .post(url, o)
           .then(() => {
-            alert("Your new password had sent to your email"); // TODO beatuy alert
+            alert("Invitation mail sent."); // TODO beatuy alert
           })
           .catch(function(error) {
             // TODO error control
@@ -92,7 +70,7 @@ export default {
   width: 100%;
   padding: 50px 250px;
 }
-.login {
+.invitation {
   background: #f5f7f8;
   text-align: center;
 }

@@ -1,87 +1,76 @@
 <template>
   <div class="register container">
-    <div v-if="hasInvitation_id">
-      <p>{{ $t("fillToRegister") }}</p>
-      <div class="form-group">
-        <input
-          type="text"
-          class="textbox"
-          id="email-textbox"
-          :placeholder="$t('email')"
-          v-model="email"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          class="textbox"
-          id="username"
-          :placeholder="$t('username')"
-          v-model="username"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="password"
-          class="textbox"
-          id="password"
-          :placeholder="$t('password')"
-          v-model="password"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="password"
-          class="textbox"
-          id="passwordConfirm"
-          :placeholder="$t('passwordConfirm')"
-          v-model="password2"
-        />
-      </div>
-      <div class="form-group">
-        <input type="text" class="textbox" id="sn" :placeholder="$t('sn')" v-model="sn" />
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          class="textbox"
-          id="last_name"
-          :placeholder="$t('last_name')"
-          v-model="last_name"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          class="textbox"
-          id="first_name"
-          :placeholder="$t('first_name')"
-          v-model="first_name"
-        />
-      </div>
-      <div class="form-group">
-        {{ $t("reilizeHowWeSaveYourPrivacyPleaseVisit") }}
-        <a href="#">{{ $t("privacyPolicy") }}</a>
-      </div>
-      <div class="button-box">
-        <input type="button" class="btn blue" :value="$t('send')" @click="createUser" />
-      </div>
+    <p>{{ $t("fillToRegister") }}</p>
+    <div class="form-group">
+      <input
+        type="text"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.email}"
+        :placeholder="$t('email')"
+        v-model="email"
+      />
     </div>
-
-    <div v-else>
-      <p>{{ $t("registerByEmail") }}</p>
-      <div class="form-group">
-        <input
-          type="text"
-          class="textbox"
-          id="email-textbox"
-          :placeholder="$t('email')"
-          v-model="email"
-        />
-      </div>
-      <div class="button-box">
-        <input type="button" class="btn blue" :value="$t('send')" @click="requestInvitation" />
-      </div>
+    <div class="form-group">
+      <input
+        type="text"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.username}"
+        :placeholder="$t('username')"
+        v-model="username"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="password"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.password}"
+        :placeholder="$t('password')"
+        v-model="password"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="password"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.password}"
+        :placeholder="$t('passwordConfirm')"
+        v-model="password2"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.sn}"
+        :placeholder="$t('sn')"
+        v-model="sn"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.last_name}"
+        :placeholder="$t('last_name')"
+        v-model="last_name"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        class="textbox"
+        :class="{'is-invalid':invalidForm.first_name}"
+        :placeholder="$t('first_name')"
+        v-model="first_name"
+      />
+    </div>
+    <div class="form-group">
+      {{ $t("reilizeHowWeSaveYourPrivacyPleaseVisit") }}
+      <a href="#">{{ $t("privacyPolicy") }}</a>
+      <!-- TODO privacyPolicy -->
+    </div>
+    <div class="button-box">
+      <input type="button" class="btn blue" :value="$t('send')" @click="createUser" />
     </div>
   </div>
 </template>
@@ -89,10 +78,17 @@
 <script>
 export default {
   name: "Register",
+  mounted: function() {
+    // TODO set invitation_id
+    let invitation_id = this.$route.query.id;
+    if (invitation_id) {
+      this.invitation_id = invitation_id;
+    } else {
+      alert("error");
+    }
+  },
   data() {
     return {
-      hasInvitation_id: false, // TODO implement
-
       invitation_id: "",
       email: "",
       username: "",
@@ -100,46 +96,128 @@ export default {
       password2: "",
       sn: "",
       first_name: "",
-      last_name: ""
+      last_name: "",
+
+      dirty: {
+        email: false,
+        username: false,
+        password: false,
+        sn: false,
+        first_name: false,
+        last_name: false
+      },
+      invalidForm: {
+        email: false,
+        username: false,
+        password: false,
+        password2: false,
+        sn: false,
+        first_name: false,
+        last_name: false
+      }
     };
   },
   computed: {},
+  watch: {
+    email() {
+      this.validForm_email();
+    },
+    username() {
+      this.validForm_username();
+    },
+    password() {
+      this.validForm_password();
+    },
+    password2() {
+      this.validForm_password();
+    },
+    sn() {
+      this.validForm_sn();
+    },
+    first_name() {
+      this.validForm_first_name();
+    },
+    last_name() {
+      this.validForm_last_name();
+    }
+  },
   methods: {
-    requestInvitation() {
-      // TODO check form
-      let url = "http://127.0.0.1:8000/api/invitation/";
-      let o = { email: this.email };
-      this.axios
-        .post(url, o)
-        .then(() => {
-          alert("Invitation mail sent."); // TODO beatuy alert
-        })
-        .catch(function(error) {
-          // TODO error control
-          console.error(error);
-        });
+    validForm_email() {
+      this.dirty.email = true;
+      this.invalidForm.email = this.email.trim() === "" || this.email.trim().indexOf(" ") > 0;
+    },
+    validForm_username() {
+      this.dirty.username = true;
+      this.invalidForm.username = this.username.trim() === "" || this.username.trim().indexOf(" ") > 0;
+    },
+    validForm_password() {
+      this.dirty.password = true;
+      this.invalidForm.password =
+        this.password.trim() !== this.password2.trim() ||
+        this.password.trim() === "" ||
+        this.password.trim().indexOf(" ") > 0;
+    },
+    validForm_sn() {
+      this.dirty.sn = true;
+      this.invalidForm.sn = this.sn.trim() === "" || this.sn.trim().indexOf(" ") > 0;
+    },
+    validForm_first_name() {
+      this.dirty.first_name = true;
+      this.invalidForm.first_name = this.first_name.trim() === "" || this.first_name.trim().indexOf(" ") > 0;
+    },
+    validForm_last_name() {
+      this.dirty.last_name = true;
+      this.invalidForm.last_name = this.last_name.trim() === "" || this.last_name.trim().indexOf(" ") > 0;
+    },
+    validForm() {
+      if (
+        this.dirty.email === false ||
+        this.dirty.username === false ||
+        this.dirty.password === false ||
+        this.dirty.sn === false ||
+        this.dirty.first_name === false ||
+        this.dirty.last_name === false
+      ) {
+        this.validForm_email();
+        this.validForm_username();
+        this.validForm_password();
+        this.validForm_sn();
+        this.validForm_first_name();
+        this.validForm_last_name();
+      } else {
+        return !(
+          this.invalidForm.email ||
+          this.invalidForm.username ||
+          this.invalidForm.password ||
+          this.invalidForm.sn ||
+          this.invalidForm.first_name ||
+          this.invalidForm.last_name
+        );
+      }
     },
     createUser() {
-      // TODO check form
-      let url = "http://127.0.0.1:8000/api/users/";
-      let o = {
-        invitation_id: this.invitation_id,
-        email: this.email,
-        username: this.username,
-        password: this.password,
-        sn: this.sn,
-        first_name: this.first_name,
-        last_name: this.last_name
-      };
-      this.axios
-        .post(url, o)
-        .then(() => {
-          alert("User created"); // TODO beatuy alert
-        })
-        .catch(function(error) {
-          // TODO error control
-          console.error(error);
-        });
+      let isValid = this.validForm();
+      if (isValid) {
+        let url = "http://127.0.0.1:8000/api/users/";
+        let o = {
+          invitation_id: this.invitation_id,
+          email: this.email,
+          username: this.username,
+          password: this.password,
+          sn: this.sn,
+          first_name: this.first_name,
+          last_name: this.last_name
+        };
+        this.axios
+          .post(url, o)
+          .then(() => {
+            alert("User created"); // TODO beatuy alert
+          })
+          .catch(function(error) {
+            // TODO error control
+            console.error(error);
+          });
+      }
     }
   }
 };
@@ -170,6 +248,11 @@ export default {
   line-height: 57px;
   display: block;
   margin: 0px auto;
+  &.is-invalid,
+  &.is-invalid:focus {
+    border-color: #dc3545;
+    outline: 0;
+  }
 }
 .button-box {
   margin-top: 50px;

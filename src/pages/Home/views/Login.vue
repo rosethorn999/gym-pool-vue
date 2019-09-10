@@ -5,7 +5,7 @@
       <input
         type="text"
         class="textbox"
-        id="email-textbox"
+        :class="{'is-invalid':invalidForm.email}"
         :placeholder="$t('email')"
         v-model="email"
       />
@@ -14,14 +14,14 @@
       <input
         type="password"
         class="textbox"
-        id="password-textbox"
+        :class="{'is-invalid':invalidForm.password}"
         :placeholder="$t('password')"
         v-model="password"
       />
     </div>
     <div class="form-group">
       <p>
-        <router-link to="/resetPassword">{{ $t("forgetYourPassword") }}?</router-link>
+        <router-link to="/resetPassword">{{ $t("forgetPassword") }}?</router-link>
       </p>
     </div>
     <div class="button-box">
@@ -36,28 +36,57 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+
+      dirty: { email: false, password: false },
+      invalidForm: { email: false, password: false }
     };
   },
   computed: {},
+  watch: {
+    email() {
+      this.validForm_email();
+    },
+    password() {
+      this.validForm_password();
+    }
+  },
   methods: {
+    validForm_email() {
+      this.dirty.email = true;
+      this.invalidForm.email = this.email.trim() === "" || this.email.trim().indexOf(" ") > 0;
+    },
+    validForm_password() {
+      this.dirty.password = true;
+      this.invalidForm.password = this.password.trim() === "" || this.password.trim().indexOf(" ") > 0;
+    },
+    validForm() {
+      if (this.dirty.email === false || this.dirty.password === false) {
+        this.validForm_email();
+        this.validForm_password();
+      } else {
+        return !(this.invalidForm.email || this.invalidForm.password);
+      }
+    },
     login() {
-      // TODO check form
-      let url = "http://127.0.0.1:8000/api-token-auth/";
-      let o = {
-        email: this.email,
-        password: this.password
-      };
-      this.axios
-        .post(url, o)
-        .then(response => {
-          alert("Welcome home"); // TODO beatuy alert
-          sessionStorage.setItem("token", "jwt " + response.data.token);
-        })
-        .catch(function(error) {
-          // TODO error control
-          console.error(error);
-        });
+      let isValid = this.validForm();
+      if (isValid) {
+        let url = "http://127.0.0.1:8000/api-token-auth/";
+        let o = {
+          email: this.email,
+          password: this.password
+        };
+        this.axios
+          .post(url, o)
+          .then(response => {
+            alert("Welcome home"); // TODO beatuy alert
+            sessionStorage.setItem("token", "jwt " + response.data.token);
+          })
+          .catch(function(error) {
+            // TODO error control
+            console.error(error);
+          });
+      }
     }
   }
 };
@@ -88,6 +117,11 @@ export default {
   line-height: 57px;
   display: block;
   margin: 0px auto;
+  &.is-invalid,
+  &.is-invalid:focus {
+    border-color: #dc3545;
+    outline: 0;
+  }
 }
 .button-box {
   margin-top: 50px;

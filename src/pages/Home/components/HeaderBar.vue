@@ -27,7 +27,7 @@
     <div class="login-area">
       <ul>
         <li>
-          <router-link to="/register">{{ $t("register") }}</router-link>
+          <router-link to="/invitation">{{ $t("register") }}</router-link>
         </li>
         <li>
           <router-link to="/login">{{ $t("login") }}</router-link>

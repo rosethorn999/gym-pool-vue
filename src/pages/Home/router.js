@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Index from "./views/Index.vue";
 import Record from "./views/Record.vue";
 import Register from "./views/Register.vue";
+import Invitation from "./views/Invitation.vue";
 import Login from "./views/Login.vue";
 import ResetPassword from "./views/ResetPassword.vue";
 import Accessory from "./views/Accessory.vue";
@@ -23,6 +24,11 @@ export default new Router({
       path: "/record",
       name: "Record",
       component: Record
+    },
+    {
+      path: "/invitation",
+      name: "Invitation",
+      component: Invitation
     },
     {
       path: "/register",
