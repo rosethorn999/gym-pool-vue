@@ -99,18 +99,4 @@ export default {
 .button-box {
   margin-top: 50px;
 }
-.btn {
-  height: 40px;
-  padding: 5px 30px;
-  border-radius: 13px;
-  margin-left: 25px;
-  cursor: pointer;
-  &.blue {
-    background: #1977f2;
-    color: #fff;
-  }
-  &:focus {
-    outline: none;
-  }
-}
 </style>

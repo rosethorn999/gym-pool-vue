@@ -202,7 +202,7 @@ p.danger {
   height: 40px;
   padding: 5px 30px;
   border-radius: 13px;
-  margin-left: 25px;
+  margin: 0px 12px;
   cursor: pointer;
   &.blue {
     background: #1977f2;

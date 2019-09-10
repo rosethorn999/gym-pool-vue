@@ -36,4 +36,22 @@ ul {
   margin-block-start: 0em;
   margin-block-end: 0em;
 }
+.router-view {
+  min-height: 700px;
+  width: 100%;
+}
+.btn {
+  height: 40px;
+  padding: 5px 30px;
+  border-radius: 13px;
+  margin: 0px 12px;
+  cursor: pointer;
+  &.blue {
+    background: #1977f2;
+    color: #fff;
+  }
+  &:focus {
+    outline: none;
+  }
+}
 </style>
