@@ -47,7 +47,7 @@
   "cancal": "取消",
   "done": "完成",
   "send": "送出",
-  "back": "回前頁",
+  "back": "回上一頁",
   "error": "錯誤",
   "filter": "篩選條件",
   "clear": "清除",
@@ -91,6 +91,8 @@
   "district": "行政區",
   "last_login": "上次登入時間",
   "date_joined": "加入日期",
+  "sellerInfo": "賣家資訊",
+  "yuan": "元",
 
   "area-north": "北區",
   "area-centre": "中區",

@@ -56,7 +56,7 @@
       </div>
       <div class="record-container">
         <ul>
-          <li class="list-tiem" v-for="r in records" :key="r.id">
+          <li class="list-tiem" v-for="(r,i) in records" :key="r.id" @click="checkout(i)">
             <div class="image-block">
               <div class="image-box">
                 <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
@@ -211,7 +211,7 @@ export default {
       let record = this.records[index];
       localStorage.setItem("record", JSON.stringify(record));
       let id = record.id;
-      this.$router.push({ name: "contract", params: { contractId: id } });
+      this.$router.push({ name: "RecordDetail", params: { recordId: id } });
     },
     gym_typeCaption(v) {
       let selected = this.selection.gym_types.filter(function(item) {
