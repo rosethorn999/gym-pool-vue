@@ -205,7 +205,7 @@ p.danger {
   margin: 0px 12px;
   cursor: pointer;
   &.blue {
-    background: #1977f2;
+    background: $blue;
     color: #fff;
   }
   &:focus {

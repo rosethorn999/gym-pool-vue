@@ -157,37 +157,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$pc-media: 960px;
-$pcs-media: 959px;
-$pad-media: 760px;
-$pads-media: 759px;
-$phone-media: 480px;
-$phones-media: 479px;
-//電腦
-@mixin pc-width() {
-  @media all and (min-width: $pc-media) {
-    @content;
-  }
-}
-//平板
-@mixin pad-width() {
-  @media all and (min-width: $pad-media) and (max-width: $pcs-media) {
-    @content;
-  }
-}
-//小平板
-@mixin small-pad-width() {
-  @media all and (min-width: $phone-media) and (max-width: $pads-media) {
-    @content;
-  }
-}
-//手機
-@mixin phone-width() {
-  @media all and (max-width: $phones-media) {
-    @content;
-  }
-}
-$grassgreen: #2ed97d;
 $pc-padding: 10%;
 $phone-padding: 40px;
 $pc-font-size: 24px;
@@ -393,7 +362,7 @@ $phone-font-size: 30px;
             color: #989898;
           }
           .blue-text {
-            color: #0099ff;
+            color: $blue;
           }
         }
       }
