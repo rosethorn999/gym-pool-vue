@@ -5,44 +5,34 @@
         <img src="../assets/bg.png" />
       </div>
       <div class="text-area">
-        <p>健身會籍轉讓</p>
-        <p>
+        <p class="first-line">健身會籍轉讓</p>
+        <p class="second-line">
           有
           <span class="mark">1000</span>
           多件刊登商品
         </p>
-        <p>尋找你所在的城市</p>
-        <div class="city-Area">
+        <p class="second-line">尋找你所在的城市</p>
+        <div class="county-area">
           <ul class="circles">
             <li class="north-area">
               <p>300</p>
-              <p class="secend-line">件</p>
+              <p>件</p>
+              <router-link to="/record" class="area-btn">北部</router-link>
             </li>
             <li class="central-area">
               <p>300</p>
-              <p class="secend-line">件</p>
+              <p>件</p>
+              <router-link to="/record" class="area-btn">中部</router-link>
             </li>
             <li class="south-area">
               <p>300</p>
-              <p class="secend-line">件</p>
+              <p>件</p>
+              <router-link to="/record" class="area-btn">南部</router-link>
             </li>
             <li class="east-area">
               <p>300</p>
-              <p class="secend-line">件</p>
-            </li>
-          </ul>
-          <ul class="buttons">
-            <li>
-              <a href="#">北部</a>
-            </li>
-            <li>
-              <a href="#">中部</a>
-            </li>
-            <li>
-              <a href="#">南部</a>
-            </li>
-            <li>
-              <a href="#">東部</a>
+              <p>件</p>
+              <router-link to="/record" class="area-btn">東部</router-link>
             </li>
           </ul>
         </div>
@@ -53,11 +43,11 @@
       </div>
     </div>
     <div class="why-area">
-      <h3>為什麼我們需要使用你？</h3>
-      <h3>我們使用你能幫助我什麼？</h3>
+      <p>為什麼我們需要使用你？</p>
+      <p>我們使用你能幫助我什麼？</p>
     </div>
     <div class="we-provide-them">
-      <h1>我們方便、簡單、好管理</h1>
+      <p>我們方便、簡單、好管理</p>
       <div>
         <ul>
           <li>
@@ -80,13 +70,13 @@
       </div>
     </div>
     <div class="you-should-know">
-      <h1>健身會籍轉讓需知</h1>
+      <p>健身會籍轉讓需知</p>
       <p>需要注意的事情</p>
     </div>
     <div class="latst-sell">
-      <h1>最近上架</h1>
+      <p>最近上架</p>
       <div class="record-container">
-        <div class="record-box" v-for="item in 15">
+        <div class="record-box" v-for="(item,i) in records" :key="item.id" @click="checkout(i)">
           <img src="../assets/world_gym__1448962972_16f5e373.jpg" />
           <div class="text-box">
             <p>轉讓世界健身 竹北店 會籍</p>
@@ -108,28 +98,103 @@
 <script>
 export default {
   name: "Index",
-  components: {},
-  props: {},
+  mounted: function() {
+    // this.readRecord();
+  },
+  data: function() {
+    return {
+      recordCount: 0,
+      records: [{ id: "1" }, { id: "2" }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+      // TODO mobile show 7 records, pc 15 records
+
+      pagination: { pageSize: 20, pageIndex: 0, noNext: false },
+      filter: { gym_type: null, county: null, district: null },
+      sorting: { create_time: null, price: null },
+
+      selection: {
+        gym_types: [
+          { val: 1, name: "健身工廠" },
+          { val: 2, name: "全真會館" },
+          { val: 3, name: "世界健身" },
+          { val: 4, name: "成吉思汗" },
+          { val: 5, name: "台北健身院" },
+          { val: 999, name: "其他" }
+        ]
+      }
+    };
+  },
   computed: {
     routerActive() {
       return this.$route.name;
     }
   },
   methods: {
-    switchRouter(e) {
-      let targetPage = e.currentTarget.dataset.target;
-      console.log(targetPage);
-      this.$router.push("/" + targetPage);
+    readRecord() {
+      this.records = [];
+
+      let sortWay = this.sorting.way;
+      let sortName = this.sorting.name;
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+      this.pagination.pageIndex = 0;
+
+      // TODO sorting
+      // TODO pagination
+      // TODO query by it owns
+      let url = "http://127.0.0.1:8000/api/record/";
+      this.axios.get(url).then(response => {
+        this.recordCount = response.data.count;
+        this.records = response.data.results;
+      });
+    },
+    checkout(index) {
+      let record = this.records[index];
+      localStorage.setItem("record", JSON.stringify(record));
+      let id = record.id;
+      this.$router.push({ name: "RecordDetail", params: { recordId: id } });
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
+$pc-media: 960px;
+$pcs-media: 959px;
+$pad-media: 760px;
+$pads-media: 759px;
+$phone-media: 480px;
+$phones-media: 479px;
+//電腦
+@mixin pc-width() {
+  @media all and (min-width: $pc-media) {
+    @content;
+  }
+}
+//平板
+@mixin pad-width() {
+  @media all and (min-width: $pad-media) and (max-width: $pcs-media) {
+    @content;
+  }
+}
+//小平板
+@mixin small-pad-width() {
+  @media all and (min-width: $phone-media) and (max-width: $pads-media) {
+    @content;
+  }
+}
+//手機
+@mixin phone-width() {
+  @media all and (max-width: $phones-media) {
+    @content;
+  }
+}
 $grassgreen: #2ed97d;
+$pc-padding: 10%;
+$phone-padding: 40px;
+$pc-font-size: 24px;
+$phone-font-size: 30px;
 
 .index {
-  background: #f5f7f8;
+  background: #fff;
   width: 100%;
 
   .sliderBanner {
@@ -142,18 +207,25 @@ $grassgreen: #2ed97d;
       background: $grassgreen;
     }
     p {
-      padding: 15px 0;
-      font-size: 24px;
+      margin-bottom: 16px;
+      &.first-line {
+        margin-top: 0px;
+        font-size: 40px;
+      }
+      &.second-line {
+        font-size: $phone-font-size;
+      }
     }
     a:visited {
       color: #fff;
     }
 
-    .city-Area {
+    .county-area {
+      padding: 10px;
       .circles {
         li {
           display: inline-block;
-          margin: 0px 20px;
+          margin: 20px;
           border-radius: 50%;
           width: 120px;
           height: 120px;
@@ -161,28 +233,22 @@ $grassgreen: #2ed97d;
             margin: 0px;
             padding: 0;
             line-height: 120px;
+            font-size: 26px;
+            &:nth-child(2) {
+              font-size: 17px;
+              margin-top: -90px;
+            }
           }
-          p.secend-line {
-            margin-top: -90px;
-          }
-        }
-      }
-      .buttons {
-        li {
-          display: inline-block;
-          margin: 0px 20px;
-          width: 120px;
-        }
-        a {
-          padding: 2px 10px;
-          border: 1px solid #fff;
-          color: #dee2e6;
-          &:hover {
-            color: #fff;
+          a.area-btn {
+            padding: 2px 10px;
+            border: 1px solid #fff;
+            color: #dee2e6;
+            &:hover {
+              color: #fff;
+            }
           }
         }
       }
-
       .north-area {
         border: 2px solid #aa0000;
       }
@@ -198,7 +264,7 @@ $grassgreen: #2ed97d;
     }
     .text-area {
       box-sizing: border-box;
-      padding: 150px 0 0 0;
+      padding-top: 100px;
       width: 100%;
       position: absolute;
       top: 0;
@@ -220,48 +286,86 @@ $grassgreen: #2ed97d;
     }
   }
   .why-area {
-    padding: 50px 20% 75px;
+    padding: 30px $phone-padding;
     background: #fff;
-    h3 {
-      font-size: 30px;
-      padding: 0px 5% 0;
+    @include pc-width {
+      padding: 67px $pc-padding;
+    }
+    p {
+      margin: 0px;
+      margin-bottom: 7px;
+      font-size: 28px;
+      @include pc-width {
+        font-size: 40px;
+        margin-bottom: 20px;
+      }
     }
   }
   .we-provide-them {
     box-sizing: border-box;
     text-align: center;
-    padding-top: 50px;
-
-    li {
-      display: inline-block;
-      margin: 50px 90px;
-      border-radius: 50%;
-      width: 120px;
-      height: 120px;
+    padding: 50px $phone-padding 0px;
+    background: #ededed;
+    font-size: 30px;
+    @include pc-width {
+      font-size: 40px;
+      padding: 50px $pc-padding 100px;
+    }
+    div {
+      margin-top: 50px;
+      font-size: $pc-font-size;
+      li {
+        display: inline-block;
+        width: 50%;
+        height: 200px;
+        border-radius: 50%;
+        @include pc-width {
+          width: 25%;
+          height: 150px;
+        }
+      }
     }
   }
   .you-should-know {
     box-sizing: border-box;
-    height: 244px;
+    height: 307px;
     background-image: url("../assets/bg.png");
     color: #fff;
-    padding: 52px 20%;
-    width: 100vw;
+    padding: 60px $phone-padding 150px;
+    width: 100%;
+    @include pc-width {
+      padding: 52px $pc-padding;
+    }
+    p {
+      font-size: 30px;
+      @include pc-width {
+        font-size: 40px;
+      }
+      &:last-child {
+        font-size: $pc-font-size;
+      }
+    }
   }
   .latst-sell {
-    padding: 100px 136px;
+    padding: 35px $phone-padding;
+    font-size: $phone-font-size;
+    @include pc-width {
+      font-size: $pc-font-size;
+      padding: 100px $pc-padding;
+    }
     .record-container {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       flex-wrap: wrap;
       .record-box {
-        margin-top: 24px;
+        margin-bottom: 38px;
         box-shadow: 0px 3px 6px #00000029;
+        width: 298px;
         min-height: 235px;
-        width: 300px;
         border-radius: 10px;
         cursor: pointer;
         opacity: 0.9;
+        font-size: 18px;
         &:hover {
           opacity: 1;
         }
@@ -272,7 +376,7 @@ $grassgreen: #2ed97d;
         }
         .text-box {
           height: 100px;
-          padding: 5px;
+          padding: 10px;
           position: relative;
           > p {
             margin: 0px;
@@ -295,8 +399,10 @@ $grassgreen: #2ed97d;
       }
     }
     .watch-more-block {
-      margin-top: 50px;
+      height: 150px;
+      line-height: 150px;
       text-align: center;
+      font-size: 20px;
       .watch-more {
         padding: 10px 25px;
         border: 1px solid #080808;

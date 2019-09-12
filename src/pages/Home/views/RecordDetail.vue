@@ -198,7 +198,6 @@ $phones-media: 479px;
 }
 .container {
   padding: 0px 234px;
-  cursor: pointer;
 }
 
 .you-should-know {
@@ -211,6 +210,7 @@ $phones-media: 479px;
 }
 .controller {
   margin: 10px 0px;
+  cursor: pointer;
 }
 
 .record-container {
@@ -233,6 +233,7 @@ $phones-media: 479px;
         overflow: auto;
         margin: 33px 0px 41px 0px;
         img {
+          cursor: pointer;
           flex: 1;
           border: 1px solid #707070;
           max-width: 105px;
