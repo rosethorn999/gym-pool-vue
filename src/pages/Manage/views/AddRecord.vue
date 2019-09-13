@@ -157,36 +157,37 @@ export default {
       }
     },
     productLife() {
-      // TODO calc
       let ret = "";
 
-      // let now = new Date();
-      // let nowYYYY = now.getFullYear();
-      // let nowMM = now.getMonth() + 1;
+      let now = new Date();
+      let nowYYYY = now.getFullYear();
+      let nowMM = now.getMonth() + 1;
 
-      // let expiryArr = this.expiry_date.map(function(item) {
-      //   return Number(item);
-      // });
-      // let YYYY = expiryArr[0];
-      // let MM = expiryArr[1];
-      // if (YYYY === -1 || MM === -1) {
-      //   ret = this.$t("disComputable");
-      // } else if (nowYYYY > YYYY) {
-      //   ret = this.$t("expired");
-      // } else if (nowYYYY === YYYY && nowMM >= MM) {
-      //   ret = this.$t("expired");
-      // } else {
-      //   let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
-      //   if (YYYY > nowYYYY) {
-      //     let gap = MM - nowMM < 0 ? -1 : 0;
-      //     if (YYYY - nowYYYY + gap !== 0) {
-      //       ret = YYYY - nowYYYY + gap + this.$t("year");
-      //     }
-      //   }
-      //   ret += life;
-      // }
+      let expiryArr = this.expiry_date.split("-");
+      expiryArr = expiryArr.map(function(item) {
+        return Number(item);
+      });
+      let YYYY = expiryArr[0];
+      let MM = expiryArr[1];
+      if (YYYY === -1 || MM === -1) {
+        ret = this.$t("disComputable");
+      } else if (nowYYYY > YYYY) {
+        ret = this.$t("expired");
+      } else if (nowYYYY === YYYY && nowMM >= MM) {
+        ret = this.$t("expired");
+      } else {
+        ret = this.$t("remain");
+        let life = MM - nowMM < 0 ? 12 - nowMM + MM : MM - nowMM;
+        life += this.$t("ge") + this.$t("month");
+        if (YYYY > nowYYYY) {
+          let gap = MM - nowMM < 0 ? -1 : 0;
+          if (YYYY - nowYYYY + gap !== 0) {
+            ret += YYYY - nowYYYY + gap + this.$t("year");
+          }
+        }
+        ret += life;
+      }
 
-      ret = "X" + this.$t("month");
       return ret;
     },
     price() {

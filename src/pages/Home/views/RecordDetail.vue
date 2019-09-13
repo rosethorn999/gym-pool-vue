@@ -88,7 +88,7 @@ export default {
     this.features = record.features;
     this.processing_fee = record.processing_fee;
     this.create_time = record.create_time;
-    this.deal_timme = record.deal_timme;
+    this.deal_date = record.deal_date;
     this.creator = record.creator;
   },
   data: function() {

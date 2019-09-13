@@ -7,7 +7,7 @@
           <label>{{ $t("_id") }}</label>
           <div class="control-box">
             <div class="control-box">
-              <input type="text" v-model="id" disabled />
+              <input type="text" v-model="underlineid" disabled />
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
             <div>
               <label>
                 {{ $t("yes") }}
-                <input type="checkbox" />
+                <input type="checkbox" v-model="isSoldout" />
               </label>
             </div>
           </div>
@@ -131,7 +131,7 @@
 
       <div class="button-box">
         <input type="button" class="btn" :value="$t('cancal')" @click="backToList" />
-        <input type="button" class="btn blue" :value="$t('done')" @click="done" />
+        <input type="button" class="btn blue" :value="$t('send')" @click="update" />
       </div>
     </div>
   </div>
@@ -147,8 +147,8 @@ export default {
   data() {
     return {
       id: "",
+      underlineid: "",
       title: "",
-      price: null,
       gym_type: -1,
       store: "",
       monthly_rental: null,
@@ -159,6 +159,8 @@ export default {
       remark: "",
       features: [],
       processing_fee: 0,
+
+      isSoldout: false,
 
       selection: {
         gym_types: [
@@ -179,6 +181,9 @@ export default {
     };
   },
   computed: {
+    token() {
+      return this.$store.state.token;
+    },
     gym_typeCaption() {
       let v = this.gym_type;
       let selected = this.selection.gym_types.filter(function(item) {
@@ -191,45 +196,50 @@ export default {
       }
     },
     productLife() {
-      // TODO calc
       let ret = "";
 
-      // let now = new Date();
-      // let nowYYYY = now.getFullYear();
-      // let nowMM = now.getMonth() + 1;
+      let now = new Date();
+      let nowYYYY = now.getFullYear();
+      let nowMM = now.getMonth() + 1;
 
-      // let expiryArr = this.expiry_date.map(function(item) {
-      //   return Number(item);
-      // });
-      // let YYYY = expiryArr[0];
-      // let MM = expiryArr[1];
-      // if (YYYY === -1 || MM === -1) {
-      //   ret = this.$t("disComputable");
-      // } else if (nowYYYY > YYYY) {
-      //   ret = this.$t("expired");
-      // } else if (nowYYYY === YYYY && nowMM >= MM) {
-      //   ret = this.$t("expired");
-      // } else {
-      //   let life = MM - nowMM < 0 ? 12 - nowMM + MM + this.$t("month") : MM - nowMM + this.$t("month");
-      //   if (YYYY > nowYYYY) {
-      //     let gap = MM - nowMM < 0 ? -1 : 0;
-      //     if (YYYY - nowYYYY + gap !== 0) {
-      //       ret = YYYY - nowYYYY + gap + this.$t("year");
-      //     }
-      //   }
-      //   ret += life;
-      // }
+      let expiryArr = this.expiry_date.split("-");
+      expiryArr = expiryArr.map(function(item) {
+        return Number(item);
+      });
+      let YYYY = expiryArr[0];
+      let MM = expiryArr[1];
+      if (YYYY === -1 || MM === -1) {
+        ret = this.$t("disComputable");
+      } else if (nowYYYY > YYYY) {
+        ret = this.$t("expired");
+      } else if (nowYYYY === YYYY && nowMM >= MM) {
+        ret = this.$t("expired");
+      } else {
+        ret = this.$t("remain");
+        let life = MM - nowMM < 0 ? 12 - nowMM + MM : MM - nowMM;
+        life += this.$t("ge") + this.$t("month");
+        if (YYYY > nowYYYY) {
+          let gap = MM - nowMM < 0 ? -1 : 0;
+          if (YYYY - nowYYYY + gap !== 0) {
+            ret += YYYY - nowYYYY + gap + this.$t("year");
+          }
+        }
+        ret += life;
+      }
 
-      ret = "X" + this.$t("month");
       return ret;
+    },
+    price() {
+      let monthCount = 12; // TODO calc real months
+      return this.monthly_rental * monthCount + this.processing_fee;
     }
   },
   mounted() {
     let record = localStorage.getItem("record") ? JSON.parse(localStorage.getItem("record")) : {};
 
-    this.id = record._id;
+    this.id = record.id;
+    this.underlineid = record._id;
     this.title = record.title;
-    this.price = null;
     this.gym_type = record.gym_type;
     this.store = record.store;
     this.monthly_rental = record.monthly_rental;
@@ -239,15 +249,39 @@ export default {
     this.features = record.features;
     this.processing_fee = record.processing_fee;
     this.create_time = record.create_time;
-    this.deal_timme = record.deal_timme;
+    this.deal_date = record.deal_date;
+    this.isSoldout = record.inventory <= 0 ? true : false;
   },
   methods: {
     backToList() {
       this.$router.push({ name: "Index" });
     },
-    done() {
-      // TODO save
-      this.$router.push({ name: "Index" });
+    update() {
+      let url = "http://127.0.0.1:8000/api/record/" + this.id + "/";
+      let o = {
+        monthly_rental: this.monthly_rental,
+        title: this.title,
+        processing_fee: this.processing_fee,
+        store: this.store,
+        location: this.location,
+        remark: this.remark,
+        inventory: this.isSoldout ? 0 : 1,
+        expiry_date: this.expiry_date,
+        gym_type: this.gym_type,
+        features: this.features
+      };
+      let headers = { headers: { Authorization: this.token } };
+
+      this.axios
+        .patch(url, o, headers)
+        .then(() => {
+          alert("Updated"); // TODO beatuy alert
+          this.$router.push({ name: "Index" });
+        })
+        .catch(function(error) {
+          // TODO error control
+          console.error(error);
+        });
     }
   }
 };
