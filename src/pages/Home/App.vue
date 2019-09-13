@@ -15,6 +15,9 @@ export default {
   components: {
     HeaderBar,
     FooterBar
+  },
+  mounted() {
+    this.$store.commit("checkLoginState");
   }
 };
 </script>

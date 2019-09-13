@@ -101,6 +101,9 @@
 
   "register": "註冊",
   "login": "登入",
+  "logout": "登出",
+  "admin": "管理後台",
+  "goToIndex": "回首頁",
   "forgetPassword": "忘記密碼",
   "fillToRegister": "填妥以下資訊來完成註冊",
   "newPasswordWillSentToEmail": "新密碼將會寄到你的信箱",

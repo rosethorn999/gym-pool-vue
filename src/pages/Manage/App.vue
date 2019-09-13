@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <h1>Gym Pool</h1>
+      <h1>GymPool</h1>
       <p>{{$t("appDescription")}}</p>
       <div class="headImage"></div>
       <p>{{userName}}</p>
@@ -18,7 +18,10 @@
             <router-link to="/account">{{ $t("memberCenter") }}</router-link>
           </li>
           <li>
-            <a href="/">前台</a>
+            <a href="/">{{ $t("goToIndex") }}</a>
+          </li>
+          <li>
+            <a href="#" @click="logout">{{ $t("logout") }}</a>
           </li>
         </ul>
       </div>
@@ -29,16 +32,30 @@
 
 <script>
 export default {
-  name: "About",
+  name: "Index",
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     userName() {
-      // TODO implement
-      let ret = "Alex"; //user.first_name
-      return ret;
+      if (this.user) {
+        return this.user.first_name + " " + this.user.last_name;
+      } else {
+        return "";
+      }
     },
     routerActive() {
       console.log(this.$route.name);
       return this.$route.name;
+    },
+    token() {
+      return this.$store.state.token;
+    }
+  },
+  mounted() {
+    this.$store.commit("checkLoginState");
+    if (this.token === "") {
+      this.logout();
     }
   },
   methods: {
@@ -46,6 +63,10 @@ export default {
       let targetPage = e.currentTarget.dataset.target;
       console.log(targetPage);
       this.$router.push("/" + targetPage);
+    },
+    logout() {
+      this.$store.commit("logout");
+      window.location.href = "/";
     }
   }
 };

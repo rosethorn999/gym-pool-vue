@@ -25,14 +25,26 @@
       <input type="text" class="search-textbox" />
     </div>
     <div class="login-area">
-      <ul>
-        <li>
-          <router-link to="/invitation">{{ $t("register") }}</router-link>
-        </li>
-        <li>
-          <router-link to="/login">{{ $t("login") }}</router-link>
-        </li>
-      </ul>
+      <template v-if="logined">
+        <ul>
+          <li>
+            <a href="./manage">{{ $t("admin") }}</a>
+          </li>
+          <li>
+            <a href="#" @click="logout">{{ $t("logout") }}</a>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <ul>
+          <li>
+            <router-link to="/invitation">{{ $t("register") }}</router-link>
+          </li>
+          <li>
+            <router-link to="/login">{{ $t("login") }}</router-link>
+          </li>
+        </ul>
+      </template>
     </div>
     <div class="mobile-menu-area">
       <p>
@@ -45,7 +57,17 @@
 <script>
 export default {
   name: "HeaderBar",
-  props: {}
+  props: {},
+  computed: {
+    logined() {
+      return this.$store.state.token !== "";
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+    }
+  }
 };
 </script>
 
@@ -79,8 +101,8 @@ header {
   }
   @include pc-width {
     text-align: center;
-    max-width: 10%;
-    flex: 1;
+    max-width: 300px;
+    flex: 2;
   }
 }
 .menu-area {
@@ -89,7 +111,7 @@ header {
   text-align: center;
   display: none;
   @include pc-width {
-    flex: 5;
+    flex: 4;
     display: block;
   }
   a:link,
@@ -121,7 +143,7 @@ header {
     display: inline-block;
     height: 30px;
     vertical-align: middle;
-    max-width: 100%;
+    max-width: calc(100% - 5rem);
   }
 }
 .login-area {

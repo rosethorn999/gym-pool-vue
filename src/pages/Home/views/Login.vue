@@ -42,7 +42,11 @@ export default {
       invalidForm: { email: false, password: false }
     };
   },
-  computed: {},
+  computed: {
+    token() {
+      return this.$store.state.token;
+    }
+  },
   watch: {
     email() {
       this.validForm_email();
@@ -80,13 +84,30 @@ export default {
           .post(url, o)
           .then(response => {
             alert("Welcome home"); // TODO beatuy alert
-            sessionStorage.setItem("token", "jwt " + response.data.token);
+            let token = "jwt " + response.data.token;
+            this.$store.commit("setToken", token);
+            this.getUser();
           })
           .catch(function(error) {
             // TODO error control
             console.error(error);
           });
       }
+    },
+    getUser() {
+      let url = "http://127.0.0.1:8000/api/users/";
+      let headers = { headers: { Authorization: this.token } };
+      this.axios
+        .get(url, headers)
+        .then(response => {
+          let user = response.data[0];
+          this.$store.commit("setUser", user);
+          this.$router.push({ name: "Index" });
+        })
+        .catch(function(error) {
+          // TODO error control
+          console.error(error);
+        });
     }
   }
 };

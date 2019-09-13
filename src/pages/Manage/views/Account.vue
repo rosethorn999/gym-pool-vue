@@ -164,8 +164,7 @@ export default {
     };
   },
   mounted() {
-    // TODO implement
-    let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {};
+    let user = this.user;
 
     this.id = user._id;
     this.first_name = user.first_name;
@@ -184,6 +183,11 @@ export default {
     this.date_joined = user.date_joined;
     this.modify_time = user.modify_time;
     this.last_login = user.last_login;
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   },
   methods: {
     done() {
