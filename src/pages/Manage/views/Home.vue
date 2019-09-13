@@ -35,7 +35,7 @@
           <p>{{r.remark}}</p>
         </div>
         <div>
-          <p class="blue">NT{{r.monthly_rental}}</p>
+          <p class="blue">NT{{ getPrice(r) }}</p>
         </div>
         <div>
           <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
@@ -64,9 +64,9 @@
     <div class="pagination">
       <span>{{$t('pageNow')}} {{pagination.pageIndex+1}}</span>
       &nbsp;|&nbsp;
-      <span @click="pageControl(-1)">{{$t('prevPage')}}</span>
+      <span @click="readRecord(-1)">{{$t('prevPage')}}</span>
       &nbsp;|&nbsp;
-      <span @click="pageControl(1)">{{$t('nextPage')}}</span>
+      <span @click="readRecord(1)">{{$t('nextPage')}}</span>
     </div>
   </div>
 </template>
@@ -85,41 +85,57 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      pagination: { pageSize: 20, pageIndex: 0, noNext: false, lastData: {} },
+      pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       sorting: { name: "postDate", way: "asc" },
-      gym_types: [
-        { val: 0, name: "健身工廠" },
-        { val: 1, name: "全真會館" },
-        { val: 2, name: "世界健身" },
-        { val: 3, name: "成吉思汗" },
-        { val: 4, name: "台北健身院" },
-        { val: 999, name: "其他" }
-      ]
+
+      selection: {
+        gym_types: [
+          { val: 1, name: "健身工廠" },
+          { val: 2, name: "全真會館" },
+          { val: 3, name: "世界健身" },
+          { val: 4, name: "成吉思汗" },
+          { val: 5, name: "台北健身院" },
+          { val: 999, name: "其他" }
+        ]
+      }
     };
   },
   methods: {
-    pageControl(pager) {
+    readRecord(pager) {
       if (pager === -1 && this.pagination.pageIndex === 0) {
         console.log("page index is 0");
         return;
-      } else if (pager === 1 && this.pagination.noNext) {
+      } else if (pager === 1 && this.pagination.nextUrl === null) {
         console.log("no next page");
         return;
       }
 
-      this.pagination.pageIndex += pager;
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
 
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
 
       // .orderBy(sortName, sortWay)
-      // this.pagination.pageSize
-      this.records = [];
-
+      // TODO this.pagination.pageSize
+      // TODO only query record by his own
       let url = "http://127.0.0.1:8000/api/record/";
+      this.records = [];
+      switch (pager) {
+        case -1:
+          url = this.pagination.previousUrl;
+          this.pagination.pageIndex += pager;
+          break;
+        case 1:
+          url = this.pagination.nextUrl;
+          this.pagination.pageIndex += pager;
+          break;
+      }
+
       this.axios.get(url).then(response => {
+        this.recordCount = response.data.count;
         this.records = response.data.results;
+        this.pagination.nextUrl = response.data.next;
+        this.pagination.previousUrl = response.data.previous;
       });
     },
     isShowSortIcon(name, way) {
@@ -209,23 +225,6 @@ export default {
     addRecord() {
       this.$router.push({ name: "add" });
     },
-    readRecord() {
-      this.records = [];
-
-      let sortWay = this.sorting.way;
-      let sortName = this.sorting.name;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-      this.pagination.pageIndex = 0;
-
-      // TODO sorting
-      // TODO pagination
-      // TODO query by it owns
-      let url = "http://127.0.0.1:8000/api/record/";
-      this.axios.get(url).then(response => {
-        this.recordCount = response.data.count;
-        this.records = response.data.results;
-      });
-    },
     triggerMenu(e, index) {
       e.stopPropagation();
 
@@ -244,8 +243,12 @@ export default {
       let id = record.id;
       this.$router.push({ name: "contract", params: { contractId: id } });
     },
+    getPrice(r) {
+      let month = 12; //TODO calc month
+      return month * r.monthly_rental + r.processing_fee;
+    },
     gym_typeCaption(v) {
-      let selected = this.gym_types.filter(function(item) {
+      let selected = this.selection.gym_types.filter(function(item) {
         return item.val === v;
       });
       if (selected.length > 0) {

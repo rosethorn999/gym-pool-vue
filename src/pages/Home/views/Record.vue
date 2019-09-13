@@ -68,7 +68,7 @@
               <p>{{r.remark}}</p>
             </div>
             <div>
-              <p class="blue">NT{{r.monthly_rental}}</p>
+              <p class="blue">NT{{ getPrice(r) }}</p>
             </div>
             <div>
               <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
@@ -82,8 +82,8 @@
           <li v-if="records&&records.length===0">{{$t('none')}}</li>
         </ul>
         <div class="pagination-block">
-          <a class="pagination-btn" href="#">{{$t("prevPage")}}</a>
-          <a class="pagination-btn" href="#">{{$t("nextPage")}}</a>
+          <a class="pagination-btn" href="#" @click.prevent="readRecord(-1)">{{$t("prevPage")}}</a>
+          <a class="pagination-btn" href="#" @click.prevent="readRecord(1)">{{$t("nextPage")}}</a>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@ export default {
       recordCount: 0,
       records: null,
 
-      pagination: { pageSize: 20, pageIndex: 0, noNext: false },
+      pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       filter: { gym_type: null, county: null, district: null },
       sorting: { create_time: null, price: null },
 
@@ -140,28 +140,40 @@ export default {
     }
   },
   methods: {
-    pageControl(pager) {
+    readRecord(pager) {
       if (pager === -1 && this.pagination.pageIndex === 0) {
         console.log("page index is 0");
         return;
-      } else if (pager === 1 && this.pagination.noNext) {
+      } else if (pager === 1 && this.pagination.nextUrl === null) {
         console.log("no next page");
         return;
       }
 
-      this.pagination.pageIndex += pager;
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
 
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
 
       // .orderBy(sortName, sortWay)
-      // this.pagination.pageSize
-      this.records = [];
-
+      // TODO this.pagination.pageSize
       let url = "http://127.0.0.1:8000/api/record/";
+      this.records = [];
+      switch (pager) {
+        case -1:
+          url = this.pagination.previousUrl;
+          this.pagination.pageIndex += pager;
+          break;
+        case 1:
+          url = this.pagination.nextUrl;
+          this.pagination.pageIndex += pager;
+          break;
+      }
+
       this.axios.get(url).then(response => {
+        this.recordCount = response.data.count;
         this.records = response.data.results;
+        this.pagination.nextUrl = response.data.next;
+        this.pagination.previousUrl = response.data.previous;
       });
     },
     isShowSortIcon(name, way) {
@@ -190,28 +202,15 @@ export default {
         this.records = response.data.results;
       });
     },
-    readRecord() {
-      this.records = [];
-
-      let sortWay = this.sorting.way;
-      let sortName = this.sorting.name;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-      this.pagination.pageIndex = 0;
-
-      // TODO sorting
-      // TODO pagination
-      // TODO query by it owns
-      let url = "http://127.0.0.1:8000/api/record/";
-      this.axios.get(url).then(response => {
-        this.recordCount = response.data.count;
-        this.records = response.data.results;
-      });
-    },
     checkout(index) {
       let record = this.records[index];
       localStorage.setItem("record", JSON.stringify(record));
       let id = record.id;
       this.$router.push({ name: "RecordDetail", params: { recordId: id } });
+    },
+    getPrice(r) {
+      let month = 12; //TODO calc month
+      return month * r.monthly_rental + r.processing_fee;
     },
     gym_typeCaption(v) {
       let selected = this.selection.gym_types.filter(function(item) {

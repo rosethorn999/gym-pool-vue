@@ -76,14 +76,14 @@
     <div class="latst-sell">
       <p>最近上架</p>
       <div class="record-container">
-        <div class="record-box" v-for="(item,i) in records" :key="item.id" @click="checkout(i)">
+        <div class="record-box" v-for="(r,i) in records" :key="r.id" @click="checkout(i)">
           <img src="../assets/world_gym__1448962972_16f5e373.jpg" />
           <div class="text-box">
-            <p>轉讓世界健身 竹北店 會籍</p>
-            <p>World Gym 竹北店</p>
+            <p>{{ r.title }}</p>
+            <p>{{ gym_typeCaption(r.gym_type) }} {{ r.store }}</p>
             <div>
-              <span class="gray-text">到期時間: 2019/11月</span>
-              <span class="blue-text">NT12000</span>
+              <span class="gray-text">{{ $t("expiry_date") }}: {{ r.expiry_date }}</span>
+              <span class="blue-text">NT{{ getPrice(r) }}</span>
             </div>
           </div>
         </div>
@@ -98,18 +98,15 @@
 <script>
 export default {
   name: "Index",
-  mounted: function() {
-    // this.readRecord();
-  },
   data: function() {
     return {
       recordCount: 0,
-      records: [{ id: "1" }, { id: "2" }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+      records: null,
       // TODO mobile show 7 records, pc 15 records
 
-      pagination: { pageSize: 20, pageIndex: 0, noNext: false },
+      pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       filter: { gym_type: null, county: null, district: null },
-      sorting: { create_time: null, price: null },
+      sorting: { name: "postDate", way: "asc" },
 
       selection: {
         gym_types: [
@@ -128,22 +125,45 @@ export default {
       return this.$route.name;
     }
   },
+  mounted: function() {
+    this.readRecord();
+  },
   methods: {
-    readRecord() {
-      this.records = [];
+    readRecord(pager) {
+      if (pager === -1 && this.pagination.pageIndex === 0) {
+        console.log("page index is 0");
+        return;
+      } else if (pager === 1 && this.pagination.nextUrl === null) {
+        console.log("no next page");
+        return;
+      }
 
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-      this.pagination.pageIndex = 0;
 
-      // TODO sorting
-      // TODO pagination
-      // TODO query by it owns
+      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
+
+      // .orderBy(sortName, sortWay)
+      // TODO this.pagination.pageSize
+      // TODO sort by postDate
       let url = "http://127.0.0.1:8000/api/record/";
+      this.records = [];
+      switch (pager) {
+        case -1:
+          url = this.pagination.previousUrl;
+          this.pagination.pageIndex += pager;
+          break;
+        case 1:
+          url = this.pagination.nextUrl;
+          this.pagination.pageIndex += pager;
+          break;
+      }
+
       this.axios.get(url).then(response => {
         this.recordCount = response.data.count;
         this.records = response.data.results;
+        this.pagination.nextUrl = response.data.next;
+        this.pagination.previousUrl = response.data.previous;
       });
     },
     checkout(index) {
@@ -151,6 +171,20 @@ export default {
       localStorage.setItem("record", JSON.stringify(record));
       let id = record.id;
       this.$router.push({ name: "RecordDetail", params: { recordId: id } });
+    },
+    getPrice(r) {
+      let month = 12; //TODO calc month
+      return month * r.monthly_rental + r.processing_fee;
+    },
+    gym_typeCaption(v) {
+      let selected = this.selection.gym_types.filter(function(item) {
+        return item.val === v;
+      });
+      if (selected.length > 0) {
+        return selected[0].name;
+      } else {
+        return this.$t("disComputable");
+      }
     }
   }
 };
