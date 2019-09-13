@@ -58,10 +58,8 @@
         <div class="form-group">
           <label>{{ $t("expiry_date") }}</label>
           <div class="control-box">
-            <div>
-              <input type="date" v-model="expiry_date" />
-              <div class="expiry_date">{{productLife}}</div>
-            </div>
+            <DatePick :isFullYYYY="false" v-model="expiry_date" />
+            <div class="expiry_date">{{productLife}}</div>
           </div>
         </div>
       </div>
@@ -107,9 +105,11 @@
 </template>
 
 <script>
-import { constants } from "crypto";
+import DatePick from "../components/DatePick.vue";
+
 export default {
   name: "addRecord",
+  components: { DatePick },
   props: {},
   data() {
     return {
@@ -142,6 +142,9 @@ export default {
     };
   },
   computed: {
+    token() {
+      return this.$store.state.token;
+    },
     gym_typeCaption() {
       let v = this.gym_type;
       let selected = this.selection.gym_types.filter(function(item) {
@@ -194,11 +197,10 @@ export default {
   mounted() {},
   methods: {
     backToList() {
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "Index" });
     },
     done() {
-      // TODO save
-      let url = "http://127.0.0.1:8000/api/record";
+      let url = "http://127.0.0.1:8000/api/record/";
       let o = {
         monthly_rental: this.monthly_rental,
         title: this.title,
@@ -211,14 +213,12 @@ export default {
         gym_type: this.gym_type,
         features: this.features
       };
-      let token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNDAwYTYyOGEtY2VmNi00MWZkLTgzMTAtYWQxYmM1NDBkYTE5IiwidXNlcm5hbWUiOiJhZG1pbkB2aWxsYWdlci5jbHViIiwiZXhwIjoxNTY3NTI3Njg2LCJlbWFpbCI6ImFkbWluQHZpbGxhZ2VyLmNsdWIiLCJvcmlnX2lhdCI6MTU2NzUyNTg4Nn0.TfU-OxXuB8bjxi9UooFKkmKrBd8HgL7qhp-WJS11Jxk"; // TODO replace real token
-      let headers = { headers: { Authorization: "jwt " + token } };
+      let headers = { headers: { Authorization: this.token } };
       this.axios
         .post(url, o, headers)
         .then(() => {
           alert("Created"); // TODO beatuy alert
-          this.$router.push({ name: "index" });
+          this.$router.push({ name: "Index" });
         })
         .catch(function(error) {
           console.log(error);

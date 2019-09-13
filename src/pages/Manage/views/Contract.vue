@@ -67,7 +67,7 @@
           <label>{{ $t("expiry_date") }}</label>
           <div class="control-box">
             <div>
-              <input type="date" />
+              <DatePick :isFullYYYY="false" v-model="expiry_date" />
               <div class="expiry_date">{{productLife}}</div>
             </div>
           </div>
@@ -138,8 +138,11 @@
 </template>
 
 <script>
+import DatePick from "../components/DatePick.vue";
+
 export default {
   name: "contract",
+  components: { DatePick },
   props: {},
   data() {
     return {
@@ -240,11 +243,11 @@ export default {
   },
   methods: {
     backToList() {
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "Index" });
     },
     done() {
       // TODO save
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "Index" });
     }
   }
 };

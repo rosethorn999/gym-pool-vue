@@ -7,7 +7,7 @@
       <p>{{userName}}</p>
       <div class="item-Menu">
         <ul>
-          <li data-target :class="{active:routerActive==='index'}" @click="switchRouter">
+          <li data-target :class="{active:routerActive==='Index'}" @click="switchRouter">
             <router-link to="/">{{ $t("sllerCenter") }}</router-link>
           </li>
           <li

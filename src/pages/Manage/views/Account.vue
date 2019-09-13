@@ -55,7 +55,7 @@
           <label>{{ $t("birth_date") }}</label>
           <div class="control-box">
             <div class="control-box">
-              <input type="text" v-model="birth_date" />
+              <DatePick v-model="birth_date" />
             </div>
           </div>
         </div>
@@ -139,8 +139,11 @@
 </template>
 
 <script>
+import DatePick from "../components/DatePick.vue";
+
 export default {
   name: "account",
+  components: { DatePick },
   props: {},
   data() {
     return {
@@ -163,6 +166,11 @@ export default {
       last_login: ""
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
   mounted() {
     let user = this.user;
 
@@ -184,15 +192,10 @@ export default {
     this.modify_time = user.modify_time;
     this.last_login = user.last_login;
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    }
-  },
   methods: {
     done() {
       // TODO save
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "Index" });
     }
   }
 };
