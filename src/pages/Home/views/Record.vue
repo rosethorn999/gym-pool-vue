@@ -2,16 +2,16 @@
   <div class="records">
     <div class="area-switcher">
       <ul>
-        <li class="active">北區</li>
-        <li>中區</li>
-        <li>南區</li>
-        <li>東區</li>
+        <li class="active">{{ $t("area-north") }}</li>
+        <li>{{ $t("area-centre") }}</li>
+        <li>{{ $t("area-south") }}</li>
+        <li>{{ $t("area-east") }}</li>
       </ul>
     </div>
     <div class="container">
       <div class="you-should-know">
-        <h1>健身會籍轉讓需知</h1>
-        <p>需要注意的事情</p>
+        <h1>{{ $t("transferMustKnow") }}</h1>
+        <p>{{ $t("somethingToNotice") }}</p>
       </div>
       <div class="list-header">
         <div>
@@ -42,15 +42,16 @@
               :value="district.name"
             >{{district.name}}</option>
           </select>
-          <select class="sorter" v-model="sorting.create_time">
-            <option :value="null">發佈時間</option>
-            <option>新到舊</option>
-            <option>舊到新</option>
+          <select class="sorter" v-model="ordering.create_time">
+            <option :value="null" selected>{{ $t("create_time") }}</option>
+            <option :value="null">{{ $t("newToOld") }}</option>
+            <option value>{{ $t("oldToNew") }}</option>
           </select>
-          <select class="sorter" v-model="sorting.price">
-            <option :value="null">價格</option>
-            <option>高到低</option>
-            <option>低到高</option>
+          <select class="sorter" v-model="ordering.monthly_rental">
+            <option :value="null" selected>{{ $t("monthly_rental") }}</option>
+            <!-- TODO price(server side calculated) not monthly_rental -->
+            <option value="-">{{ $t("highToLow") }}</option>
+            <option value>{{ $t("lowToHigh") }}</option>
           </select>
         </div>
       </div>
@@ -108,7 +109,8 @@ export default {
 
       pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       filter: { gym_type: null, county: null, district: null },
-      sorting: { create_time: null, price: null },
+      ordering: { create_time: null, monthly_rental: null },
+      // TODO expiry_date is a key feature, should be set as order
 
       selection: {
         zipcode: zipcode,
@@ -145,6 +147,12 @@ export default {
     },
     search() {
       this.readRecord();
+    },
+    "ordering.create_time"() {
+      this.readRecord();
+    },
+    "ordering.monthly_rental"() {
+      this.readRecord();
     }
   },
   methods: {
@@ -159,15 +167,10 @@ export default {
 
       this.records = [];
 
-      let sortWay = this.sorting.way;
-      let sortName = this.sorting.name;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-
-      // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
 
       // filter
-      let url = new URL("http://127.0.0.1:8000/api/record/");
+      let url = new URL("http://127.0.0.1:8000/api/record");
       // pagination
       switch (pager) {
         case -1:
@@ -184,38 +187,26 @@ export default {
         // TODO 'this.search.search' could be more clever
         url.searchParams.set("search", this.search.search);
       }
+      // ordering
+      let ordering = [];
+      let orderingCreate_time = this.ordering.create_time;
+      if (orderingCreate_time !== null) {
+        ordering.push(orderingCreate_time + "create_time");
+      }
+      let orderingMonthly_rental = this.ordering.monthly_rental;
+      if (orderingMonthly_rental !== null) {
+        ordering.push(orderingMonthly_rental + "monthly_rental");
+      }
+      if (ordering.length > 0) {
+        url.searchParams.set("ordering", ordering);
+      }
+      console.log(url);
 
       this.axios.get(url).then(response => {
         this.recordCount = response.data.count;
         this.records = response.data.results;
         this.pagination.nextUrl = response.data.next;
         this.pagination.previousUrl = response.data.previous;
-      });
-    },
-    isShowSortIcon(name, way) {
-      return this.sorting.name === name && this.sorting.way === way;
-    },
-    orderBy(sortName) {
-      // TODO implement
-      let sortingWay = this.sorting.way;
-      let sortingName = this.sorting.name;
-      let sortWay = "asc";
-      this.pagination.pageIndex = 0;
-      if (sortingName === sortName) {
-        if (sortingWay === "desc") {
-          sortName = "postDate";
-          sortWay = "asc";
-        } else {
-          sortWay = "desc";
-        }
-      }
-      this.sorting.way = sortWay;
-      this.sorting.name = sortName;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-
-      let url = "http://127.0.0.1:8000/api/record/";
-      this.axios.get(url).then(response => {
-        this.records = response.data.results;
       });
     },
     checkout(index) {

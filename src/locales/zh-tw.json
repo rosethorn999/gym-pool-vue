@@ -4,6 +4,8 @@
   "article": "文章",
 
   "appDescription": "健身房合約轉讓庫",
+  "transferMustKnow": "健身會籍轉讓需知",
+  "somethingToNotice": "需要注意的事情",
   "addRecordPageDescription": "填寫你的合約內容",
 
   "memberCenter": "會員中心",
@@ -71,6 +73,10 @@
   "no": "否",
   "remove": "刪除",
   "update": "修改",
+  "newToOld": "新到舊",
+  "oldToNew": "舊到新",
+  "highToLow": "高到低",
+  "lowToHigh": "低到高",
 
   "memberInfo": "會員資料",
   "contactInfo": "聯絡資料",

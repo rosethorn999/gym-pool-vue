@@ -2,8 +2,8 @@
   <div class="recordDetail">
     <div class="container">
       <div class="you-should-know">
-        <h1>健身會籍轉讓需知</h1>
-        <p>需要注意的事情</p>
+        <h1>{{ $t("transferMustKnow") }}</h1>
+        <p>{{ $t("somethingToNotice") }}</p>
       </div>
       <div class="controller" @click="goBack">
         <img src="https://via.placeholder.com/40x25" />

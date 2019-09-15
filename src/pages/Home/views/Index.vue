@@ -1,11 +1,12 @@
 <template>
+  <!-- TODO i18n -->
   <div class="index">
     <div class="sliderBanner">
       <div class="background-area">
         <img src="../assets/bg.png" />
       </div>
       <div class="text-area">
-        <p class="first-line">健身會籍轉讓</p>
+        <p class="first-line">{{ $t("recordSell") }}</p>
         <p class="second-line">
           有
           <span class="mark">1000</span>
@@ -17,22 +18,22 @@
             <li class="north-area">
               <p>300</p>
               <p>件</p>
-              <router-link to="/record" class="area-btn">北部</router-link>
+              <router-link to="/record" class="area-btn">{{ $t("area-north") }}</router-link>
             </li>
             <li class="central-area">
               <p>300</p>
               <p>件</p>
-              <router-link to="/record" class="area-btn">中部</router-link>
+              <router-link to="/record" class="area-btn">{{ $t("area-centre") }}</router-link>
             </li>
             <li class="south-area">
               <p>300</p>
               <p>件</p>
-              <router-link to="/record" class="area-btn">南部</router-link>
+              <router-link to="/record" class="area-btn">{{ $t("area-south") }}</router-link>
             </li>
             <li class="east-area">
               <p>300</p>
               <p>件</p>
-              <router-link to="/record" class="area-btn">東部</router-link>
+              <router-link to="/record" class="area-btn">{{ $t("area-east") }}</router-link>
             </li>
           </ul>
         </div>
@@ -70,8 +71,8 @@
       </div>
     </div>
     <div class="you-should-know">
-      <p>健身會籍轉讓需知</p>
-      <p>需要注意的事情</p>
+      <p>{{ $t("transferMustKnow") }}</p>
+      <p>{{ $t("somethingToNotice") }}</p>
     </div>
     <div class="latst-sell">
       <p>最近上架</p>
@@ -102,9 +103,7 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
-      filter: { gym_type: null, county: null, district: null },
-      sorting: { name: "postDate", way: "asc" },
+      pagination: { pageSize: 20 },
 
       selection: {
         gym_types: [
@@ -127,44 +126,17 @@ export default {
     this.readRecord();
   },
   methods: {
-    readRecord(pager) {
-      if (pager === -1 && this.pagination.pageIndex === 0) {
-        console.log("page index is 0");
-        return;
-      } else if (pager === 1 && this.pagination.nextUrl === null) {
-        console.log("no next page");
-        return;
-      }
-
+    readRecord() {
       this.records = [];
 
-      let sortWay = this.sorting.way;
-      let sortName = this.sorting.name;
-      console.log("sortName:" + sortName + ", sortWay:" + sortWay);
-
-      // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
       // TODO mobile show 7 records, pc 15 records
-      // TODO sort by postDate
 
-      let url = new URL("http://127.0.0.1:8000/api/record/");
-      // pagination
-      switch (pager) {
-        case -1:
-          url.href = this.pagination.previousUrl;
-          this.pagination.pageIndex += pager;
-          break;
-        case 1:
-          url.href = this.pagination.nextUrl;
-          this.pagination.pageIndex += pager;
-          break;
-      }
+      let url = "http://127.0.0.1:8000/api/record";
 
       this.axios.get(url).then(response => {
         this.recordCount = response.data.count;
         this.records = response.data.results;
-        this.pagination.nextUrl = response.data.next;
-        this.pagination.previousUrl = response.data.previous;
       });
     },
     checkout(index) {
