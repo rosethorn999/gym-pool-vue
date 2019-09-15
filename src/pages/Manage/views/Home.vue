@@ -2,8 +2,9 @@
   <div class="home">
     <input type="button" class="add-record" @click="addRecord" />
 
-    <input type="text" id="filterBar" />
-    <!-- TODO filter -->
+    <input type="text" id="searchBar" />
+    <!-- TODO magnifier icon -->
+    <!-- TODO search -->
     <div class="list-header">
       <div>
         <h2 id="recordCount">{{$t('selling')}} {{recordCount}}</h2>
@@ -76,11 +77,6 @@
 export default {
   name: "home",
   components: {},
-  mounted: function() {
-    this.readRecord();
-
-    this.$el.addEventListener("click", this.closeAllDropDownMenu);
-  },
   data: function() {
     return {
       recordCount: 0,
@@ -100,6 +96,25 @@ export default {
       }
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    user_id() {
+      if (this.user) {
+        return this.user._id;
+      } else {
+        return "";
+      }
+    }
+  },
+  mounted: function() {
+    this.$nextTick(() => {
+      this.readRecord();
+    });
+
+    this.$el.addEventListener("click", this.closeAllDropDownMenu);
+  },
   methods: {
     readRecord(pager) {
       if (pager === -1 && this.pagination.pageIndex === 0) {
@@ -117,8 +132,8 @@ export default {
 
       // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
-      // TODO only query record by his own
-      let url = "http://127.0.0.1:8000/api/record/";
+      let creator = this.user_id;
+      let url = "http://127.0.0.1:8000/api/record?creator=" + creator;
       this.records = [];
       switch (pager) {
         case -1:
@@ -263,8 +278,7 @@ export default {
         item.classList.remove("show");
       });
     }
-  },
-  computed: {}
+  }
 };
 </script>
 
@@ -272,7 +286,7 @@ export default {
 .home {
   padding: 28px 56px;
 }
-#filterBar {
+#searchBar {
   margin-bottom: 40px;
   width: 30%;
   min-width: 250px;
