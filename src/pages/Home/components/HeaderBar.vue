@@ -22,7 +22,8 @@
       <select class="search-select">
         <option value="1">標題</option>
       </select>
-      <input type="text" class="search-textbox" />
+      <input type="text" class="search-textbox" v-model="search" />
+      <input type="button" class="btn search-btn" :value="$t('search')" @click="goRecords()" />
     </div>
     <div class="login-area">
       <template v-if="logined">
@@ -58,12 +59,21 @@
 export default {
   name: "HeaderBar",
   props: {},
+  data: function() {
+    return {
+      search: ""
+    };
+  },
   computed: {
     logined() {
       return this.$store.state.token !== "";
     }
   },
   methods: {
+    goRecords() {
+      let key = this.search.trim();
+      this.$router.push({ name: "Record", query: { search: key } });
+    },
     logout() {
       this.$store.commit("logout");
     }
@@ -129,7 +139,7 @@ header {
   text-align: center;
   display: none;
   @include pc-width {
-    flex: 2;
+    flex: 3;
     display: block;
   }
   .search-select {
@@ -143,7 +153,14 @@ header {
     display: inline-block;
     height: 30px;
     vertical-align: middle;
-    max-width: calc(100% - 5rem);
+    max-width: calc(100% - 10rem);
+  }
+  .search-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 4rem;
+    padding: 0px;
+    margin-right: 0px;
   }
 }
 .login-area {

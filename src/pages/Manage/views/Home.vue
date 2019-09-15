@@ -2,9 +2,11 @@
   <div class="home">
     <input type="button" class="add-record" @click="addRecord" />
 
-    <input type="text" id="searchBar" />
-    <!-- TODO magnifier icon -->
-    <!-- TODO search -->
+    <div class="search-bar">
+      <!-- TODO magnifier icon -->
+      <input type="text" v-model="search" :placeholder="$t('title')" />
+      <input type="button" class="btn blue" :value="$t('send')" @click="readRecord()" />
+    </div>
     <div class="list-header">
       <div>
         <h2 id="recordCount">{{$t('selling')}} {{recordCount}}</h2>
@@ -36,7 +38,7 @@
           <p>{{r.remark}}</p>
         </div>
         <div>
-          <p class="blue">NT{{ getPrice(r) }}</p>
+          <p class="blue-text">NT{{ getPrice(r) }}</p>
         </div>
         <div>
           <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
@@ -83,6 +85,7 @@ export default {
       records: null,
       pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       sorting: { name: "postDate", way: "asc" },
+      search: "",
 
       selection: {
         gym_types: [
@@ -125,25 +128,33 @@ export default {
         return;
       }
 
+      this.records = [];
+
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
-
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
 
       // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
+
+      // filter
+      let url = new URL("http://127.0.0.1:8000/api/record");
       let creator = this.user_id;
-      let url = "http://127.0.0.1:8000/api/record?creator=" + creator;
-      this.records = [];
+      url.searchParams.set("creator", creator);
+      // pagination
       switch (pager) {
         case -1:
-          url = this.pagination.previousUrl;
+          url.href = this.pagination.previousUrl;
           this.pagination.pageIndex += pager;
           break;
         case 1:
-          url = this.pagination.nextUrl;
+          url.href = this.pagination.nextUrl;
           this.pagination.pageIndex += pager;
           break;
+      }
+      // search
+      if (this.search) {
+        url.searchParams.set("search", this.search);
       }
 
       this.axios.get(url).then(response => {
@@ -286,11 +297,13 @@ export default {
 .home {
   padding: 28px 56px;
 }
-#searchBar {
+.search-bar {
   margin-bottom: 40px;
   width: 30%;
-  min-width: 250px;
   display: block;
+  > input:first-child {
+    min-width: 250px;
+  }
 }
 .list-header {
   display: flex;
@@ -400,7 +413,7 @@ ul {
   margin-top: 80px;
   cursor: pointer;
 }
-.blue {
+.blue-text {
   color: $blue;
 }
 </style>

@@ -102,8 +102,6 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      // TODO mobile show 7 records, pc 15 records
-
       pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
       filter: { gym_type: null, county: null, district: null },
       sorting: { name: "postDate", way: "asc" },
@@ -138,23 +136,26 @@ export default {
         return;
       }
 
+      this.records = [];
+
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
-
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
 
       // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
+      // TODO mobile show 7 records, pc 15 records
       // TODO sort by postDate
-      let url = "http://127.0.0.1:8000/api/record/";
-      this.records = [];
+
+      let url = new URL("http://127.0.0.1:8000/api/record/");
+      // pagination
       switch (pager) {
         case -1:
-          url = this.pagination.previousUrl;
+          url.href = this.pagination.previousUrl;
           this.pagination.pageIndex += pager;
           break;
         case 1:
-          url = this.pagination.nextUrl;
+          url.href = this.pagination.nextUrl;
           this.pagination.pageIndex += pager;
           break;
       }

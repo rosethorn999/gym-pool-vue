@@ -97,7 +97,9 @@ export default {
   name: "records",
   components: {},
   mounted: function() {
-    this.readRecord();
+    this.$nextTick(() => {
+      this.readRecord();
+    });
   },
   data: function() {
     return {
@@ -122,6 +124,9 @@ export default {
     };
   },
   computed: {
+    search() {
+      return this.$route.query;
+    },
     districts() {
       let ret = [];
       let selectedDistricts = this.selection.zipcode.filter(item => {
@@ -137,6 +142,9 @@ export default {
   watch: {
     "filter.county"() {
       this.filter.district = null;
+    },
+    search() {
+      this.readRecord();
     }
   },
   methods: {
@@ -149,24 +157,32 @@ export default {
         return;
       }
 
+      this.records = [];
+
       let sortWay = this.sorting.way;
       let sortName = this.sorting.name;
-
       console.log("sortName:" + sortName + ", sortWay:" + sortWay);
 
       // .orderBy(sortName, sortWay)
       // TODO this.pagination.pageSize
-      let url = "http://127.0.0.1:8000/api/record/";
-      this.records = [];
+
+      // filter
+      let url = new URL("http://127.0.0.1:8000/api/record/");
+      // pagination
       switch (pager) {
         case -1:
-          url = this.pagination.previousUrl;
+          url.href = this.pagination.previousUrl;
           this.pagination.pageIndex += pager;
           break;
         case 1:
-          url = this.pagination.nextUrl;
+          url.href = this.pagination.nextUrl;
           this.pagination.pageIndex += pager;
           break;
+      }
+      // search
+      if (this.search.search) {
+        // TODO 'this.search.search' could be more clever
+        url.searchParams.set("search", this.search.search);
       }
 
       this.axios.get(url).then(response => {
