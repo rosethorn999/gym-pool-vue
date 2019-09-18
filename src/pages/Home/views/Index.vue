@@ -77,17 +77,14 @@
     <div class="latst-sell">
       <p>最近上架</p>
       <div class="record-container">
-        <div class="record-box" v-for="(r,i) in records" :key="r.id" @click="checkout(i)">
-          <img src="../assets/world_gym__1448962972_16f5e373.jpg" />
-          <div class="text-box">
-            <p>{{ r.title }}</p>
-            <p>{{ gym_typeCaption(r.gym_type) }} {{ r.store }}</p>
-            <div>
-              <span class="gray-text">{{ $t("expiry_date") }}: {{ r.expiry_date }}</span>
-              <span class="blue-text">NT{{ getPrice(r) }}</span>
-            </div>
-          </div>
-        </div>
+        <RecordBox
+          v-for="(r,i) in records"
+          :key="r.id"
+          @click.native="checkout(i)"
+          class="record-box"
+          :r="r"
+          :fitXs="true"
+        />
       </div>
       <div class="watch-more-block">
         <router-link class="watch-more" to="/record">看更多</router-link>
@@ -97,8 +94,11 @@
 </template>
 
 <script>
+import RecordBox from "../components/RecordBox.vue";
+
 export default {
   name: "Index",
+  components: { RecordBox },
   data: function() {
     return {
       recordCount: 0,
@@ -334,44 +334,7 @@ $phone-font-size: 30px;
       justify-content: space-evenly;
       flex-wrap: wrap;
       .record-box {
-        margin-bottom: 38px;
-        box-shadow: 0px 3px 6px #00000029;
         width: 298px;
-        min-height: 235px;
-        border-radius: 10px;
-        cursor: pointer;
-        opacity: 0.9;
-        font-size: 18px;
-        &:hover {
-          opacity: 1;
-        }
-        > img {
-          border-radius: 10px;
-          width: 100%;
-          height: 136px;
-        }
-        .text-box {
-          height: 100px;
-          padding: 10px;
-          position: relative;
-          > p {
-            margin: 0px;
-            line-height: 1.5rem;
-          }
-          > div {
-            position: absolute;
-            bottom: 5px;
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-          }
-          .gray-text {
-            color: #989898;
-          }
-          .blue-text {
-            color: $blue;
-          }
-        }
       }
     }
     .watch-more-block {

@@ -56,32 +56,11 @@
         </div>
       </div>
       <div class="record-container">
-        <ul>
-          <li class="list-tiem" v-for="(r,i) in records" :key="r.id" @click="checkout(i)">
-            <div class="image-block">
-              <div class="image-box">
-                <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
-              </div>
-            </div>
-            <div>
-              <p>{{r.title}}</p>
-              <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
-              <p>{{r.remark}}</p>
-            </div>
-            <div>
-              <p class="blue">NT{{ getPrice(r) }}</p>
-            </div>
-            <div>
-              <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
-              <p>{{$t("monthly_rental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
-              <p>{{$t("expiry_date")}}: {{r.expiry_date}}</p>
-            </div>
-          </li>
-          <li v-if="records===null">
-            <img src="../assets/loading.gif" />
-          </li>
-          <li v-if="records&&records.length===0">{{$t('none')}}</li>
-        </ul>
+        <RecordBox v-for="(r,i) in records" :key="r.id" :r="r" @click.native="checkout(i)" />
+        <div v-if="records===null">
+          <img src="../assets/loading.gif" />
+        </div>
+        <div v-if="records&&records.length===0">{{$t('none')}}</div>
         <div class="pagination-block">
           <a class="pagination-btn" href="#" @click.prevent="readRecord(-1)">{{$t("prevPage")}}</a>
           <a class="pagination-btn" href="#" @click.prevent="readRecord(1)">{{$t("nextPage")}}</a>
@@ -93,10 +72,11 @@
 
 <script>
 import zipcode from "@/assets/twZipCode.json";
+import RecordBox from "../components/RecordBox.vue";
 
 export default {
   name: "records",
-  components: {},
+  components: { RecordBox },
   mounted: function() {
     this.$nextTick(() => {
       this.readRecord();
@@ -234,18 +214,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-* {
-  padding: 0;
-  margin: 0;
-}
-.blue {
-  color: $blue;
-}
+$pc-padding: 10%;
+$phone-padding: 13px;
 .records {
   background: #f5f7f8;
+  width: 100%;
 }
 .container {
-  padding: 0px 234px;
+  padding: $phone-padding;
+  @include pc-width {
+    padding: 0px $pc-padding;
+  }
 }
 .area-switcher {
   text-align: center;
@@ -297,55 +276,18 @@ export default {
 }
 
 .record-container {
-  ul {
-    li.list-tiem {
-      font-size: 24px;
-      padding: 9px;
-      display: flex;
-      height: 143px;
-      background: #ffffff 0% 0% no-repeat padding-box;
-      box-shadow: 0px 2px 5px #00000029;
-      transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-      margin-bottom: 24px;
-      &:hover {
-        background: #eee;
-      }
-      div {
-        flex: 1;
-      }
-    }
-  }
-  .image-block {
-    width: 30%;
-    min-width: 150px;
-    overflow: hidden;
-    position: relative;
-    padding: 0.5%;
-    .image-box {
-      width: 80%;
-      min-width: 150px;
-      height: 120px;
-      position: relative;
-      overflow: hidden;
-      img {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-      }
-    }
-  }
   .pagination-block {
     height: 100px;
     margin-top: 50px;
     text-align: center;
     .pagination-btn {
-      margin: 0px 50px;
+      margin: 0px 10px;
       padding: 10px 25px;
       border: 1px solid #707070;
       color: #0058e5;
+      @include pc-width {
+        margin: 0px 50px;
+      }
     }
   }
 }
