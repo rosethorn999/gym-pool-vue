@@ -114,9 +114,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$pc-padding: 10%;
+$phone-padding: 40px;
+
 .container {
   width: 100%;
-  padding: 50px 250px;
+  padding: 50px $pc-padding;
+  @include pc-width {
+    padding: 50px $phone-padding;
+  }
 }
 .login {
   background: #f5f7f8;
