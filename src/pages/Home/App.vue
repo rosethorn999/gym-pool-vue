@@ -23,13 +23,12 @@ export default {
 </script>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
 * {
   box-sizing: border-box;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Noto Sans TC", Arial, sans-serif;
 }
 a {
   text-decoration: none;
