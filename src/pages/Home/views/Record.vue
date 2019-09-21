@@ -8,16 +8,16 @@
         <li>{{ $t("area-east") }}</li>
       </ul>
     </div>
+    <div class="you-should-know">
+      <h1>{{ $t("transferMustKnow") }}</h1>
+      <p>{{ $t("somethingToNotice") }}</p>
+    </div>
     <div class="container">
-      <div class="you-should-know">
-        <h1>{{ $t("transferMustKnow") }}</h1>
-        <p>{{ $t("somethingToNotice") }}</p>
-      </div>
       <div class="list-header">
-        <div>
-          <h2 id="recordCount">{{$t('area-north')}} {{$t('selling')}} {{recordCount}}</h2>
+        <div class="query-counter">
+          <span id="record-count">{{$t('area-north')}} {{$t('selling')}} {{recordCount}}</span>
         </div>
-        <div>
+        <div class="query-fun">
           <select class="filter" v-model="filter.gym_type">
             <option :value="null">{{$t('gym_type')}}</option>
             <option
@@ -235,6 +235,9 @@ $phone-padding: 13px;
     list-style-type: none;
     margin: 0;
     padding: 0;
+    width: auto;
+    overflow: auto;
+    white-space: nowrap;
     li {
       display: inline-block;
       height: 51px;
@@ -254,18 +257,36 @@ $phone-padding: 13px;
   height: 244px;
   background-image: url("../assets/bg.png");
   color: #fff;
-  padding: 52px 20%;
+  padding: 60px $phone-padding 150px;
   width: 100%;
+  @include pc-width {
+    padding: 52px $pc-padding;
+  }
 }
 .list-header {
-  display: flex;
   margin: 10px 0px;
-
+  @include pc-width {
+    display: flex;
+  }
   div {
-    flex: 1;
-    &:last-child {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .query-counter {
+    font-size: 24px;
+    @include pc-width {
+      flex: 1;
+    }
+  }
+  .query-fun {
+    text-align: right;
+    overflow: auto;
+    white-space: nowrap;
+    @include pc-width {
       flex: 2;
-      text-align: right;
     }
   }
   .filter,
