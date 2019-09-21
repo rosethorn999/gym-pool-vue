@@ -54,9 +54,8 @@
           />
           <div class="dropdown-menu" :ref="'dropdown-menu'+index">
             <!-- TODO triangle-->
-            <a class="dropdown-item">{{ $t("remove") }}</a>
-            <!-- TODO  implement-->
             <a class="dropdown-item" @click="checkout(index)">{{ $t("update") }}</a>
+            <a class="dropdown-item" @click="remove(index)">{{ $t("remove") }}</a>
           </div>
         </div>
       </li>
@@ -76,6 +75,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 // @ is an alias to /src
 export default {
   name: "home",
@@ -111,6 +112,9 @@ export default {
       } else {
         return "";
       }
+    },
+    token() {
+      return this.$store.state.token;
     }
   },
   watch: {
@@ -261,6 +265,38 @@ export default {
       localStorage.setItem("record", JSON.stringify(record));
       let id = record.id;
       this.$router.push({ name: "contract", params: { contractId: id } });
+    },
+    remove(index) {
+      // Check
+      Swal.fire({
+        title: this.$t("keepGoing"),
+        text: this.$t("actionUnReveralbe"),
+        showCancelButton: true,
+        type: "warning"
+      }).then(result => {
+        if (result.value) {
+          // Press Yes
+          let record = this.records[index];
+          let url = "http://192.168.1.101:8000/api/record/" + record.id + "/";
+          let headers = { headers: { Authorization: this.token } };
+
+          // Delete
+          this.axios
+            .delete(url, headers)
+            .then(() => {
+              Swal.fire(this.$t("done"), this.$t("beenRemoved"), "success").then(() => {
+                // Refresh records
+                this.readRecord();
+              });
+            })
+            .catch(function(error) {
+              const title = error.response.status.toString();
+              const msg = JSON.stringify(error.response.data);
+              Swal.fire(title, msg, "error");
+              console.error(error);
+            });
+        }
+      });
     },
     getPrice(r) {
       let month = 12; //TODO calc month

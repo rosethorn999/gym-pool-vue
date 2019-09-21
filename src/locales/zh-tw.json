@@ -69,6 +69,7 @@
   "deal_date": "成交日期",
   "deal": "成交",
   "markAsSoldout": "標示為已售出",
+  "keepGoing": "確定嗎?",
   "yes": "是",
   "no": "否",
   "remove": "刪除",
@@ -130,5 +131,7 @@
   "hi": "嗨",
   "welcomeBack": "歡迎回來",
   "invitationMailSent": "認證信已經寄出",
-  "registerSucc": "{0} 已經可以使用"
+  "registerSucc": "{0} 已經可以使用",
+  "actionUnReveralbe": "此動作將無法回復",
+  "beenRemoved": "此商品已經被刪除了"
 }

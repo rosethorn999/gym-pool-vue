@@ -130,6 +130,7 @@
       </div>
 
       <div class="button-box">
+        <!-- TODO markAsSoldout red button -->
         <input type="button" class="btn" :value="$t('cancal')" @click="backToList" />
         <input type="button" class="btn blue" :value="$t('send')" @click="update" />
       </div>
