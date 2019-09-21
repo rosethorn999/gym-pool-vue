@@ -85,7 +85,7 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      pagination: { pageSize: 20, pageIndex: 0, nextUrl: null, previousUrl: null },
+      pagination: { pageIndex: 0, nextUrl: null, previousUrl: null },
       ordering: { create_time: null, monthly_rental: null },
       // TODO expiry_date is a key feature, should be set as order
       search: "",
@@ -143,8 +143,6 @@ export default {
       }
 
       this.records = [];
-
-      // TODO this.pagination.pageSize
 
       // filter
       let url = new URL("http://192.168.1.101:8000/api/record");

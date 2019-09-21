@@ -103,7 +103,7 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      pagination: { pageSize: 20 },
+      pagination: {},
 
       selection: {
         gym_types: [
@@ -129,10 +129,9 @@ export default {
     readRecord() {
       this.records = [];
 
-      // TODO this.pagination.pageSize
-      // TODO mobile show 7 records, pc 15 records
-
-      let url = "http://192.168.1.101:8000/api/record";
+      const isMobileWidth = window.innerWidth <= 480;
+      let _page_size = isMobileWidth ? 7 : 15; // mobile show 7 items, pc 15 items
+      let url = "http://192.168.1.101:8000/api/record?page_size=" + _page_size;
 
       this.axios.get(url).then(response => {
         this.recordCount = response.data.count;
