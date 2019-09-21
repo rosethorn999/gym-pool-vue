@@ -1,10 +1,10 @@
 <template>
   <div class="recordDetail">
+    <div class="you-should-know">
+      <h1>{{ $t("transferMustKnow") }}</h1>
+      <p>{{ $t("somethingToNotice") }}</p>
+    </div>
     <div class="container">
-      <div class="you-should-know">
-        <h1>{{ $t("transferMustKnow") }}</h1>
-        <p>{{ $t("somethingToNotice") }}</p>
-      </div>
       <div class="controller" @click="goBack">
         <img src="https://via.placeholder.com/40x25" />
         {{ $t("back") }}
@@ -74,23 +74,6 @@
 export default {
   name: "recordDetail",
   components: {},
-  mounted() {
-    let record = localStorage.getItem("record") ? JSON.parse(localStorage.getItem("record")) : {};
-
-    this.id = record._id;
-    this.title = record.title;
-    this.gym_type = record.gym_type;
-    this.store = record.store;
-    this.monthly_rental = record.monthly_rental;
-    this.location = record.location;
-    this.expiry_date = record.expiry_date;
-    this.remark = record.remark;
-    this.features = record.features;
-    this.processing_fee = record.processing_fee;
-    this.create_time = record.create_time;
-    this.deal_date = record.deal_date;
-    this.creator = record.creator;
-  },
   data: function() {
     return {
       id: "",
@@ -132,6 +115,23 @@ export default {
     }
   },
   watch: {},
+  mounted() {
+    let record = localStorage.getItem("record") ? JSON.parse(localStorage.getItem("record")) : {};
+
+    this.id = record._id;
+    this.title = record.title;
+    this.gym_type = record.gym_type;
+    this.store = record.store;
+    this.monthly_rental = record.monthly_rental;
+    this.location = record.location;
+    this.expiry_date = record.expiry_date;
+    this.remark = record.remark;
+    this.features = record.features;
+    this.processing_fee = record.processing_fee;
+    this.create_time = record.create_time;
+    this.deal_date = record.deal_date;
+    this.creator = record.creator;
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -151,6 +151,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$pc-padding: 10%;
+$phone-padding: 13px;
+$pc-font-size: 24px;
+$phone-font-size: 30px;
+
 * {
   padding: 0;
   margin: 0;
@@ -162,10 +167,13 @@ export default {
   color: #989898;
 }
 .recordDetail {
-  background: #f5f7f8;
+  background: #fff;
 }
 .container {
-  padding: 0px 234px;
+  padding: $phone-padding;
+  @include pc-width {
+    padding: 0px $pc-padding;
+  }
 }
 
 .you-should-know {
@@ -173,35 +181,47 @@ export default {
   height: 244px;
   background-image: url("../assets/bg.png");
   color: #fff;
-  padding: 52px 20%;
+  padding: 52px $phone-padding;
   width: 100%;
 }
 .controller {
   margin: 10px 0px;
   cursor: pointer;
+  @include pc-width {
+    margin-bottom: 100px;
+  }
 }
 
 .record-container {
-  margin-top: 100px;
-  padding: 0px 50px 100px 50px;
+  margin-bottom: 100px;
+  @include pc-width {
+    margin-bottom: 200px;
+  }
   .upper-box {
     display: flex;
     margin-bottom: 30px;
+    flex-wrap: wrap;
     .left-box {
       flex: 1;
-      width: 50%;
+      width: 100%;
+      min-width: 100%;
+      @include pc-width {
+        min-width: auto;
+        width: 50%;
+      }
       .main-image {
-        width: 583px;
+        width: 100%;
         border: 1px solid #707070;
       }
       .img-box {
-        width: 583px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         overflow: auto;
         margin: 33px 0px 41px 0px;
         img {
           cursor: pointer;
+          width: 100%;
           flex: 1;
           border: 1px solid #707070;
           max-width: 105px;
@@ -216,9 +236,14 @@ export default {
       }
     }
     .right-box {
-      padding-left: 88px;
       flex: 1;
-      width: 50%;
+      width: 100%;
+      min-width: 100%;
+      @include pc-width {
+        min-width: auto;
+        padding-left: 10%;
+        width: 50%;
+      }
       h1 {
         line-height: 50px;
       }
@@ -242,7 +267,7 @@ export default {
   }
   .bottom-box {
     width: 100%;
-    height: 480px;
+    height: 400px;
     border: 1px solid #707070;
     .header {
       line-height: 45px;
@@ -253,57 +278,6 @@ export default {
     }
     .remark {
       padding: 31px 25px;
-    }
-  }
-  ul {
-    li.list-tiem {
-      font-size: 24px;
-      padding: 9px;
-      display: flex;
-      height: 143px;
-      background: #ffffff 0% 0% no-repeat padding-box;
-      box-shadow: 0px 2px 5px #00000029;
-      transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-      margin-bottom: 24px;
-      &:hover {
-        background: #eee;
-      }
-      div {
-        flex: 1;
-      }
-    }
-  }
-  .image-block {
-    width: 30%;
-    min-width: 150px;
-    overflow: hidden;
-    position: relative;
-    padding: 0.5%;
-    .image-box {
-      width: 80%;
-      min-width: 150px;
-      height: 120px;
-      position: relative;
-      overflow: hidden;
-      img {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-      }
-    }
-  }
-  .pagination-block {
-    height: 100px;
-    margin-top: 50px;
-    text-align: center;
-    .pagination-btn {
-      margin: 0px 50px;
-      padding: 10px 25px;
-      border: 1px solid #707070;
-      color: #0058e5;
     }
   }
 }
