@@ -114,6 +114,7 @@
   "forgetPassword": "忘記密碼",
   "fillToRegister": "填妥以下資訊來完成註冊",
   "newPasswordWillSentToEmail": "新密碼將會寄到你的信箱",
+  "newPasswordHadSentToEmail": "新密碼已經寄到你的信箱: {0}",
   "reilizeHowWeSaveYourPrivacyPleaseVisit": "要深入了解 Gympool 如何收集、使用、分享及保護你的個人資料，請詳閱 Gympool 的",
   "privacyPolicy": "隱私權政策",
   "registerByEmail": "用電子郵件註冊",
@@ -124,5 +125,10 @@
   "mm": "月份",
   "dd": "日期",
   "remain": "剩下",
-  "ge": "個"
+  "ge": "個",
+
+  "hi": "嗨",
+  "welcomeBack": "歡迎回來",
+  "invitationMailSent": "認證信已經寄出",
+  "registerSucc": "{0} 已經可以使用"
 }

@@ -76,6 +76,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   name: "Register",
   mounted: function() {
@@ -211,10 +213,13 @@ export default {
         this.axios
           .post(url, o)
           .then(() => {
-            alert("User created"); // TODO beatuy alert
+            const msg = this.$t("registerSucc", [this.email]);
+            Swal.fire(this.$t("done"), msg, "success");
           })
           .catch(function(error) {
-            // TODO error control
+            const title = error.response.status.toString();
+            const msg = JSON.stringify(error.response.data);
+            Swal.fire(title, msg, "error");
             console.error(error);
           });
       }

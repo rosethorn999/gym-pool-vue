@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   name: "ResetPassword",
   data() {
@@ -75,10 +77,13 @@ export default {
         this.axios
           .post(url, o)
           .then(() => {
-            alert("Your new password had sent to your email"); // TODO beatuy alert
+            const msg = this.$t("newPasswordHadSentToEmail", [this.email]);
+            Swal.fire(this.$t("done"), msg, "success");
           })
           .catch(function(error) {
-            // TODO error control
+            const title = error.response.status.toString();
+            const msg = JSON.stringify(error.response.data);
+            Swal.fire(title, msg, "error");
             console.error(error);
           });
       }

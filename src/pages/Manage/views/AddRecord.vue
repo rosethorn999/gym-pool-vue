@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
 
 export default {
@@ -218,8 +219,9 @@ export default {
       this.axios
         .post(url, o, headers)
         .then(() => {
-          alert("Created"); // TODO beatuy alert
-          this.$router.push({ name: "Index" });
+          Swal.fire(this.$t("done"), "", "success").then(() => {
+            this.$router.push({ name: "Index" });
+          });
         })
         .catch(function(error) {
           console.log(error);

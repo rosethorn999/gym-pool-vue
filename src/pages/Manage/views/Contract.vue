@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
 
 export default {
@@ -275,11 +276,14 @@ export default {
       this.axios
         .patch(url, o, headers)
         .then(() => {
-          alert("Updated"); // TODO beatuy alert
-          this.$router.push({ name: "Index" });
+          Swal.fire(this.$t("done"), "", "success").then(() => {
+            this.$router.push({ name: "Index" });
+          });
         })
         .catch(function(error) {
-          // TODO error control
+          const title = error.response.status.toString();
+          const msg = JSON.stringify(error.response.data);
+          Swal.fire(title, msg, "error");
           console.error(error);
         });
     }

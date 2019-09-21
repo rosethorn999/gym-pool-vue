@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   name: "Login",
   data() {
@@ -83,13 +85,16 @@ export default {
         this.axios
           .post(url, o)
           .then(response => {
-            alert("Welcome home"); // TODO beatuy alert
-            let token = "jwt " + response.data.token;
-            this.$store.commit("setToken", token);
-            this.getUser();
+            Swal.fire(this.$t("hi"), this.$t("welcomeBack") + "!", "success").then(() => {
+              let token = "jwt " + response.data.token;
+              this.$store.commit("setToken", token);
+              this.getUser();
+            });
           })
           .catch(function(error) {
-            // TODO error control
+            const title = error.response.status.toString();
+            const msg = JSON.stringify(error.response.data);
+            Swal.fire(title, msg, "error");
             console.error(error);
           });
       }
@@ -105,7 +110,9 @@ export default {
           this.$router.push({ name: "Index" });
         })
         .catch(function(error) {
-          // TODO error control
+          const title = error.response.status.toString();
+          const msg = JSON.stringify(error.response.data);
+          Swal.fire(title, msg, "error");
           console.error(error);
         });
     }

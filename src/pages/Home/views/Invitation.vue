@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   name: "Invitation",
   data() {
@@ -53,10 +55,12 @@ export default {
         this.axios
           .post(url, o)
           .then(() => {
-            alert("Invitation mail sent."); // TODO beatuy alert
+            Swal.fire(this.$t("done"), this.$t("invitationMailSent"), "success");
           })
           .catch(function(error) {
-            // TODO error control
+            const title = error.response.status.toString();
+            const msg = JSON.stringify(error.response.data);
+            Swal.fire(title, msg, "error");
             console.error(error);
           });
       }
