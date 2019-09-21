@@ -132,7 +132,7 @@ export default {
       // TODO this.pagination.pageSize
       // TODO mobile show 7 records, pc 15 records
 
-      let url = "http://127.0.0.1:8000/api/record";
+      let url = "http://192.168.1.101:8000/api/record";
 
       this.axios.get(url).then(response => {
         this.recordCount = response.data.count;

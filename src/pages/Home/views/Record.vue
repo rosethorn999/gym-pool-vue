@@ -150,7 +150,7 @@ export default {
       // TODO this.pagination.pageSize
 
       // filter
-      let url = new URL("http://127.0.0.1:8000/api/record");
+      let url = new URL("http://192.168.1.101:8000/api/record");
       // pagination
       switch (pager) {
         case -1:

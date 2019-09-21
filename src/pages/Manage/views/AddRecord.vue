@@ -201,7 +201,7 @@ export default {
       this.$router.push({ name: "Index" });
     },
     done() {
-      let url = "http://127.0.0.1:8000/api/record";
+      let url = "http://192.168.1.101:8000/api/record";
       let o = {
         monthly_rental: this.monthly_rental,
         title: this.title,

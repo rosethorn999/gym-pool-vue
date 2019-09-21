@@ -75,7 +75,7 @@ export default {
     login() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://127.0.0.1:8000/api-token-auth/";
+        let url = "http://192.168.1.101:8000/api-token-auth/";
         let o = {
           email: this.email,
           password: this.password
@@ -95,7 +95,7 @@ export default {
       }
     },
     getUser() {
-      let url = "http://127.0.0.1:8000/api/users/";
+      let url = "http://192.168.1.101:8000/api/users/";
       let headers = { headers: { Authorization: this.token } };
       this.axios
         .get(url, headers)

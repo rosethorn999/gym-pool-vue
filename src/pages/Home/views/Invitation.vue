@@ -48,7 +48,7 @@ export default {
     requestInvitation() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://127.0.0.1:8000/api/invitation/";
+        let url = "http://192.168.1.101:8000/api/invitation/";
         let o = { email: this.email };
         this.axios
           .post(url, o)
