@@ -151,11 +151,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$pc-padding: 10%;
-$phone-padding: 13px;
-$pc-font-size: 24px;
-$phone-font-size: 30px;
-
 * {
   padding: 0;
   margin: 0;

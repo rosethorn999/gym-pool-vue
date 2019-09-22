@@ -33,20 +33,20 @@
             <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
           </div>
         </div>
-        <div>
+        <div class="title-block">
           <p>{{r.title}}</p>
           <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
           <p>{{r.remark}}</p>
         </div>
-        <div>
+        <div class="price-block">
           <p class="blue-text">NT{{ getPrice(r) }}</p>
         </div>
-        <div>
+        <div class="detail-block">
           <p>{{$t("processing_fee")}}: {{r.processing_fee}}</p>
           <p>{{$t("monthly_rental")}}: {{r.monthly_rental}} / {{$t("month")}}</p>
           <p>{{$t("expiry_date")}}: {{r.expiry_date}}</p>
         </div>
-        <div>
+        <div class="more-block">
           <img
             class="more"
             src="../assets/iconfinder_ic_more_vert_48px_352549.png"
@@ -262,7 +262,7 @@ export default {
       let record = this.records[index];
       localStorage.setItem("record", JSON.stringify(record));
       let id = record.id;
-      this.$router.push({ name: "contract", params: { contractId: id } });
+      this.$router.push({ name: "record", params: { recordId: id } });
     },
     remove(index) {
       // Check
@@ -350,29 +350,6 @@ export default {
     margin-left: 10px;
   }
 }
-.image-block {
-  width: 30%;
-  min-width: 150px;
-  overflow: hidden;
-  position: relative;
-  padding: 0.5%;
-  .image-box {
-    width: 80%;
-    min-width: 150px;
-    height: 120px;
-    position: relative;
-    overflow: hidden;
-    img {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-    }
-  }
-}
-
 ul {
   li.list-tiem {
     font-size: 24px;
@@ -388,6 +365,46 @@ ul {
     }
     div {
       flex: 1;
+
+      &.image-block {
+        width: 30%;
+        min-width: 150px;
+        overflow: hidden;
+        position: relative;
+        padding: 0.5%;
+        .image-box {
+          width: 80%;
+          min-width: 150px;
+          height: 120px;
+          position: relative;
+          overflow: hidden;
+          img {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+          }
+        }
+      }
+      &.title-block {
+        min-width: 30%;
+        line-height: 2.5rem;
+      }
+      &.price-block {
+        line-height: 7rem;
+        text-align: right;
+      }
+      &.detail-block {
+        text-align: right;
+        line-height: 2.5rem;
+      }
+      &.more-block {
+        text-align: center;
+        max-width: 50px;
+        line-height: 2.5rem;
+      }
     }
   }
 }

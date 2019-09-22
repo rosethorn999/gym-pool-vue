@@ -1,16 +1,16 @@
 <template>
-  <div class="contract">
+  <div class="record">
     <div class="container">
       <div class="block">
         <h3>{{ $t("basicInfo") }}</h3>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>{{ $t("_id") }}</label>
           <div class="control-box">
             <div class="control-box">
               <input type="text" v-model="underlineid" disabled />
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="form-group">
           <label>{{ $t("title") }}</label>
           <div class="control-box">
@@ -143,7 +143,7 @@ import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
 
 export default {
-  name: "contract",
+  name: "record",
   components: { DatePick },
   props: {},
   data() {

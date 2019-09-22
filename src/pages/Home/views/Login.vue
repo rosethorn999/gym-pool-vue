@@ -121,9 +121,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$pc-padding: 10%;
-$phone-padding: 40px;
-
 .container {
   width: 100%;
   padding: 50px $pc-padding;

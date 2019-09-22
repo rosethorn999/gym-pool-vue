@@ -212,8 +212,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$pc-padding: 10%;
-$phone-padding: 13px;
 .records {
   background: #f5f7f8;
   width: 100%;

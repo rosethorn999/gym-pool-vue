@@ -2,15 +2,13 @@
   <!-- TODO i18n -->
   <div class="index">
     <div class="sliderBanner">
-      <div class="background-area">
-        <img src="../assets/bg.png" />
-      </div>
+      <div class="background-area"></div>
       <div class="text-area">
         <p class="first-line">{{ $t("recordSell") }}</p>
         <p class="second-line">
           有
-          <span class="mark">1000</span>
-          多件刊登商品
+          <span class="mark">{{ recordCount }}</span>
+          件刊登商品
         </p>
         <p class="second-line">尋找你所在的城市</p>
         <div class="county-area">
@@ -163,11 +161,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$pc-padding: 10%;
-$phone-padding: 40px;
-$pc-font-size: 24px;
-$phone-font-size: 30px;
-
 .index {
   background: #fff;
   width: 100%;
@@ -253,10 +246,16 @@ $phone-font-size: 30px;
       height: 100%;
       position: absolute;
       top: 0;
-      > img {
-        height: 100vh;
+      background-image: url("../assets/bg.png");
+      background-size: cover;
+      background-position: center;
+      &::after {
+        content: " ";
+        background: #222;
+        opacity: 0.6;
         width: 100%;
-        filter: brightness(50%);
+        height: 100%;
+        display: block;
       }
     }
   }
@@ -333,7 +332,10 @@ $phone-font-size: 30px;
       justify-content: space-evenly;
       flex-wrap: wrap;
       .record-box {
-        width: 298px;
+        width: 100%;
+        @include pc-width {
+          width: 298px;
+        }
       }
     }
     .watch-more-block {

@@ -1,5 +1,5 @@
 <template>
-  <div class="contract">
+  <div class="record">
     <div class="container">
       <div class="block">
         <h3>{{ $t("basicInfo") }}</h3>
@@ -202,7 +202,7 @@ export default {
       this.$router.push({ name: "Index" });
     },
     done() {
-      let url = "http://192.168.1.101:8000/api/record";
+      let url = "http://192.168.1.101:8000/api/record/";
       let o = {
         monthly_rental: this.monthly_rental,
         title: this.title,

@@ -1,10 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
-      <h1>GymPool</h1>
+      <h1>
+        <a href="/">GymPool</a>
+      </h1>
       <p>{{$t("appDescription")}}</p>
       <div class="headImage"></div>
       <p>{{userName}}</p>
+      <p>
+        <a href="#" @click="logout">{{ $t("logout") }}</a>
+      </p>
       <div class="item-Menu">
         <ul>
           <li data-target :class="{active:routerActive==='Index'}" @click="switchRouter">
@@ -19,9 +24,6 @@
           </li>
           <li>
             <a href="/">{{ $t("goToIndex") }}</a>
-          </li>
-          <li>
-            <a href="#" @click="logout">{{ $t("logout") }}</a>
           </li>
         </ul>
       </div>
@@ -86,9 +88,12 @@ body {
 #app {
   display: inline-block;
   font-family: "Noto Sans TC", Arial, sans-serif;
-  width: 100%;
+  width: 1920px;
   color: #2c3e50;
   background: #222222;
+  @include pc-width {
+    width: 100%;
+  }
 }
 #nav {
   padding: 30px;
@@ -100,11 +105,23 @@ body {
   left: 0px;
   text-align: center;
   h1 {
-    color: #fe4220;
+    a {
+      color: #fe4220;
+      &:hover {
+        color: #f32702;
+      }
+    }
   }
   p {
     color: #fff;
-    margin-bottom: 0.2em;
+    margin-bottom: 1em;
+  }
+  a {
+    text-decoration: none;
+    color: #dee2e6;
+    &:hover {
+      color: #fff;
+    }
   }
   .headImage {
     background-image: url("./assets/20160203022635285.png");
@@ -123,10 +140,6 @@ body {
       text-align: end;
       padding: 10px;
       cursor: pointer;
-      a {
-        color: #fff;
-        text-decoration: none;
-      }
     }
     .active {
       background: #2c72b1;

@@ -27,9 +27,9 @@ export default new Router({
       component: () => import("./views/AddRecord.vue")
     },
     {
-      path: "/contract/:contractId",
-      name: "contract",
-      component: () => import("./views/Contract.vue")
+      path: "/record/:recordId",
+      name: "record",
+      component: () => import("./views/Record.vue")
     },
     {
       path: "/account",
