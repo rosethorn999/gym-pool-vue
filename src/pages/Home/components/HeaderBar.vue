@@ -29,7 +29,7 @@
       <template v-if="logined">
         <ul>
           <li>
-            <a href="./manage">{{ $t("admin") }}</a>
+            <a href="./manage.html">{{ $t("admin") }}</a>
           </li>
           <li>
             <a href="#" @click="logout">{{ $t("logout") }}</a>
@@ -67,7 +67,7 @@
         <template v-if="logined">
           <ul>
             <li>
-              <a href="./manage">{{ $t("admin") }}</a>
+              <a href="./manage.html">{{ $t("admin") }}</a>
             </li>
             <li>
               <a href="#" @click="logout">{{ $t("logout") }}</a>
