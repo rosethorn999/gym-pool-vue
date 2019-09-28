@@ -18,6 +18,7 @@
 
 <script>
 import Swal from "sweetalert2";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "Invitation",
@@ -48,11 +49,12 @@ export default {
       }
     },
     requestInvitation() {
+      // TODO show loading animation
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://192.168.1.101:8000/api/invitation/";
+        let url = "/invitation/";
         let o = { email: this.email };
-        this.axios
+        basicRequest
           .post(url, o)
           .then(() => {
             Swal.fire(this.$t("done"), this.$t("invitationMailSent"), "success");

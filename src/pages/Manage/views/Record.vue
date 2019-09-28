@@ -141,6 +141,7 @@
 <script>
 import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "record",
@@ -183,9 +184,6 @@ export default {
     };
   },
   computed: {
-    token() {
-      return this.$store.state.token;
-    },
     gym_typeCaption() {
       let v = this.gym_type;
       let selected = this.selection.gym_types.filter(function(item) {
@@ -259,7 +257,7 @@ export default {
       this.$router.push({ name: "Index" });
     },
     update() {
-      let url = "http://192.168.1.101:8000/api/record/" + this.id + "/";
+      let url = "/record/" + this.id + "/";
       let o = {
         monthly_rental: this.monthly_rental,
         title: this.title,
@@ -272,10 +270,9 @@ export default {
         gym_type: this.gym_type,
         features: this.features
       };
-      let headers = { headers: { Authorization: this.token } };
 
-      this.axios
-        .patch(url, o, headers)
+      basicRequest
+        .patch(url, o)
         .then(() => {
           Swal.fire(this.$t("done"), "", "success").then(() => {
             this.$router.push({ name: "Index" });

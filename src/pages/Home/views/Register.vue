@@ -77,6 +77,7 @@
 
 <script>
 import Swal from "sweetalert2";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "Register",
@@ -200,7 +201,7 @@ export default {
     createUser() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://192.168.1.101:8000/api/users/";
+        let url = "/user/";
         let o = {
           invitation_id: this.invitation_id,
           email: this.email,
@@ -210,11 +211,13 @@ export default {
           first_name: this.first_name,
           last_name: this.last_name
         };
-        this.axios
+        // TODO show loading animation
+        basicRequest
           .post(url, o)
           .then(() => {
             const msg = this.$t("registerSucc", [this.email]);
             Swal.fire(this.$t("done"), msg, "success");
+            // TODO direct to Login
           })
           .catch(function(error) {
             const title = error.response.status.toString();

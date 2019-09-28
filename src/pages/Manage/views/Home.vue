@@ -37,6 +37,7 @@
           <p>{{r.title}}</p>
           <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
           <p>{{r.remark}}</p>
+          <!-- FIXME set max length prevent overfllow -->
         </div>
         <div class="price-block">
           <p class="blue-text">NT{{ getPrice(r) }}</p>
@@ -65,7 +66,7 @@
       <li v-if="records&&records.length===0">{{$t('none')}}</li>
     </ul>
     <div class="pagination">
-      <span>{{$t('pageNow')}} {{pagination.pageIndex+1}}</span>
+      <span>{{$t('pageNow')}} {{pagination.pageIndex}}</span>
       &nbsp;|&nbsp;
       <span @click="readRecord(-1)">{{$t('prevPage')}}</span>
       &nbsp;|&nbsp;
@@ -76,6 +77,7 @@
 
 <script>
 import Swal from "sweetalert2";
+const { basicRequest } = require("@/apis/api.js");
 
 // @ is an alias to /src
 export default {
@@ -85,7 +87,7 @@ export default {
     return {
       recordCount: 0,
       records: null,
-      pagination: { pageIndex: 0, nextUrl: null, previousUrl: null },
+      pagination: { pageIndex: 1, nextUrl: null, previousUrl: null },
       ordering: { create_time: null, monthly_rental: null },
       // TODO expiry_date is a key feature, should be set as order
       search: "",
@@ -112,9 +114,6 @@ export default {
       } else {
         return "";
       }
-    },
-    token() {
-      return this.$store.state.token;
     }
   },
   watch: {
@@ -144,25 +143,36 @@ export default {
 
       this.records = [];
 
+      let url = this.getRecordUrl(pager);
+      console.log(url);
+
+      basicRequest.get(url).then(response => {
+        this.recordCount = response.data.count;
+        this.records = response.data.results;
+        this.pagination.nextUrl = response.data.next;
+        this.pagination.previousUrl = response.data.previous;
+      });
+    },
+    getRecordUrl(pager) {
+      let url = "/record/";
+
       // filter
-      let url = new URL("http://192.168.1.101:8000/api/record");
+      let urlSearch = new URLSearchParams();
       let creator = this.user_id;
-      url.searchParams.set("creator", creator);
+      urlSearch.set("creator", creator);
+
       // pagination
-      switch (pager) {
-        case -1:
-          url.href = this.pagination.previousUrl;
-          this.pagination.pageIndex += pager;
-          break;
-        case 1:
-          url.href = this.pagination.nextUrl;
-          this.pagination.pageIndex += pager;
-          break;
+      if (typeof pager === "number") {
+        this.pagination.pageIndex += pager;
+        if (this.pagination.pageIndex !== 0) {
+          urlSearch.set("page", this.pagination.pageIndex);
+        }
       }
       // search
       if (this.search) {
-        url.searchParams.set("search", this.search);
+        urlSearch.set("search", this.search);
       }
+
       // ordering
       let ordering = [];
       let orderingCreate_time = this.ordering.create_time;
@@ -174,16 +184,15 @@ export default {
         ordering.push(orderingMonthly_rental + "monthly_rental");
       }
       if (ordering.length > 0) {
-        url.searchParams.set("ordering", ordering);
+        urlSearch.set("ordering", ordering);
       }
-      console.log(url);
 
-      this.axios.get(url).then(response => {
-        this.recordCount = response.data.count;
-        this.records = response.data.results;
-        this.pagination.nextUrl = response.data.next;
-        this.pagination.previousUrl = response.data.previous;
-      });
+      let querys = urlSearch.toString();
+      if (querys) {
+        url += "?" + querys;
+      }
+
+      return url;
     },
     getProductLife(expiry_date) {
       let ret = "";
@@ -275,12 +284,11 @@ export default {
         if (result.value) {
           // Press Yes
           let record = this.records[index];
-          let url = "http://192.168.1.101:8000/api/record/" + record.id + "/";
-          let headers = { headers: { Authorization: this.token } };
+          let url = "/record/" + record.id + "/";
 
           // Delete
-          this.axios
-            .delete(url, headers)
+          basicRequest
+            .delete(url)
             .then(() => {
               Swal.fire(this.$t("done"), this.$t("beenRemoved"), "success").then(() => {
                 // Refresh records

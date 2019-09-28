@@ -28,6 +28,7 @@
 
 <script>
 import Swal from "sweetalert2";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "ResetPassword",
@@ -69,13 +70,13 @@ export default {
     resetPassword() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://192.168.1.101:8000/api/password_reset/";
+        let url = "/password-reset/";
         let o = {
           email: this.email,
           sn: this.sn
         };
-        this.axios
-          .post(url, o)
+        basicRequest
+          .put(url, o)
           .then(() => {
             const msg = this.$t("newPasswordHadSentToEmail", [this.email]);
             Swal.fire(this.$t("done"), msg, "success");

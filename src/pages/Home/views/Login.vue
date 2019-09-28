@@ -32,6 +32,7 @@
 
 <script>
 import Swal from "sweetalert2";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "Login",
@@ -44,11 +45,7 @@ export default {
       invalidForm: { email: false, password: false }
     };
   },
-  computed: {
-    token() {
-      return this.$store.state.token;
-    }
-  },
+  computed: {},
   watch: {
     email() {
       this.validForm_email();
@@ -77,18 +74,19 @@ export default {
     login() {
       let isValid = this.validForm();
       if (isValid) {
-        let url = "http://192.168.1.101:8000/api-token-auth/";
+        let url = "/login/";
         let o = {
           email: this.email,
           password: this.password
         };
-        this.axios
+        // TODO show loading animation
+        basicRequest
           .post(url, o)
           .then(response => {
             Swal.fire(this.$t("hi"), this.$t("welcomeBack") + "!", "success").then(() => {
               let token = "jwt " + response.data.token;
               this.$store.commit("setToken", token);
-              this.getUser();
+              this.getUser(); // TODO get token& user by apiLogin
             });
           })
           .catch(function(error) {
@@ -100,10 +98,9 @@ export default {
       }
     },
     getUser() {
-      let url = "http://192.168.1.101:8000/api/users/";
-      let headers = { headers: { Authorization: this.token } };
-      this.axios
-        .get(url, headers)
+      let url = "/user/";
+      basicRequest
+        .get(url)
         .then(response => {
           let user = response.data[0];
           this.$store.commit("setUser", user);

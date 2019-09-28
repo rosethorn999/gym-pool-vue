@@ -93,6 +93,7 @@
 
 <script>
 import RecordBox from "../components/RecordBox.vue";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "Index",
@@ -129,9 +130,9 @@ export default {
 
       const isMobileWidth = window.innerWidth <= 480;
       let _page_size = isMobileWidth ? 7 : 15; // mobile show 7 items, pc 15 items
-      let url = "http://192.168.1.101:8000/api/record?page_size=" + _page_size;
+      let url = "/record?page_size=" + _page_size;
 
-      this.axios.get(url).then(response => {
+      basicRequest.get(url).then(response => {
         this.recordCount = response.data.count;
         this.records = response.data.results;
       });

@@ -73,6 +73,7 @@
 <script>
 import zipcode from "@/assets/twZipCode.json";
 import RecordBox from "../components/RecordBox.vue";
+const { basicRequest } = require("@/apis/api.js");
 
 export default {
   name: "records",
@@ -87,7 +88,7 @@ export default {
       recordCount: 0,
       records: null,
 
-      pagination: { pageIndex: 0, nextUrl: null, previousUrl: null },
+      pagination: { pageIndex: 1, nextUrl: null, previousUrl: null },
       filter: { gym_type: null, county: null, district: null },
       ordering: { create_time: null, monthly_rental: null },
       // TODO expiry_date is a key feature, should be set as order
@@ -107,7 +108,7 @@ export default {
   },
   computed: {
     search() {
-      return this.$route.query;
+      return this.$route.query.search;
     },
     districts() {
       let ret = [];
@@ -147,24 +148,34 @@ export default {
 
       this.records = [];
 
+      let url = this.getRecordUrl(pager);
+      console.log(url);
+
+      basicRequest.get(url).then(response => {
+        this.recordCount = response.data.count;
+        this.records = response.data.results;
+        this.pagination.nextUrl = response.data.next;
+        this.pagination.previousUrl = response.data.previous;
+      });
+    },
+    getRecordUrl(pager) {
+      let url = "/record/";
+
       // filter
-      let url = new URL("http://192.168.1.101:8000/api/record");
+      let urlSearch = new URLSearchParams();
       // pagination
-      switch (pager) {
-        case -1:
-          url.href = this.pagination.previousUrl;
-          this.pagination.pageIndex += pager;
-          break;
-        case 1:
-          url.href = this.pagination.nextUrl;
-          this.pagination.pageIndex += pager;
-          break;
+      if (typeof pager === "number") {
+        this.pagination.pageIndex += pager;
+        if (this.pagination.pageIndex !== 0) {
+          urlSearch.set("page", this.pagination.pageIndex);
+        }
       }
+
       // search
-      if (this.search.search) {
-        // TODO 'this.search.search' could be more clever
-        url.searchParams.set("search", this.search.search);
+      if (this.search) {
+        urlSearch.set("search", this.search);
       }
+
       // ordering
       let ordering = [];
       let orderingCreate_time = this.ordering.create_time;
@@ -176,16 +187,15 @@ export default {
         ordering.push(orderingMonthly_rental + "monthly_rental");
       }
       if (ordering.length > 0) {
-        url.searchParams.set("ordering", ordering);
+        urlSearch.set("ordering", ordering);
       }
-      console.log(url);
 
-      this.axios.get(url).then(response => {
-        this.recordCount = response.data.count;
-        this.records = response.data.results;
-        this.pagination.nextUrl = response.data.next;
-        this.pagination.previousUrl = response.data.previous;
-      });
+      let querys = urlSearch.toString();
+      if (querys) {
+        url += "?" + querys;
+      }
+
+      return url;
     },
     checkout(index) {
       let record = this.records[index];
