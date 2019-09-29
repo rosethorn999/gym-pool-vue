@@ -44,7 +44,7 @@
             <h4>{{ $t("expiry_date") }}: {{expiry_date}}</h4>
             <p>&nbsp;</p>
             <p>{{ $t("create_time") }}: {{create_time}}</p>
-            <p>{{ $t("location") }}: {{location}}</p>
+            <p>{{ $t("location") }}: {{county}}{{district}}</p>
             <p>{{ $t("sellerInfo") }}: {{creator}}</p>
             <h3>&nbsp;</h3>
             <h1>
@@ -81,7 +81,8 @@ export default {
       gym_type: -1,
       store: "",
       monthly_rental: null,
-      location: "",
+      county: "",
+      district: "",
       expiry_date: "",
       create_time: "",
       deal_date: "",
@@ -123,7 +124,8 @@ export default {
     this.gym_type = record.gym_type;
     this.store = record.store;
     this.monthly_rental = record.monthly_rental;
-    this.location = record.location;
+    this.county = record.county;
+    this.district = record.district;
     this.expiry_date = record.expiry_date;
     this.remark = record.remark;
     this.features = record.features;
@@ -178,6 +180,9 @@ export default {
   color: #fff;
   padding: 52px $phone-padding;
   width: 100%;
+  @include pc-width {
+    padding: 52px $pc-padding;
+  }
 }
 .controller {
   margin: 10px 0px;

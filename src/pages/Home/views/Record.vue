@@ -1,13 +1,5 @@
 <template>
   <div class="records">
-    <div class="area-switcher">
-      <ul>
-        <li class="active">{{ $t("area-north") }}</li>
-        <li>{{ $t("area-centre") }}</li>
-        <li>{{ $t("area-south") }}</li>
-        <li>{{ $t("area-east") }}</li>
-      </ul>
-    </div>
     <div class="you-should-know">
       <h1>{{ $t("transferMustKnow") }}</h1>
       <p>{{ $t("somethingToNotice") }}</p>
@@ -15,7 +7,7 @@
     <div class="container">
       <div class="list-header">
         <div class="query-counter">
-          <span id="record-count">{{$t('area-north')}} {{$t('selling')}} {{recordCount}}</span>
+          <span id="record-count">{{$t('selling')}} {{recordCount}}</span>
         </div>
         <div class="query-fun">
           <select class="filter" v-model="filter.gym_type">
@@ -232,38 +224,12 @@ export default {
     padding: 0px $pc-padding;
   }
 }
-.area-switcher {
-  text-align: center;
-  color: #fff;
-  background: #434343;
-  height: 51px;
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    overflow: auto;
-    white-space: nowrap;
-    li {
-      display: inline-block;
-      height: 51px;
-      line-height: 51px;
-      width: 194px;
-      cursor: pointer;
-      &:hover,
-      &.active {
-        background: #555555;
-      }
-    }
-  }
-}
-
 .you-should-know {
   box-sizing: border-box;
   height: 244px;
   background-image: url("../assets/bg.png");
   color: #fff;
-  padding: 60px $phone-padding 150px;
+  padding: 52px $phone-padding;
   width: 100%;
   @include pc-width {
     padding: 52px $pc-padding;

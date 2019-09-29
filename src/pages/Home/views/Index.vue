@@ -1,69 +1,53 @@
 <template>
-  <!-- TODO i18n -->
   <div class="index">
     <div class="sliderBanner">
       <div class="background-area"></div>
       <div class="text-area">
         <p class="first-line">{{ $t("recordSell") }}</p>
         <p class="second-line">
-          有
+          {{ $t("have") }}
           <span class="mark">{{ recordCount }}</span>
-          件刊登商品
+          {{ $t("countOfRecord") }}
         </p>
-        <p class="second-line">尋找你所在的城市</p>
+        <p class="second-line">{{ $t("findOutYourCounty") }}</p>
         <div class="county-area">
           <ul class="circles">
-            <li class="north-area">
-              <p>300</p>
-              <p>件</p>
-              <router-link to="/record" class="area-btn">{{ $t("area-north") }}</router-link>
-            </li>
-            <li class="central-area">
-              <p>300</p>
-              <p>件</p>
-              <router-link to="/record" class="area-btn">{{ $t("area-centre") }}</router-link>
-            </li>
-            <li class="south-area">
-              <p>300</p>
-              <p>件</p>
-              <router-link to="/record" class="area-btn">{{ $t("area-south") }}</router-link>
-            </li>
-            <li class="east-area">
-              <p>300</p>
-              <p>件</p>
-              <router-link to="/record" class="area-btn">{{ $t("area-east") }}</router-link>
+            <li v-for="item in countyScatter" :key="item.county">
+              <p>{{ item.count }}</p>
+              <p>{{ $t("count") }}</p>
+              <router-link to="/record" class="area-btn">{{ item.county }}</router-link>
             </li>
           </ul>
         </div>
         <p>
-          看
-          <router-link to="/record">全部商品</router-link>
+          {{ $t("view") }}
+          <router-link to="/record">{{ $t("allRecord") }}</router-link>
         </p>
       </div>
     </div>
     <div class="why-area">
-      <p>為什麼我們需要使用你？</p>
-      <p>我們使用你能幫助我什麼？</p>
+      <p>{{ $t("whyWeExist") }}</p>
+      <p>{{ $t("weCanProvideYouFindPerfectRecord") }}</p>
     </div>
     <div class="we-provide-them">
-      <p>我們方便、簡單、好管理</p>
+      <p>{{ $t("ourFeatures") }}</p>
       <div>
         <ul>
           <li>
             <img src="https://via.placeholder.com/90" />
-            <p>方便聯絡</p>
+            <p>{{ $t("connectEasily") }}</p>
           </li>
           <li>
             <img src="https://via.placeholder.com/90" />
-            <p>完全免費</p>
+            <p>{{ $t("totalFree") }}</p>
           </li>
           <li>
             <img src="https://via.placeholder.com/90" />
-            <p>資訊透明</p>
+            <p>{{ $t("infoClearly") }}</p>
           </li>
           <li>
             <img src="https://via.placeholder.com/90" />
-            <p>多樣商品</p>
+            <p>{{ $t("manyProducts") }}</p>
           </li>
         </ul>
       </div>
@@ -73,7 +57,7 @@
       <p>{{ $t("somethingToNotice") }}</p>
     </div>
     <div class="latst-sell">
-      <p>最近上架</p>
+      <p>{{ $t("leastProduct") }}</p>
       <div class="record-container">
         <RecordBox
           v-for="(r,i) in records"
@@ -85,7 +69,7 @@
         />
       </div>
       <div class="watch-more-block">
-        <router-link class="watch-more" to="/record">看更多</router-link>
+        <router-link class="watch-more" to="/record">{{ $t("watchMore") }}</router-link>
       </div>
     </div>
   </div>
@@ -103,6 +87,7 @@ export default {
       recordCount: 0,
       records: null,
       pagination: {},
+      countyScatter: [],
 
       selection: {
         gym_types: [
@@ -123,6 +108,7 @@ export default {
   },
   mounted: function() {
     this.readRecord();
+    this.getRecordByCounty();
   },
   methods: {
     readRecord() {
@@ -135,6 +121,17 @@ export default {
       basicRequest.get(url).then(response => {
         this.recordCount = response.data.count;
         this.records = response.data.results;
+      });
+    },
+    getRecordByCounty() {
+      let url = "/group-by-county";
+
+      basicRequest.get(url).then(response => {
+        this.countyScatter = response.data;
+        this.countyScatter.splice(4, this.countyScatter.length);
+        this.countyScatter.sort((a, b) => {
+          return b.count - a.count;
+        });
       });
     },
     checkout(index) {
@@ -217,18 +214,18 @@ export default {
             }
           }
         }
-      }
-      .north-area {
-        border: 2px solid #aa0000;
-      }
-      .central-area {
-        border: 2px solid #e6c01e;
-      }
-      .south-area {
-        border: 2px solid $grassgreen;
-      }
-      .east-area {
-        border: 2px solid #5196e6;
+        li:nth-child(1) {
+          border: 2px solid #aa0000;
+        }
+        li:nth-child(2) {
+          border: 2px solid #e6c01e;
+        }
+        li:nth-child(3) {
+          border: 2px solid $grassgreen;
+        }
+        li:nth-child(4) {
+          border: 2px solid #5196e6;
+        }
       }
     }
     .text-area {

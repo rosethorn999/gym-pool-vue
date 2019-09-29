@@ -52,7 +52,22 @@
         <div class="form-group">
           <label>{{ $t("location") }}</label>
           <div class="control-box">
-            <input type="text" v-model="location" />
+            <select v-model="county">
+              <option :value="null">{{$t('county')}}</option>
+              <option
+                v-for="county in selection.zipcode"
+                :key="county.name"
+                :value="county.name"
+              >{{county.name}}</option>
+            </select>
+            <select v-model="district">
+              <option :value="null">{{$t('district')}}</option>
+              <option
+                v-for="district in districts"
+                :key="district.name"
+                :value="district.name"
+              >{{district.name}}</option>
+            </select>
           </div>
         </div>
         <div class="form-group">
@@ -105,6 +120,7 @@
 </template>
 
 <script>
+import zipcode from "@/assets/twZipCode.json";
 import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
 const { basicRequest } = require("@/apis/api.js");
@@ -119,13 +135,15 @@ export default {
       gym_type: -1,
       store: "",
       monthly_rental: null,
-      location: "",
+      county: "",
+      district: "",
       expiry_date: "",
       remark: "",
       features: [],
       processing_fee: 0,
 
       selection: {
+        zipcode: zipcode,
         gym_types: [
           { val: 1, name: "健身工廠" },
           { val: 2, name: "全真會館" },
@@ -144,6 +162,17 @@ export default {
     };
   },
   computed: {
+    districts() {
+      let ret = [];
+      let selectedDistricts = this.selection.zipcode.filter(item => {
+        return item.name === this.county;
+      });
+
+      if (selectedDistricts.length > 0) {
+        ret = selectedDistricts[0].districts;
+      }
+      return ret;
+    },
     gym_typeCaption() {
       let v = this.gym_type;
       let selected = this.selection.gym_types.filter(function(item) {
@@ -206,7 +235,8 @@ export default {
         title: this.title,
         processing_fee: this.processing_fee,
         store: this.store,
-        location: this.location,
+        county: this.county,
+        district: this.district,
         remark: this.remark,
         inventory: 1, // Fix to 1
         expiry_date: this.expiry_date,
