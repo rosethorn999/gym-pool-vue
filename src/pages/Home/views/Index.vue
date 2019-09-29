@@ -140,10 +140,6 @@ export default {
       let id = record.id;
       this.$router.push({ name: "RecordDetail", params: { recordId: id } });
     },
-    getPrice(r) {
-      let month = 12; //TODO calc month
-      return month * r.monthly_rental + r.processing_fee;
-    },
     gym_typeCaption(v) {
       let selected = this.selection.gym_types.filter(function(item) {
         return item.val === v;

@@ -82,7 +82,6 @@ const { basicRequest } = require("@/apis/api.js");
 export default {
   name: "Register",
   mounted: function() {
-    // TODO set invitation_id
     let invitation_id = this.$route.query.id;
     if (invitation_id) {
       this.invitation_id = invitation_id;

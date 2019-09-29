@@ -71,8 +71,11 @@ export default {
       }
     },
     price() {
-      let month = 12; //TODO calc month
-      return month * this.monthly_rental + this.processing_fee;
+      let d = new Date(this.expiry_date).getTime();
+      let now = new Date().getTime();
+
+      const monthCount = Math.round((d - now) / 1000 / 60 / 60 / 24 / 30);
+      return this.monthly_rental * monthCount + this.processing_fee;
     },
     yyyymm: function() {
       let d = new Date(this.expiry_date);

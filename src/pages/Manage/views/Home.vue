@@ -305,8 +305,11 @@ export default {
       });
     },
     getPrice(r) {
-      let month = 12; //TODO calc month
-      return month * r.monthly_rental + r.processing_fee;
+      let d = new Date(r.expiry_date).getTime();
+      let now = new Date().getTime();
+
+      const monthCount = Math.round((d - now) / 1000 / 60 / 60 / 24 / 30);
+      return r.monthly_rental * monthCount + r.processing_fee;
     },
     gym_typeCaption(v) {
       let selected = this.selection.gym_types.filter(function(item) {
