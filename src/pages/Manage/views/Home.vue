@@ -36,8 +36,7 @@
         <div class="title-block">
           <p>{{r.title}}</p>
           <p>{{gym_typeCaption(r.gym_type)}} {{r.store}}</p>
-          <p>{{r.remark}}</p>
-          <!-- FIXME set max length prevent overfllow -->
+          <p>{{ r.remark | max30Chr }}</p>
         </div>
         <div class="price-block">
           <p class="blue-text">NT{{ getPrice(r) }}</p>
@@ -114,6 +113,14 @@ export default {
       } else {
         return "";
       }
+    }
+  },
+  filters: {
+    max30Chr: function(v) {
+      if (v && v.length > 27) {
+        return v.substr(0, 27) + "...";
+      }
+      return v;
     }
   },
   watch: {
@@ -402,6 +409,9 @@ ul {
       &.title-block {
         min-width: 30%;
         line-height: 2.5rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex: 2;
       }
       &.price-block {
         line-height: 7rem;

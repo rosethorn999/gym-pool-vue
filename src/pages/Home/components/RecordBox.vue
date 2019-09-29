@@ -6,7 +6,7 @@
     <div class="text-box-left">
       <p class="font-size-20">{{ title }}</p>
       <p class="font-size-18">{{ gym_typeCaption }} {{ store }}</p>
-      <p class="darkgray-text font-size-14">{{ remark }}</p>
+      <p class="darkgray-text font-size-14">{{ remark | max30Chr }}</p>
     </div>
     <div class="text-box-right">
       <p
@@ -82,6 +82,14 @@ export default {
       let yyyy = d.getFullYear();
       let mm = d.getMonth() + 1;
       return yyyy + "/" + mm + this.$t("month");
+    }
+  },
+  filters: {
+    max30Chr: function(v) {
+      if (v && v.length > 27) {
+        return v.substr(0, 27) + "...";
+      }
+      return v;
     }
   },
   mounted() {
@@ -166,6 +174,8 @@ export default {
   .text-box-left {
     padding-top: 10px;
     text-align: left;
+    overflow-x: auto;
+    overflow-y: hidden;
     @include pc-width {
       flex: 3;
       padding-left: 3%;
