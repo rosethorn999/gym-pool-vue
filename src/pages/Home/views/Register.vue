@@ -161,7 +161,8 @@ export default {
     },
     validForm_sn() {
       this.dirty.sn = true;
-      this.invalidForm.sn = this.sn.trim() === "" || this.sn.trim().indexOf(" ") > 0;
+      const reSn = /^[A-Z]\d{9}$/;
+      this.invalidForm.sn = !reSn.exec(this.sn);
     },
     validForm_first_name() {
       this.dirty.first_name = true;
