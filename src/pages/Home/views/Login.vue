@@ -84,9 +84,13 @@ export default {
           .post(url, o)
           .then(response => {
             Swal.fire(this.$t("hi"), this.$t("welcomeBack") + "!", "success").then(() => {
+              // token
               let token = "jwt " + response.data.token;
               this.$store.commit("setToken", token);
-              this.getUser(); // TODO get token& user by apiLogin
+              // user
+              let user = response.data.user;
+              this.$store.commit("setUser", user);
+              this.$router.push({ name: "Index" });
             });
           })
           .catch(function(error) {
@@ -96,22 +100,6 @@ export default {
             console.error(error);
           });
       }
-    },
-    getUser() {
-      let url = "/user/";
-      basicRequest
-        .get(url)
-        .then(response => {
-          let user = response.data[0];
-          this.$store.commit("setUser", user);
-          this.$router.push({ name: "Index" });
-        })
-        .catch(function(error) {
-          const title = error.response.status.toString();
-          const msg = JSON.stringify(error.response.data);
-          Swal.fire(title, msg, "error");
-          console.error(error);
-        });
     }
   }
 };
