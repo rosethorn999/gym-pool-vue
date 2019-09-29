@@ -140,8 +140,8 @@ export default {
   },
   methods: {
     readRecord(pager) {
-      if (pager === -1 && this.pagination.pageIndex === 0) {
-        console.log("page index is 0");
+      if (pager === -1 && this.pagination.pageIndex === 1) {
+        console.log("page index is 1");
         return;
       } else if (pager === 1 && this.pagination.nextUrl === null) {
         console.log("no next page");

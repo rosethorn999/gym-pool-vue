@@ -130,8 +130,8 @@ export default {
   },
   methods: {
     readRecord(pager) {
-      if (pager === -1 && this.pagination.pageIndex === 0) {
-        console.log("page index is 0");
+      if (pager === -1 && this.pagination.pageIndex === 1) {
+        console.log("page index is 1");
         return;
       } else if (pager === 1 && this.pagination.nextUrl === null) {
         console.log("no next page");
@@ -148,6 +148,7 @@ export default {
         this.records = response.data.results;
         this.pagination.nextUrl = response.data.next;
         this.pagination.previousUrl = response.data.previous;
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       });
     },
     getRecordUrl(pager) {
