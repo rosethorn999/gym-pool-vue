@@ -17,6 +17,7 @@
         :class="{'is-invalid':invalidForm.password}"
         :placeholder="$t('password')"
         v-model="password"
+        @keydown.enter="login"
       />
     </div>
     <div class="form-group">
