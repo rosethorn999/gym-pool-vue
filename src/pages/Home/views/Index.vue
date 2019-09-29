@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <div class="sliderBanner">
+    <div class="slider-banner">
       <div class="background-area"></div>
       <div class="text-area">
         <p class="first-line">{{ $t("recordSell") }}</p>
@@ -159,11 +159,14 @@ export default {
   background: #fff;
   width: 100%;
 
-  .sliderBanner {
+  .slider-banner {
     height: 100vh;
     position: relative;
     text-align: center;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .mark {
       background: $grassgreen;
@@ -188,6 +191,7 @@ export default {
         li {
           display: inline-block;
           margin: 20px;
+          margin-bottom: 80px;
           border-radius: 50%;
           width: 120px;
           height: 120px;
@@ -226,11 +230,9 @@ export default {
     }
     .text-area {
       box-sizing: border-box;
-      padding-top: 100px;
       width: 100%;
       position: absolute;
-      top: 0;
-      height: 100vh;
+
       a {
         color: $grassgreen;
       }
@@ -238,8 +240,6 @@ export default {
     .background-area {
       width: 100%;
       height: 100%;
-      position: absolute;
-      top: 0;
       background-image: url("../assets/bg.png");
       background-size: cover;
       background-position: center;

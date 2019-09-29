@@ -246,7 +246,6 @@ export default {
   }
   div {
     width: 100%;
-    height: 50px;
     line-height: 50px;
     vertical-align: middle;
     display: inline-block;
