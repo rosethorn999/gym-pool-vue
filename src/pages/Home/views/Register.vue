@@ -215,8 +215,9 @@ export default {
           .post(url, o)
           .then(() => {
             const msg = this.$t("registerSucc", [this.email]);
-            Swal.fire(this.$t("done"), msg, "success");
-            // TODO direct to Login
+            Swal.fire(this.$t("done"), msg, "success").then(() => {
+              this.$router.push({ name: "Login" });
+            });
           })
           .catch(function(error) {
             const title = error.response.status.toString();
