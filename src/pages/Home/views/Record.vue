@@ -1,8 +1,10 @@
 <template>
   <div class="records">
     <div class="you-should-know">
-      <h1>{{ $t("transferMustKnow") }}</h1>
-      <p>{{ $t("somethingToNotice") }}</p>
+      <p>{{ $t("transferMustKnow") }}</p>
+      <p>
+        <router-link to="/notice">{{ $t("somethingToNotice") }}</router-link>
+      </p>
     </div>
     <div class="container">
       <div class="list-header">
@@ -230,13 +232,29 @@ export default {
 }
 .you-should-know {
   box-sizing: border-box;
-  height: 244px;
+  height: 307px;
   background-image: url("../assets/bg.png");
   color: #fff;
-  padding: 52px $phone-padding;
+  padding: 60px $phone-padding 150px;
   width: 100%;
   @include pc-width {
     padding: 52px $pc-padding;
+  }
+  p {
+    font-size: 30px;
+    @include pc-width {
+      font-size: 40px;
+    }
+    a:link,
+    a:visited {
+      color: #dee2e6;
+    }
+    a:hover {
+      color: #fff;
+    }
+    &:last-child {
+      font-size: $pc-font-size;
+    }
   }
 }
 .list-header {

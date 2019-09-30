@@ -1,9 +1,7 @@
 <template>
   <header>
-    <div class="logo-area">
-      <b>
-        <router-link to="/">GymPool</router-link>
-      </b>
+    <div class="logo-area" @click="goIndex">
+      <b>GymPool</b>
     </div>
     <div class="menu-area">
       <ul>
@@ -121,6 +119,13 @@ export default {
     }
   },
   methods: {
+    goIndex() {
+      if (this.$router.currentRoute.path !== "/") {
+        this.$router.push({ path: "/" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      }
+    },
     goRecords() {
       let key = this.search.trim();
       this.$router.push({ name: "Record", query: { search: key } });
@@ -147,6 +152,9 @@ export default {
 
 <style scoped lang="scss">
 header {
+  position: fixed;
+  top: 0px;
+  z-index: 10;
   background: $red;
   display: flex;
   width: 100%;
@@ -164,19 +172,20 @@ header {
 .logo-area {
   height: 100%;
   line-height: 67px;
-  width: 100%;
+  width: 50%;
   background: $red;
   color: #fff;
   text-align: left;
   font-size: 28px;
-  a:link,
-  a:visited {
-    color: #fff;
-  }
+  transition: 0.4s;
+  cursor: pointer;
   @include pc-width {
     text-align: center;
     max-width: 300px;
     flex: 2;
+    &:hover {
+      background: $bloodred;
+    }
   }
 }
 .menu-area {
@@ -208,14 +217,17 @@ header {
   }
   .search-select {
     display: inline-block;
-    height: 30px;
+    height: 32px;
     width: 5rem;
     vertical-align: middle;
-    border-right-color: #fff;
+    background-color: #fff;
+    border: 0px;
+    outline: 1px solid $gray;
+    outline-offset: 0px;
   }
   .search-textbox {
     display: inline-block;
-    height: 30px;
+    height: 34px;
     vertical-align: middle;
     max-width: calc(100% - 10rem);
     border: 1px solid $gray;
@@ -247,6 +259,8 @@ header {
   }
 }
 .mobile-menu-area {
+  position: absolute;
+  right: 20px;
   .tirgger-button > div {
     width: 35px;
     height: 5px;
@@ -256,7 +270,7 @@ header {
   }
   .closed .bar1 {
     -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-    transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-8px, 6px);
   }
   .closed .bar2 {
     opacity: 0;
@@ -274,7 +288,7 @@ header {
   width: 100%;
   position: fixed;
   z-index: 1;
-  top: 67px;
+  top: 66px;
   left: 0;
   background-color: $red;
   overflow-y: hidden;
@@ -291,14 +305,17 @@ header {
     width: 100%;
     .search-select {
       display: inline-block;
-      height: 30px;
+      height: 32px;
       width: 5rem;
       vertical-align: middle;
-      border-right-color: #fff;
+      background-color: #fff;
+      border: 0px;
+      outline: 1px solid $gray;
+      outline-offset: 0px;
     }
     .search-textbox {
       display: inline-block;
-      height: 30px;
+      height: 34px;
       vertical-align: middle;
       max-width: calc(100% - 10rem);
       border: 1px solid $gray;

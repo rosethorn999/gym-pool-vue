@@ -54,7 +54,9 @@
     </div>
     <div class="you-should-know">
       <p>{{ $t("transferMustKnow") }}</p>
-      <p>{{ $t("somethingToNotice") }}</p>
+      <p>
+        <router-link to="/notice">{{ $t("somethingToNotice") }}</router-link>
+      </p>
     </div>
     <div class="latst-sell">
       <p>{{ $t("leastProduct") }}</p>
@@ -308,6 +310,13 @@ export default {
       font-size: 30px;
       @include pc-width {
         font-size: 40px;
+      }
+      a:link,
+      a:visited {
+        color: #dee2e6;
+      }
+      a:hover {
+        color: #fff;
       }
       &:last-child {
         font-size: $pc-font-size;

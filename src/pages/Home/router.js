@@ -7,6 +7,8 @@ import Register from "./views/Register.vue";
 import Invitation from "./views/Invitation.vue";
 import Login from "./views/Login.vue";
 import ResetPassword from "./views/ResetPassword.vue";
+import Notice from "./views/Notice.vue";
+import PrivacyPolicy from "./views/PrivacyPolicy.vue";
 import Accessory from "./views/Accessory.vue";
 import Article from "./views/Article.vue";
 
@@ -50,6 +52,16 @@ export default new Router({
       path: "/resetPassword",
       name: "ResetPassword",
       component: ResetPassword
+    },
+    {
+      path: "/notice",
+      name: "Notice",
+      component: Notice
+    },
+    {
+      path: "/privacyPolicy",
+      name: "PrivacyPolicy",
+      component: PrivacyPolicy
     },
     {
       path: "/accessory",

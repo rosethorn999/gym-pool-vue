@@ -143,4 +143,11 @@ export default {
 .button-box {
   margin-top: 50px;
 }
+a:link,
+a:visited {
+  color: $blue;
+}
+a:hover {
+  color: $electricblue;
+}
 </style>

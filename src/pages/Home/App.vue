@@ -39,7 +39,8 @@ ul {
   margin-block-end: 0em;
 }
 .router-view {
-  min-height: 700px;
+  margin-top: 67px;
+  min-height: 719px;
   width: 100%;
 }
 .btn {

@@ -1,5 +1,5 @@
 <template>
-  <div class="accessory">
+  <div class="privacy-policy">
     <h1>Coming soon</h1>
     <!-- TODO implement -->
   </div>
@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "Accessory"
+  name: "PrivacyPolicy"
 };
 </script>
 

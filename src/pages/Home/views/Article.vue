@@ -1,6 +1,7 @@
 <template>
   <div class="article">
     <h1>Coming soon</h1>
+    <!-- TODO implement -->
   </div>
 </template>
 

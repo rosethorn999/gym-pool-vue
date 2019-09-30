@@ -66,8 +66,7 @@
     </div>
     <div class="form-group">
       {{ $t("reilizeHowWeSaveYourPrivacyPleaseVisit") }}
-      <a href="#">{{ $t("privacyPolicy") }}</a>
-      <!-- TODO privacyPolicy -->
+      <router-link to="/privacyPolicy">{{ $t("privacyPolicy") }}</router-link>
     </div>
     <div class="button-box">
       <input type="button" class="btn blue" :value="$t('send')" @click="createUser" />
@@ -268,5 +267,12 @@ export default {
 }
 .button-box {
   margin-top: 50px;
+}
+a:link,
+a:visited {
+  color: $blue;
+}
+a:hover {
+  color: $electricblue;
 }
 </style>
