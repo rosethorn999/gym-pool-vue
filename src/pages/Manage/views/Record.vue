@@ -131,23 +131,17 @@
             <input type="text" v-model="deal_date" disabled />
           </div>
         </div>
-        <div class="form-group">
-          <label>{{ $t("markAsSoldout") }}</label>
-          <div class="control-box">
-            <div>
-              <label>
-                {{ $t("yes") }}
-                <input type="checkbox" v-model="isSoldout" />
-              </label>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="button-box">
-        <!-- TODO markAsSoldout red button -->
-        <input type="button" class="btn" :value="$t('cancal')" @click="backToList" />
-        <input type="button" class="btn blue" :value="$t('send')" @click="update" />
+        <button
+          class="btn pink"
+          style="margin-right:150px;"
+          @click="markAsSoldout"
+          :disabled="isSoldout"
+        >{{ $t('soldout') }}</button>
+        <button class="btn" @click="backToList">{{ $t('cancal') }}</button>
+        <button class="btn blue" @click="update" :disabled="isSoldout">{{ $t('send') }}</button>
       </div>
     </div>
   </div>
@@ -180,8 +174,7 @@ export default {
       remark: "",
       features: [],
       processing_fee: 0,
-
-      isSoldout: false,
+      inventory: null,
 
       selection: {
         zipcode: zipcode,
@@ -253,6 +246,9 @@ export default {
 
       const monthCount = Math.round((d - now) / 1000 / 60 / 60 / 24 / 30);
       return this.monthly_rental * monthCount + this.processing_fee;
+    },
+    isSoldout() {
+      return this.inventory <= 0;
     }
   },
   mounted() {
@@ -272,11 +268,32 @@ export default {
     this.processing_fee = record.processing_fee;
     this.create_time = record.create_time;
     this.deal_date = record.deal_date;
-    this.isSoldout = record.inventory <= 0 ? true : false;
+    this.inventory = record.inventory;
+    if (record.inventory <= 0) {
+      Swal.fire(this.$t("readonly"), this.$t("inventoryLessThan1"), "warning");
+    }
   },
   methods: {
     backToList() {
       this.$router.push({ name: "Index" });
+    },
+    markAsSoldout() {
+      let url = "/record/" + this.id + "/";
+      let o = { inventory: 0 };
+
+      basicRequest
+        .patch(url, o)
+        .then(() => {
+          Swal.fire(this.$t("done"), "", "success").then(() => {
+            this.$router.push({ name: "Index" });
+          });
+        })
+        .catch(function(error) {
+          const title = error.response.status.toString();
+          const msg = JSON.stringify(error.response.data);
+          Swal.fire(title, msg, "error");
+          console.error(error);
+        });
     },
     update() {
       let url = "/record/" + this.id + "/";
@@ -288,7 +305,6 @@ export default {
         county: this.county,
         district: this.district,
         remark: this.remark,
-        inventory: this.isSoldout ? 0 : 1,
         expiry_date: this.expiry_date,
         gym_type: this.gym_type,
         features: this.features

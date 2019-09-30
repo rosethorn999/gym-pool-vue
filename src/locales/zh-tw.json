@@ -63,6 +63,8 @@
   "filter": "篩選條件",
   "clear": "清除",
   "search": "查詢",
+  "readonly": "不可更改",
+  "inventoryLessThan1": "庫存小於 1",
 
   "_id": "編號",
   "price": "價格",
@@ -77,7 +79,7 @@
   "modify_time": "修改日期",
   "deal_date": "成交日期",
   "deal": "成交",
-  "markAsSoldout": "標示為已售出",
+  "soldout": "已售出",
   "keepGoing": "確定嗎?",
   "yes": "是",
   "no": "否",

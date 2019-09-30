@@ -53,8 +53,19 @@ ul {
     background: $blue;
     color: #fff;
   }
+  &.pink {
+    background: $pink;
+    color: #fff;
+  }
   &:focus {
     outline: none;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+  &:hover {
+    opacity: 0.9;
   }
 }
 </style>

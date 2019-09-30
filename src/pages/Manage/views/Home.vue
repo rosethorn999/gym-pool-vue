@@ -30,6 +30,7 @@
       <li class="list-tiem" v-for="(r,index) in records" :key="r.id">
         <div class="image-block">
           <div class="image-box">
+            <p v-show="r.inventory<=0">已售出</p>
             <img src="../assets/world_gym__1448962972_16f5e373.jpg" alt="pic" />
           </div>
         </div>
@@ -390,6 +391,13 @@ ul {
           height: 120px;
           position: relative;
           overflow: hidden;
+          p {
+            z-index: 10;
+            position: absolute;
+            background: $pink;
+            padding: 10px;
+            color: #fff;
+          }
           img {
             width: 100%;
             position: absolute;
