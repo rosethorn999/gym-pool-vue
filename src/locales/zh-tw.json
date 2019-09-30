@@ -47,12 +47,6 @@
   "remark": "備註",
   "location": "所在地",
   "storeFeature": "場館特色",
-  "features": {
-    "saunaRoom": "蒸汽室",
-    "swimPool": "游泳池",
-    "fitnessClass": "健身課程",
-    "freeParking": "免費停車"
-  },
   "contact": "聯繫方式",
   "keyingPhoneNumber": "請輸入電話",
   "keyingMailAddr": "請輸入電子信箱",

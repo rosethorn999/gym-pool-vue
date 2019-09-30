@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import selections from "@/assets/selections.json";
 import zipcode from "@/assets/twZipCode.json";
 import RecordBox from "../components/RecordBox.vue";
 const { basicRequest } = require("@/apis/api.js");
@@ -89,14 +90,7 @@ export default {
 
       selection: {
         zipcode: zipcode,
-        gym_types: [
-          { val: 1, name: "健身工廠" },
-          { val: 2, name: "全真會館" },
-          { val: 3, name: "世界健身" },
-          { val: 4, name: "成吉思汗" },
-          { val: 5, name: "台北健身院" },
-          { val: 999, name: "其他" }
-        ]
+        gym_types: selections[0].list
       }
     };
   },

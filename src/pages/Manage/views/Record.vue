@@ -96,7 +96,7 @@
             <template v-for="(f,index) in selection.features">
               <label :for="f.val" :key="index">
                 <input type="checkbox" :id="f.val" :value="f.val" v-model="features" />
-                {{f.caption}}
+                {{f.name}}
               </label>
             </template>
           </div>
@@ -154,6 +154,7 @@
 </template>
 
 <script>
+import selections from "@/assets/selections.json";
 import zipcode from "@/assets/twZipCode.json";
 import Swal from "sweetalert2";
 import DatePick from "../components/DatePick.vue";
@@ -184,20 +185,8 @@ export default {
 
       selection: {
         zipcode: zipcode,
-        gym_types: [
-          { val: 0, name: "健身工廠" },
-          { val: 1, name: "全真會館" },
-          { val: 2, name: "世界健身" },
-          { val: 3, name: "成吉思汗" },
-          { val: 4, name: "台北健身院" },
-          { val: 999, name: "其他" }
-        ],
-        features: [
-          { val: "saunaRoom", caption: this.$t("features.saunaRoom") },
-          { val: "swimPool", caption: this.$t("features.swimPool") },
-          { val: "fitnessClass", caption: this.$t("features.fitnessClass") },
-          { val: "freeParking", caption: this.$t("features.freeParking") }
-        ]
+        gym_types: selections[0].list,
+        features: selections[1].list
       }
     };
   },
