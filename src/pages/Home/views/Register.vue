@@ -210,7 +210,7 @@ export default {
           first_name: this.first_name,
           last_name: this.last_name
         };
-        // TODO show loading animation
+        this.$spinner({ isShow: true });
         basicRequest
           .post(url, o)
           .then(() => {
@@ -224,6 +224,9 @@ export default {
             const msg = JSON.stringify(error.response.data);
             Swal.fire(title, msg, "error");
             console.error(error);
+          })
+          .finally(() => {
+            this.$spinner({ isShow: false });
           });
       }
     }

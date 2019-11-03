@@ -73,7 +73,6 @@
       <div class="watch-more-block">
         <router-link class="watch-more" to="/record">{{ $t("watchMore") }}</router-link>
       </div>
-      <button @click="openSpinner">openSpinner</button>
     </div>
   </div>
 </template>
@@ -108,15 +107,6 @@ export default {
     this.getRecordByCounty();
   },
   methods: {
-    openSpinner() {
-      this.$spinner({ isShow: true });
-      setTimeout(() => {
-        this.closeSpinner();
-      }, 3000);
-    },
-    closeSpinner() {
-      this.$spinner({ isShow: false });
-    },
     readRecord() {
       this.records = [];
 

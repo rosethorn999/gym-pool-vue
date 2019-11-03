@@ -80,7 +80,7 @@ export default {
           email: this.email,
           password: this.password
         };
-        // TODO show loading animation
+        this.$spinner({ isShow: true });
         basicRequest
           .post(url, o)
           .then(response => {
@@ -99,6 +99,9 @@ export default {
             const msg = JSON.stringify(error.response.data);
             Swal.fire(title, msg, "error");
             console.error(error);
+          })
+          .finally(() => {
+            this.$spinner({ isShow: false });
           });
       }
     }

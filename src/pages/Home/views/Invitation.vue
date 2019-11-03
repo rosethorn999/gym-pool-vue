@@ -49,7 +49,7 @@ export default {
       }
     },
     requestInvitation() {
-      // TODO show loading animation
+      this.$spinner({ isShow: true });
       let isValid = this.validForm();
       if (isValid) {
         let url = "/invitation/";
@@ -64,6 +64,9 @@ export default {
             const msg = JSON.stringify(error.response.data);
             Swal.fire(title, msg, "error");
             console.error(error);
+          })
+          .finally(() => {
+            this.$spinner({ isShow: false });
           });
       }
     }
