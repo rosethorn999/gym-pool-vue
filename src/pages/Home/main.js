@@ -6,7 +6,9 @@ import store from "./store";
 import "normalize.css";
 import i18n from "./i18n";
 import axios from "axios";
+import Spinner from "@/plugins/spinner/Installer.js";
 
+Vue.use(Spinner);
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;

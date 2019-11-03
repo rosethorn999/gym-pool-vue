@@ -3,6 +3,7 @@
     <HeaderBar></HeaderBar>
     <router-view class="router-view" />
     <FooterBar></FooterBar>
+    <VueSpinnerPlugin />
   </div>
 </template>
 
